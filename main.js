@@ -877,7 +877,7 @@ module.exports.loop = function () {
               Game.creeps[i].transfer(
                 fillerTargets[k],
                 RESOURCE_ENERGY,
-                Game.creeps[i].store.getUsedCapacity(RESOURCE_ENERGY)
+                Game.creeps[i].store.getFreeCapacity(RESOURCE_ENERGY)
               ) == ERR_NOT_IN_RANGE
             ) {
               Game.creeps[i].moveTo(fillerTargets[k]);
