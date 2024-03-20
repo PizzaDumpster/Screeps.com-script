@@ -48,6 +48,7 @@ var defenders = [];
 var scavangers = [];
 
 module.exports.loop = function () {
+  console.log("-----------------------Report-----------------------");
   constructionSitesLength = Game.spawns.Spawn1.room.find(
     FIND_CONSTRUCTION_SITES
   ).length;
@@ -76,7 +77,7 @@ module.exports.loop = function () {
     filter: (structure) => {
       return structure.structureType == STRUCTURE_CONTAINER;
     },
-  })
+  });
   energyContainers.sort();
   for (let i in Game.creeps) {
     console.log(
@@ -735,27 +736,33 @@ module.exports.loop = function () {
         Game.creeps[i].store.getUsedCapacity() < amountToUpgrade &&
         !Game.creeps[i].memory.isLoaded
       ) {
-        Game.creeps[i].moveTo(energySources[0], {
-          visualizePathStyle: {
-            fill: "transparent",
-            stroke: "#fff",
-            lineStyle: "dashed",
-            strokeWidth: 0.15,
-            opacity: 0.1,
-          },
-        });
-        Game.creeps[i].harvest(energySources[0]);
+        if (Game.creeps[i].harvest(energySources[0]) === ERR_NOT_IN_RANGE) {
+          Game.creeps[i].moveTo(energySources[0], {
+            visualizePathStyle: {
+              fill: "transparent",
+              stroke: "#fff",
+              lineStyle: "dashed",
+              strokeWidth: 0.15,
+              opacity: 0.1,
+            },
+          });
+        }
       } else if (Game.creeps[i].memory.isLoaded == true) {
-        Game.creeps[i].moveTo(Game.spawns.Spawn1.room.controller, {
-          visualizePathStyle: {
-            fill: "transparent",
-            stroke: "#fff",
-            lineStyle: "dashed",
-            strokeWidth: 0.15,
-            opacity: 0.1,
-          },
-        });
-        Game.creeps[i].upgradeController(Game.spawns.Spawn1.room.controller);
+        if (
+          Game.creeps[i].upgradeController(
+            Game.spawns.Spawn1.room.controller
+          ) === ERR_NOT_IN_RANGE
+        ) {
+          Game.creeps[i].moveTo(Game.spawns.Spawn1.room.controller, {
+            visualizePathStyle: {
+              fill: "transparent",
+              stroke: "#fff",
+              lineStyle: "dashed",
+              strokeWidth: 0.15,
+              opacity: 0.1,
+            },
+          });
+        }
       }
     }
     if (Game.creeps[i].memory.role == "healer") {
@@ -863,9 +870,7 @@ module.exports.loop = function () {
     }
 
     // towerFillers fill towers
-    if (
-      Game.creeps[i].memory.role == "towerFiller"
-    ) {
+    if (Game.creeps[i].memory.role == "towerFiller") {
       if (
         Game.creeps[i].store.getUsedCapacity() == amountToFill &&
         !Game.creeps[i].memory.isLoaded
@@ -880,9 +885,13 @@ module.exports.loop = function () {
         Game.creeps[i].store.getUsedCapacity() < amountToFill &&
         !Game.creeps[i].memory.isLoaded
       ) {
-        for(var e in energyContainers) {
+        for (var e in energyContainers) {
           Game.creeps[i].moveTo(energyContainers[e]);
-          Game.creeps[i].withdraw(energyContainers[e],RESOURCE_ENERGY,amountToFill);
+          Game.creeps[i].withdraw(
+            energyContainers[e],
+            RESOURCE_ENERGY,
+            amountToFill
+          );
         }
       } else if (Game.creeps[i].memory.isLoaded == true) {
         //find rapair sites
@@ -890,17 +899,17 @@ module.exports.loop = function () {
         //fillerTargets.reverse();
         for (var k in fillerTargets) {
           if (fillerTargets[k].store.getFreeCapacity(RESOURCE_ENERGY) > 0) {
-            Game.creeps[i].moveTo(fillerTargets[k-1]);
+            Game.creeps[i].moveTo(fillerTargets[k - 1]);
             if (
               Game.creeps[i].transfer(
-                fillerTargets[k-1],
+                fillerTargets[k - 1],
                 RESOURCE_ENERGY,
                 Game.creeps[i].store.getFreeCapacity(RESOURCE_ENERGY)
               ) == ERR_NOT_IN_RANGE
             ) {
-              Game.creeps[i].moveTo(fillerTargets[k-1]);
+              Game.creeps[i].moveTo(fillerTargets[k - 1]);
             }
-          
+
             Game.creeps[i].moveTo(fillerTargets[k]);
             if (
               Game.creeps[i].transfer(
@@ -1019,7 +1028,7 @@ module.exports.loop = function () {
       );
     }
   }
-  console.log("-----------------------Report-----------------------");
+
   console.log("fillerTargets: " + fillerTargets.length);
   console.log("deadSources: " + deadSources.length);
   console.log("depositTargets: " + depositTargets.length);
