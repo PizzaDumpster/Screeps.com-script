@@ -1,4 +1,4 @@
-const { filter } = require("lodash");
+const { filter, kebabCase } = require("lodash");
 
 // BODYPART_COST: { "move": 50, "work": 100, "attack": 80, "carry": 50, "heal": 250, "ranged_attack": 150, "tough": 10, "claim": 600 }
 var PHASE = 0;
@@ -24,6 +24,7 @@ var numberOfTowerFillers;
 var numberOfDefenders;
 var numberOfScavangers;
 
+var energyContainers;
 var energySources;
 var constructionSites;
 
@@ -63,12 +64,19 @@ module.exports.loop = function () {
   towers = Game.rooms[myRoomName].find(FIND_MY_STRUCTURES, {
     filter: { structureType: STRUCTURE_TOWER },
   });
+  towers.sort();
 
   var myTowers = Game.rooms[myRoomName].find(FIND_STRUCTURES, {
     filter: (structure) => {
       return structure.structureType == STRUCTURE_TOWER;
     },
   });
+  energyContainers = Game.rooms[myRoomName].find(FIND_STRUCTURES, {
+    filter: (structure) => {
+      return structure.structureType == STRUCTURE_CONTAINER;
+    },
+  })
+  energyContainers.sort();
   for (let i in Game.creeps) {
     console.log(
       "name: " +
@@ -869,13 +877,15 @@ module.exports.loop = function () {
         Game.creeps[i].store.getUsedCapacity() < amountToFill &&
         !Game.creeps[i].memory.isLoaded
       ) {
-        Game.creeps[i].moveTo(energySources[1]);
-        Game.creeps[i].harvest(energySources[1]);
+        for(var e in energyContainers) {
+          Game.creeps[i].moveTo(energyContainers[e]);
+          Game.creeps[i].withdraw(energyContainers[e],RESOURCE_ENERGY,amountToFill);
+        }
       } else if (Game.creeps[i].memory.isLoaded == true) {
         //find rapair sites
 
         for (var k in fillerTargets) {
-          if (fillerTargets[k -1].store.getFreeCapacity(RESOURCE_ENERGY) > 0) {
+          if (fillerTargets[k].store.getFreeCapacity(RESOURCE_ENERGY) > 0) {
             Game.creeps[i].moveTo(fillerTargets[k-1]);
             if (
               Game.creeps[i].transfer(
@@ -887,15 +897,15 @@ module.exports.loop = function () {
               Game.creeps[i].moveTo(fillerTargets[k-1]);
             }
           } else {
-            Game.creeps[i].moveTo(fillerTargets[0]);
+            Game.creeps[i].moveTo(fillerTargets[k]);
             if (
               Game.creeps[i].transfer(
-                fillerTargets[0],
+                fillerTargets[k],
                 RESOURCE_ENERGY,
                 Game.creeps[i].store.getFreeCapacity(RESOURCE_ENERGY)
               ) == ERR_NOT_IN_RANGE
             ) {
-              Game.creeps[i].moveTo(fillerTargets[0]);
+              Game.creeps[i].moveTo(fillerTargets[k]);
             }
           }
         }
