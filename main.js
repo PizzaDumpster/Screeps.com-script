@@ -52,7 +52,7 @@ module.exports.loop = function () {
   energySourcesLength = Game.spawns.Spawn1.room.find(FIND_SOURCES).length;
   energySources = Game.spawns.Spawn1.room.find(FIND_SOURCES);
   energySources.sort();
-  
+
   var deadSources = Game.rooms[myRoomName].find(
     FIND_SOURCES,
     RESOURCE_ENERGY,
@@ -933,9 +933,22 @@ module.exports.loop = function () {
       console.log(
         "ALERT!!!! WE ARE UNDER ATTACK!!!!! ALERT!!!! WE ARE UNDER ATTACK!!!!! ALERT!!!! WE ARE UNDER ATTACK!!!!! ALERT!!!! WE ARE UNDER ATTACK!!!!! "
       );
-    } else if (Game.creeps[i].memory.role == "scavanger" && deadSources.length > 0) {
-      if (Game.creeps[i].store.getFreeCapacity() > 0) {
-        
+    } else if (
+      Game.creeps[i].memory.role == "scavanger" &&
+      deadSources.length > 0
+    ) {
+      if (
+        Game.creeps[i].store.getUsedCapacity() == amountToUpgrade &&
+        !Game.creeps[i].memory.isLoaded
+      ) {
+        Game.creeps[i].memory.isLoaded = true;
+      } else if (
+        Game.creeps[i].store.getUsedCapacity() == 0 &&
+        Game.creeps[i].memory.isLoaded
+      ) {
+        Game.creeps[i].memory.isLoaded = false;
+      }
+      if (Game.creeps[i].store.getFreeCapacity() >= 0 && Game.creeps[i].memory.isLoaded === false) {
         for (var a in deadSources) {
           if (
             Game.creeps[i].harvest(deadSources[deadSources.length - a]) ==
@@ -956,9 +969,10 @@ module.exports.loop = function () {
             });
           }
         }
-      } else if (Game.creeps[i].memory.isLoaded == true && depositTargets.length > 0) {
-        
-        
+      } else if (
+        Game.creeps[i].memory.isLoaded == true &&
+        depositTargets.length > 0
+      ) {
         console.log("Deposit targets: " + depositTargets);
         if (depositTargets.length > 0) {
           for (b in depositTargets) {
@@ -972,7 +986,10 @@ module.exports.loop = function () {
             }
           }
         }
-      } else if(Game.creeps[i].memory.isLoaded == true && Game.spawns["Spawn1"].store.getUsedCapacity(RESOURCE_ENERGY) === 300) {
+      } else if (
+        Game.creeps[i].memory.isLoaded == true &&
+        Game.spawns["Spawn1"].store.getUsedCapacity(RESOURCE_ENERGY) === 300
+      ) {
         Game.creeps[i].moveTo(Game.spawns.Spawn1.room.controller, {
           visualizePathStyle: {
             fill: "transparent",
@@ -999,6 +1016,9 @@ module.exports.loop = function () {
       );
     }
   }
+  console.log("-----------------------Report-----------------------");
+  console.log("deadSources: " + deadSources.length);
+  console.log("depositTargets: " + depositTargets.length);
   console.log("Towers: " + myTowers.length);
   console.log("Energy Sources: " + energySources.length);
   console.log("Construction Sites: " + constructionSites.length);
