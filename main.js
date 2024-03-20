@@ -1,3 +1,5 @@
+const { filter } = require("lodash");
+
 // BODYPART_COST: { "move": 50, "work": 100, "attack": 80, "carry": 50, "heal": 250, "ranged_attack": 150, "tough": 10, "claim": 600 }
 var PHASE = 0;
 var repairTargets;
@@ -54,9 +56,7 @@ module.exports.loop = function () {
   energySources.sort();
 
   var deadSources = Game.rooms[myRoomName].find(
-    FIND_SOURCES,
-    RESOURCE_ENERGY,
-    FIND_RUINS
+    FIND_DROPPED_RESOURCES
   );
   deadSources.sort();
   console.log("Things to scavenge: " + deadSources.length);
@@ -938,7 +938,7 @@ module.exports.loop = function () {
       deadSources.length > 0
     ) {
       if (
-        Game.creeps[i].store.getUsedCapacity() == amountToUpgrade &&
+        Game.creeps[i].store.getUsedCapacity() == amountToScavange &&
         !Game.creeps[i].memory.isLoaded
       ) {
         Game.creeps[i].memory.isLoaded = true;
@@ -951,10 +951,10 @@ module.exports.loop = function () {
       if (Game.creeps[i].store.getFreeCapacity() >= 0 && Game.creeps[i].memory.isLoaded === false) {
         for (var a in deadSources) {
           if (
-            Game.creeps[i].harvest(deadSources[deadSources.length - a]) ==
+            Game.creeps[i].harvest(deadSources[0]) ==
             ERR_NOT_IN_RANGE
           ) {
-            Game.creeps[i].moveTo(deadSources[deadSources.length - a], {
+            Game.creeps[i].moveTo(deadSources[0], {
               visualizePathStyle: { stroke: "#ffaa00" },
             });
           }
@@ -1030,6 +1030,9 @@ module.exports.loop = function () {
       totaledContainerEnergy +
       " maxEnergy: " +
       maxContainerEnergy
+  );
+  console.log(
+    "Hostiles: " + hostiles.length 
   );
   console.log("-----------------------End Report-----------------------");
 };
