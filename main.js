@@ -65,6 +65,7 @@ module.exports.loop = function () {
     filter: { structureType: STRUCTURE_TOWER },
   });
   towers.sort();
+  towers.reverse();
 
   var myTowers = Game.rooms[myRoomName].find(FIND_STRUCTURES, {
     filter: (structure) => {
@@ -883,7 +884,8 @@ module.exports.loop = function () {
         }
       } else if (Game.creeps[i].memory.isLoaded == true) {
         //find rapair sites
-
+        fillerTargets.sort();
+        //fillerTargets.reverse();
         for (var k in fillerTargets) {
           if (fillerTargets[k].store.getFreeCapacity(RESOURCE_ENERGY) > 0) {
             Game.creeps[i].moveTo(fillerTargets[k-1]);
@@ -896,7 +898,7 @@ module.exports.loop = function () {
             ) {
               Game.creeps[i].moveTo(fillerTargets[k-1]);
             }
-          } else {
+          
             Game.creeps[i].moveTo(fillerTargets[k]);
             if (
               Game.creeps[i].transfer(
