@@ -683,11 +683,14 @@ module.exports.loop = function () {
                 },
               });
             }
-          }
-          else if (
+          }else if(
             totaledContainerEnergy === maxContainerEnergy &&
             Game.spawns["Spawn1"].store.getUsedCapacity(RESOURCE_ENERGY) == 300
-          ) {
+          ){
+            Game.creeps[i].moveTo(Game.rooms["E28N8"].find(STRUCTURE_STORAGE))
+            Game.creeps[i].transfer(Game.rooms["E28N8"].find(STRUCTURE_STORAGE), RESOURCE_ENERGY)
+          }
+          else  {
             Game.creeps[i].moveTo(Game.spawns.Spawn1.room.controller, {
               visualizePathStyle: {
                 fill: "transparent",
@@ -701,10 +704,7 @@ module.exports.loop = function () {
               Game.spawns.Spawn1.room.controller
             );
           }
-          else{
-            Game.creeps[i].moveTo(Game.rooms["E28N8"].find(STRUCTURE_STORAGE))
-            Game.creeps[i].transfer(Game.rooms["E28N8"].find(STRUCTURE_STORAGE), RESOURCE_ENERGY)
-          }
+          
         }
       }
     }
