@@ -52,18 +52,7 @@ module.exports.loop = function () {
   energySourcesLength = Game.spawns.Spawn1.room.find(FIND_SOURCES).length;
   energySources = Game.spawns.Spawn1.room.find(FIND_SOURCES);
   energySources.sort();
-  var depositTargets = Game.creeps[i].room.find(FIND_STRUCTURES, {
-    filter: (structure) => {
-      return (
-        (structure.structureType == STRUCTURE_EXTENSION ||
-          structure.structureType == STRUCTURE_SPAWN ||
-          structure.structureType == STRUCTURE_CONTAINER ||
-          structure.structureType == STRUCTURE_TOWER) &&
-        structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0
-      );
-    },
-  });
-  depositTargets.sort();
+  
   var deadSources = Game.rooms[myRoomName].find(
     FIND_SOURCES,
     RESOURCE_ENERGY,
@@ -571,6 +560,18 @@ module.exports.loop = function () {
     filter: { structureType: STRUCTURE_CONTAINER },
   });
   for (const i in Game.creeps) {
+    var depositTargets = Game.creeps[i].room.find(FIND_STRUCTURES, {
+      filter: (structure) => {
+        return (
+          (structure.structureType == STRUCTURE_EXTENSION ||
+            structure.structureType == STRUCTURE_SPAWN ||
+            structure.structureType == STRUCTURE_CONTAINER ||
+            structure.structureType == STRUCTURE_TOWER) &&
+          structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0
+        );
+      },
+    });
+    depositTargets.sort();
     repairTargets = Game.creeps[i].room.find(FIND_STRUCTURES, {
       filter: (object) => object.hits < object.hitsMax,
     });
