@@ -871,19 +871,28 @@ module.exports.loop = function () {
         //find rapair sites
 
         for (var k in fillerTargets) {
-          if (fillerTargets[k].store.getFreeCapacity(RESOURCE_ENERGY) > 0) {
+          if (fillerTargets[0].store.getFreeCapacity(RESOURCE_ENERGY) > 0) {
             Game.creeps[i].moveTo(fillerTargets[k]);
             if (
               Game.creeps[i].transfer(
-                fillerTargets[k],
+                fillerTargets[0],
                 RESOURCE_ENERGY,
                 Game.creeps[i].store.getFreeCapacity(RESOURCE_ENERGY)
               ) == ERR_NOT_IN_RANGE
             ) {
-              Game.creeps[i].moveTo(fillerTargets[k]);
+              Game.creeps[i].moveTo(fillerTargets[0]);
             }
-          } else {
-            Game.creeps[i].suicide();
+          } else{
+            Game.creeps[i].moveTo(fillerTargets[1]);
+            if (
+              Game.creeps[i].transfer(
+                fillerTargets[1],
+                RESOURCE_ENERGY,
+                Game.creeps[i].store.getFreeCapacity(RESOURCE_ENERGY)
+              ) == ERR_NOT_IN_RANGE
+            ) {
+              Game.creeps[i].moveTo(fillerTargets[1]);
+            }
           }
         }
       }
