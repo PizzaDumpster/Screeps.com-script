@@ -154,7 +154,7 @@ module.exports.loop = function () {
     numberOfHealers = 0;
     numberOfBuilders = 4;
     numberOfRepairers = 2;
-    numberOfInvaders = 0;
+    numberOfInvaders = 2;
     numberOfTowerFillers = 2;
     numberOfDefenders = 4;
     numberOfScavangers = 2;
@@ -500,7 +500,7 @@ module.exports.loop = function () {
     number++;
   }
   //if no invaders in room spawn one
-  else if (invaders.length < numberOfInvaders) {
+  else if (invaders.length < numberOfInvaders && Game.gcl == 2) {
     invaders.push(
       Game.spawns["Spawn1"].spawnCreep(
         [CLAIM, MOVE],
@@ -613,7 +613,8 @@ module.exports.loop = function () {
       } else if (
         Game.creeps[i].memory.isLoaded == true &&
         Game.spawns["Spawn1"].store.getUsedCapacity(RESOURCE_ENERGY) == 300
-      ) {
+      ) 
+      {
         totaledenergy = 0;
         maxEnergy = extensions.length * 50;
         for (var j in extensions) {
@@ -639,9 +640,8 @@ module.exports.loop = function () {
                 },
               });
             }
-          }
-          if (
-            totaledenergy == maxEnergy &&
+          } else if (
+            totaledenergy === maxEnergy &&
             Game.spawns["Spawn1"].store.getUsedCapacity(RESOURCE_ENERGY) == 300
           ) {
             Game.creeps[i].moveTo(Game.spawns.Spawn1.room.controller, {
@@ -653,8 +653,9 @@ module.exports.loop = function () {
                 opacity: 0.1,
               },
             });
-            Game.creeps[i].upgradeController(Game.spawns.Spawn1.room.controller);
-          
+            Game.creeps[i].upgradeController(
+              Game.spawns.Spawn1.room.controller
+            );
           }
         }
         totaledContainerEnergy = 0;
@@ -683,8 +684,8 @@ module.exports.loop = function () {
               });
             }
           }
-          if (
-            totaledContainerEnergy == maxContainerEnergy &&
+          else if (
+            totaledContainerEnergy === maxContainerEnergy &&
             Game.spawns["Spawn1"].store.getUsedCapacity(RESOURCE_ENERGY) == 300
           ) {
             Game.creeps[i].moveTo(Game.spawns.Spawn1.room.controller, {
@@ -699,6 +700,10 @@ module.exports.loop = function () {
             Game.creeps[i].upgradeController(
               Game.spawns.Spawn1.room.controller
             );
+          }
+          else{
+            Game.creeps[i].moveTo(Game.rooms["E28N8"].find(STRUCTURE_STORAGE))
+            Game.creeps[i].transfer(Game.rooms["E28N8"].find(STRUCTURE_STORAGE), RESOURCE_ENERGY)
           }
         }
       }
@@ -882,7 +887,7 @@ module.exports.loop = function () {
             ) {
               Game.creeps[i].moveTo(fillerTargets[0]);
             }
-          } else{
+          } else {
             Game.creeps[i].moveTo(fillerTargets[1]);
             if (
               Game.creeps[i].transfer(
@@ -897,9 +902,20 @@ module.exports.loop = function () {
         }
       }
     } else if (Game.creeps[i].memory.role == "invader") {
-      if (Game.Room.find(FIND_EXIT_LEFT)) {
-        Game.creeps[i].moveTo(Game.Room.find(FIND_EXIT_LEFT)[0]);
-        Game.room.exit();
+      if (Game.rooms[myRoomName].find(FIND_EXIT_LEFT)) {
+        Game.creeps[i].moveTo(0, 8, {
+          visualizePathStyle: {
+            fill: "transparent",
+            stroke: "#fff",
+            lineStyle: "dashed",
+            strokeWidth: 0.15,
+            opacity: 0.1,
+          },
+        });
+        if (Game.rooms["E27N8"]) {
+          Game.creeps[i].moveTo(Game.rooms["E27N8"].controller);
+          Game.creeps[i].claimController(Game.rooms["E27N8"].controller);
+        }
       }
     } else if (
       Game.creeps[i].memory.role == "defender" &&
@@ -980,7 +996,6 @@ module.exports.loop = function () {
           },
         });
         Game.creeps[i].upgradeController(Game.spawns.Spawn1.room.controller);
-      
       }
     }
 
