@@ -1007,16 +1007,21 @@ module.exports.loop = function () {
         Game.creeps[i].memory.isLoaded == true &&
         Game.spawns["Spawn1"].store.getUsedCapacity(RESOURCE_ENERGY) === 300
       ) {
-        Game.creeps[i].moveTo(Game.spawns.Spawn1.room.controller, {
-          visualizePathStyle: {
-            fill: "transparent",
-            stroke: "#fff",
-            lineStyle: "dashed",
-            strokeWidth: 0.15,
-            opacity: 0.1,
-          },
-        });
-        Game.creeps[i].upgradeController(Game.spawns.Spawn1.room.controller);
+        if (
+          Game.creeps[i].upgradeController(
+            Game.spawns.Spawn1.room.controller
+          ) == ERR_NOT_IN_RANGE
+        ) {
+          Game.creeps[i].moveTo(Game.spawns.Spawn1.room.controller, {
+            visualizePathStyle: {
+              fill: "transparent",
+              stroke: "#fff",
+              lineStyle: "dashed",
+              strokeWidth: 0.15,
+              opacity: 0.1,
+            },
+          });
+        }
       }
     }
 
