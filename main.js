@@ -769,16 +769,17 @@ module.exports.loop = function () {
       var hurtCreeps = Game.spawns.Spawn1.room.find(FIND_MY_CREEPS);
 
       if (hurtCreeps.length > 0) {
-        Game.creeps[i].moveTo(hurtCreeps[0], {
-          visualizePathStyle: {
-            fill: "transparent",
-            stroke: "#fff",
-            lineStyle: "dashed",
-            strokeWidth: 0.15,
-            opacity: 0.1,
-          },
-        });
-        Game.creeps[i].heal(hurtCreeps[0]);
+        if (Game.creeps[i].heal(hurtCreeps[0]) === ERR_NOT_IN_RANGE) {
+          Game.creeps[i].moveTo(hurtCreeps[0], {
+            visualizePathStyle: {
+              fill: "transparent",
+              stroke: "#fff",
+              lineStyle: "dashed",
+              strokeWidth: 0.15,
+              opacity: 0.1,
+            },
+          });
+        }
       }
     }
     if (Game.creeps[i].memory.role == "builder") {
@@ -796,33 +797,39 @@ module.exports.loop = function () {
         Game.creeps[i].store.getUsedCapacity() < amountToBuild &&
         !Game.creeps[i].memory.isLoaded
       ) {
-        Game.creeps[i].moveTo(energySources[1], {
-          visualizePathStyle: {
-            fill: "transparent",
-            stroke: "#fff",
-            lineStyle: "dashed",
-            strokeWidth: 0.15,
-            opacity: 0.1,
-          },
-        });
-        Game.creeps[i].harvest(energySources[1]);
+        if (Game.creeps[i].harvest(energySources[1]) === ERR_NOT_IN_RANGE) {
+          Game.creeps[i].moveTo(energySources[1], {
+            visualizePathStyle: {
+              fill: "transparent",
+              stroke: "#fff",
+              lineStyle: "dashed",
+              strokeWidth: 0.15,
+              opacity: 0.1,
+            },
+          });
+        }
       } else if (Game.creeps[i].memory.isLoaded == true) {
         //find construction sites
 
         if (constructionSitesLength > 0) {
-          Game.creeps[i].moveTo(
-            constructionSites[constructionSites.length - 1],
-            {
-              visualizePathStyle: {
-                fill: "transparent",
-                stroke: "#fff",
-                lineStyle: "dashed",
-                strokeWidth: 0.15,
-                opacity: 0.1,
-              },
-            }
-          );
-          Game.creeps[i].build(constructionSites[constructionSites.length - 1]);
+          if (
+            Game.creeps[i].build(
+              constructionSites[constructionSites.length - 1]
+            ) === ERR_NOT_IN_RANGE
+          ) {
+            Game.creeps[i].moveTo(
+              constructionSites[constructionSites.length - 1],
+              {
+                visualizePathStyle: {
+                  fill: "transparent",
+                  stroke: "#fff",
+                  lineStyle: "dashed",
+                  strokeWidth: 0.15,
+                  opacity: 0.1,
+                },
+              }
+            );
+          }
         } else {
           Game.creeps[i].moveTo(14, 20, {
             visualizePathStyle: {
@@ -863,8 +870,6 @@ module.exports.loop = function () {
           if (Game.creeps[i].repair(repairTargets[0]) == ERR_NOT_IN_RANGE) {
             Game.creeps[i].moveTo(repairTargets[0]);
           }
-        } else {
-          Game.creeps[i].suicide();
         }
       }
     }
