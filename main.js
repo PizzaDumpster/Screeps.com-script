@@ -494,8 +494,7 @@ module.exports.loop = function () {
     number++;
   } else if (
     towerFillers.length < numberOfTowerFillers &&
-    fillerTargets.length > 0 &&
-    fillerTargets[0].store.getUsedCapacity(RESOURCE_ENERGY) < 1000
+    fillerTargets.length > 0
   ) {
     towerFillers.push(
       Game.spawns["Spawn1"].spawnCreep(
@@ -854,8 +853,7 @@ module.exports.loop = function () {
 
     // towerFillers fill towers
     if (
-      Game.creeps[i].memory.role == "towerFiller" &&
-      fillerTargets.length > 0
+      Game.creeps[i].memory.role == "towerFiller"
     ) {
       if (
         Game.creeps[i].store.getUsedCapacity() == amountToFill &&
@@ -1008,6 +1006,7 @@ module.exports.loop = function () {
     }
   }
   console.log("-----------------------Report-----------------------");
+  console.log("fillerTargets: " + fillerTargets.length);
   console.log("deadSources: " + deadSources.length);
   console.log("depositTargets: " + depositTargets.length);
   console.log("Towers: " + myTowers.length);
