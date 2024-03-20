@@ -55,9 +55,7 @@ module.exports.loop = function () {
   energySources = Game.spawns.Spawn1.room.find(FIND_SOURCES);
   energySources.sort();
 
-  var deadSources = Game.rooms[myRoomName].find(
-    FIND_DROPPED_RESOURCES
-  );
+  var deadSources = Game.rooms[myRoomName].find(FIND_DROPPED_RESOURCES);
   deadSources.sort();
   console.log("Things to scavenge: " + deadSources.length);
   console.log(deadSources);
@@ -904,7 +902,8 @@ module.exports.loop = function () {
           }
         }
       }
-    } else if (Game.creeps[i].memory.role == "invader") {
+    }
+    if (Game.creeps[i].memory.role == "invader") {
       if (Game.rooms[myRoomName].find(FIND_EXIT_LEFT)) {
         Game.creeps[i].moveTo(0, 8, {
           visualizePathStyle: {
@@ -920,40 +919,35 @@ module.exports.loop = function () {
           Game.creeps[i].claimController(Game.rooms["E27N8"].controller);
         }
       }
-    } else if (
-      Game.creeps[i].memory.role == "defender" &&
-      hostiles.length > 0
-    ) {
+    }
+    if (Game.creeps[i].memory.role == "defender" && hostiles.length > 0) {
       var username1 = hostiles[0].owner.username;
       Game.notify(
         `User ${username1} spotted in room ${myRoomName}` +
           " ALERT!!!! WE ARE UNDER ATTACK!!!!! ALERT!!!! WE ARE UNDER ATTACK!!!!! ALERT!!!! WE ARE UNDER ATTACK!!!!! ALERT!!!! WE ARE UNDER ATTACK!!!!! "
       );
-      Game.creeps[i].attack(hostiles[0]);
+      if (Game.creeps[i].attack(hostiles[0]) == ERR_NOT_IN_RANGE) {
+        Game.creeps[i].moveTo(hostiles[0]);
+      }
       console.log(
         "ALERT!!!! WE ARE UNDER ATTACK!!!!! ALERT!!!! WE ARE UNDER ATTACK!!!!! ALERT!!!! WE ARE UNDER ATTACK!!!!! ALERT!!!! WE ARE UNDER ATTACK!!!!! "
       );
-    } else if (
-      Game.creeps[i].memory.role == "scavanger" &&
-      deadSources.length > 0
-    ) {
+    }
+    if (Game.creeps[i].memory.role == "scavanger") {
       if (
-        Game.creeps[i].store.getUsedCapacity() == amountToScavange &&
+        Game.creeps[i].store.getUsedCapacity() === amountToScavange &&
         !Game.creeps[i].memory.isLoaded
       ) {
         Game.creeps[i].memory.isLoaded = true;
       } else if (
-        Game.creeps[i].store.getUsedCapacity() == 0 &&
+        Game.creeps[i].store.getUsedCapacity() === 0 &&
         Game.creeps[i].memory.isLoaded
       ) {
         Game.creeps[i].memory.isLoaded = false;
       }
-      if (Game.creeps[i].store.getFreeCapacity() >= 0 && Game.creeps[i].memory.isLoaded === false) {
+      if (Game.creeps[i].memory.isLoaded === false) {
         for (var a in deadSources) {
-          if (
-            Game.creeps[i].harvest(deadSources[0]) ==
-            ERR_NOT_IN_RANGE
-          ) {
+          if (Game.creeps[i].harvest(deadSources[0]) == ERR_NOT_IN_RANGE) {
             Game.creeps[i].moveTo(deadSources[0], {
               visualizePathStyle: { stroke: "#ffaa00" },
             });
@@ -969,10 +963,7 @@ module.exports.loop = function () {
             });
           }
         }
-      } else if (
-        Game.creeps[i].memory.isLoaded == true &&
-        depositTargets.length > 0
-      ) {
+      } else if (Game.creeps[i].memory.isLoaded == true) {
         console.log("Deposit targets: " + depositTargets);
         if (depositTargets.length > 0) {
           for (b in depositTargets) {
@@ -1031,8 +1022,6 @@ module.exports.loop = function () {
       " maxEnergy: " +
       maxContainerEnergy
   );
-  console.log(
-    "Hostiles: " + hostiles.length 
-  );
+  console.log("Hostiles: " + hostiles.length);
   console.log("-----------------------End Report-----------------------");
 };
