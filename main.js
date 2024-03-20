@@ -52,6 +52,26 @@ module.exports.loop = function () {
   energySourcesLength = Game.spawns.Spawn1.room.find(FIND_SOURCES).length;
   energySources = Game.spawns.Spawn1.room.find(FIND_SOURCES);
   energySources.sort();
+  var depositTargets = Game.creeps[i].room.find(FIND_STRUCTURES, {
+    filter: (structure) => {
+      return (
+        (structure.structureType == STRUCTURE_EXTENSION ||
+          structure.structureType == STRUCTURE_SPAWN ||
+          structure.structureType == STRUCTURE_CONTAINER ||
+          structure.structureType == STRUCTURE_TOWER) &&
+        structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0
+      );
+    },
+  });
+  depositTargets.sort();
+  var deadSources = Game.rooms[myRoomName].find(
+    FIND_SOURCES,
+    RESOURCE_ENERGY,
+    FIND_RUINS
+  );
+  deadSources.sort();
+  console.log("Things to scavenge: " + deadSources.length);
+  console.log(deadSources);
   hostiles = Game.rooms[myRoomName].find(FIND_HOSTILE_CREEPS);
   towers = Game.rooms[myRoomName].find(FIND_MY_STRUCTURES, {
     filter: { structureType: STRUCTURE_TOWER },
@@ -613,8 +633,7 @@ module.exports.loop = function () {
       } else if (
         Game.creeps[i].memory.isLoaded == true &&
         Game.spawns["Spawn1"].store.getUsedCapacity(RESOURCE_ENERGY) == 300
-      ) 
-      {
+      ) {
         totaledenergy = 0;
         maxEnergy = extensions.length * 50;
         for (var j in extensions) {
@@ -640,22 +659,6 @@ module.exports.loop = function () {
                 },
               });
             }
-          } else if (
-            totaledenergy === maxEnergy &&
-            Game.spawns["Spawn1"].store.getUsedCapacity(RESOURCE_ENERGY) == 300
-          ) {
-            Game.creeps[i].moveTo(Game.spawns.Spawn1.room.controller, {
-              visualizePathStyle: {
-                fill: "transparent",
-                stroke: "#fff",
-                lineStyle: "dashed",
-                strokeWidth: 0.15,
-                opacity: 0.1,
-              },
-            });
-            Game.creeps[i].upgradeController(
-              Game.spawns.Spawn1.room.controller
-            );
           }
         }
         totaledContainerEnergy = 0;
@@ -683,29 +686,28 @@ module.exports.loop = function () {
                 },
               });
             }
-          }else if(
-            totaledContainerEnergy === maxContainerEnergy &&
-            Game.spawns["Spawn1"].store.getUsedCapacity(RESOURCE_ENERGY) == 300
-          ){
-            Game.creeps[i].moveTo(Game.rooms["E28N8"].find(STRUCTURE_STORAGE))
-            Game.creeps[i].transfer(Game.rooms["E28N8"].find(STRUCTURE_STORAGE), RESOURCE_ENERGY)
           }
-          else  {
-            Game.creeps[i].moveTo(Game.spawns.Spawn1.room.controller, {
-              visualizePathStyle: {
-                fill: "transparent",
-                stroke: "#fff",
-                lineStyle: "dashed",
-                strokeWidth: 0.15,
-                opacity: 0.1,
-              },
-            });
-            Game.creeps[i].upgradeController(
-              Game.spawns.Spawn1.room.controller
-            );
-          }
-          
         }
+      } else if (
+        totaledContainerEnergy === maxContainerEnergy &&
+        Game.spawns["Spawn1"].store.getUsedCapacity(RESOURCE_ENERGY) == 300
+      ) {
+        Game.creeps[i].moveTo(Game.rooms["E28N8"].find(STRUCTURE_STORAGE));
+        Game.creeps[i].transfer(
+          Game.rooms["E28N8"].find(STRUCTURE_STORAGE),
+          RESOURCE_ENERGY
+        );
+      } else {
+        Game.creeps[i].moveTo(Game.spawns.Spawn1.room.controller, {
+          visualizePathStyle: {
+            fill: "transparent",
+            stroke: "#fff",
+            lineStyle: "dashed",
+            strokeWidth: 0.15,
+            opacity: 0.1,
+          },
+        });
+        Game.creeps[i].upgradeController(Game.spawns.Spawn1.room.controller);
       }
     }
 
@@ -930,15 +932,9 @@ module.exports.loop = function () {
       console.log(
         "ALERT!!!! WE ARE UNDER ATTACK!!!!! ALERT!!!! WE ARE UNDER ATTACK!!!!! ALERT!!!! WE ARE UNDER ATTACK!!!!! ALERT!!!! WE ARE UNDER ATTACK!!!!! "
       );
-    } else if (Game.creeps[i].memory.role == "scavanger") {
+    } else if (Game.creeps[i].memory.role == "scavanger" && deadSources.length > 0) {
       if (Game.creeps[i].store.getFreeCapacity() > 0) {
-        var deadSources = Game.rooms[myRoomName].find(
-          FIND_SOURCES,
-          RESOURCE_ENERGY
-        );
-        deadSources.sort();
-        console.log("Things to scavenge: " + deadSources.length);
-        console.log(deadSources);
+        
         for (var a in deadSources) {
           if (
             Game.creeps[i].harvest(deadSources[deadSources.length - a]) ==
@@ -959,19 +955,9 @@ module.exports.loop = function () {
             });
           }
         }
-      } else if (Game.creeps[i].memory.isLoaded == true) {
-        var depositTargets = Game.creeps[i].room.find(FIND_STRUCTURES, {
-          filter: (structure) => {
-            return (
-              (structure.structureType == STRUCTURE_EXTENSION ||
-                structure.structureType == STRUCTURE_SPAWN ||
-                structure.structureType == STRUCTURE_CONTAINER ||
-                structure.structureType == STRUCTURE_TOWER) &&
-              structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0
-            );
-          },
-        });
-        depositTargets.sort();
+      } else if (Game.creeps[i].memory.isLoaded == true && depositTargets.length > 0) {
+        
+        
         console.log("Deposit targets: " + depositTargets);
         if (depositTargets.length > 0) {
           for (b in depositTargets) {
@@ -985,7 +971,7 @@ module.exports.loop = function () {
             }
           }
         }
-      } else {
+      } else if(Game.creeps[i].memory.isLoaded == true && Game.spawns["Spawn1"].store.getUsedCapacity(RESOURCE_ENERGY) === 300) {
         Game.creeps[i].moveTo(Game.spawns.Spawn1.room.controller, {
           visualizePathStyle: {
             fill: "transparent",
