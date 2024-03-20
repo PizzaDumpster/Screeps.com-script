@@ -532,7 +532,7 @@ module.exports.loop = function () {
   else if (defenders.length < numberOfDefenders && hostiles.length > 0) {
     defenders.push(
       Game.spawns["Spawn1"].spawnCreep(
-        [MOVE, MOVE, ATTACK, ATTACK, TOUGH, TOUGH, TOUGH, TOUGH],
+        [MOVE, MOVE, MOVE, MOVE, ATTACK, ATTACK, TOUGH, TOUGH],
         "Defender" + number.toString(),
         { memory: { role: "defender", isAttacking: false } }
       )
