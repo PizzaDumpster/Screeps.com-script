@@ -302,6 +302,8 @@ module.exports.loop = function () {
       harvesters.length +
       " Upgraders: " +
       upgraders.length +
+      " Defenders: " +
+      defenders.length +
       " towerFillers: " +
       towerFillers.length +
       " Healers: " +
