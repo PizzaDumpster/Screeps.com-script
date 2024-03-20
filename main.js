@@ -55,7 +55,7 @@ module.exports.loop = function () {
   energySources = Game.spawns.Spawn1.room.find(FIND_SOURCES);
   energySources.sort();
 
-  var deadSources = Game.rooms[myRoomName].find(FIND_DROPPED_RESOURCES);
+  var deadSources = Game.rooms[myRoomName].find(FIND_TOMBSTONES);
   deadSources.sort();
   console.log("Things to scavenge: " + deadSources.length);
   console.log(deadSources);
@@ -877,8 +877,19 @@ module.exports.loop = function () {
         //find rapair sites
 
         for (var k in fillerTargets) {
-          if (fillerTargets[0].store.getFreeCapacity(RESOURCE_ENERGY) > 0) {
-            Game.creeps[i].moveTo(fillerTargets[k]);
+          if (fillerTargets[k -1].store.getFreeCapacity(RESOURCE_ENERGY) > 0) {
+            Game.creeps[i].moveTo(fillerTargets[k-1]);
+            if (
+              Game.creeps[i].transfer(
+                fillerTargets[k-1],
+                RESOURCE_ENERGY,
+                Game.creeps[i].store.getFreeCapacity(RESOURCE_ENERGY)
+              ) == ERR_NOT_IN_RANGE
+            ) {
+              Game.creeps[i].moveTo(fillerTargets[k-1]);
+            }
+          } else {
+            Game.creeps[i].moveTo(fillerTargets[0]);
             if (
               Game.creeps[i].transfer(
                 fillerTargets[0],
@@ -887,17 +898,6 @@ module.exports.loop = function () {
               ) == ERR_NOT_IN_RANGE
             ) {
               Game.creeps[i].moveTo(fillerTargets[0]);
-            }
-          } else {
-            Game.creeps[i].moveTo(fillerTargets[1]);
-            if (
-              Game.creeps[i].transfer(
-                fillerTargets[1],
-                RESOURCE_ENERGY,
-                Game.creeps[i].store.getFreeCapacity(RESOURCE_ENERGY)
-              ) == ERR_NOT_IN_RANGE
-            ) {
-              Game.creeps[i].moveTo(fillerTargets[1]);
             }
           }
         }
