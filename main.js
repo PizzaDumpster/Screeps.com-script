@@ -798,7 +798,7 @@ module.exports.loop = function () {
       } else if (
         Game.creeps[i].store.getUsedCapacity() < amountToBuild &&
         !Game.creeps[i].memory.isLoaded &&
-        totaledContainerEnergy > 0
+        totaledContainerEnergy >= amountToBuild
       ) {
         for (var e in energyContainers) {
           if (energyContainers[e].store.getUsedCapacity() >= 50) {
@@ -875,7 +875,9 @@ module.exports.loop = function () {
         Game.creeps[i].memory.isLoaded = false;
       } else if (
         Game.creeps[i].store.getUsedCapacity() < amountToRepair &&
-        !Game.creeps[i].memory.isLoaded
+        !Game.creeps[i].memory.isLoaded &&
+        totaledContainerEnergy >= amountToRepair
+
       ) {
         for (var e in energyContainers) {
           if (energyContainers[e].store.getUsedCapacity() >= 50) {
@@ -914,7 +916,8 @@ module.exports.loop = function () {
         Game.creeps[i].memory.isLoaded = false;
       } else if (
         Game.creeps[i].store.getUsedCapacity() < amountToFill &&
-        !Game.creeps[i].memory.isLoaded
+        !Game.creeps[i].memory.isLoaded &&
+        totaledContainerEnergy >= amountToFill
       ) {
         for (var e in energyContainers) {
           Game.creeps[i].moveTo(energyContainers[e]);
