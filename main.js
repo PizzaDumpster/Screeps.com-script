@@ -33,7 +33,7 @@ var maxEnergy;
 
 var totaledContainerEnergy;
 var maxContainerEnergy;
-var containerEnergyBuffer = 100; 
+var containerEnergyBuffer = 500; 
 
 var hostiles;
 var towers;
