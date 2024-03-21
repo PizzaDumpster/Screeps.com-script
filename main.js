@@ -550,7 +550,7 @@ module.exports.loop = function () {
     );
     number++;
   }
-    //clear non-existing creep memory
+  //clear non-existing creep memory
   for (var name in Memory.creeps) {
     if (!Game.creeps[name]) {
       delete Memory.creeps[name];
@@ -797,16 +797,18 @@ module.exports.loop = function () {
         Game.creeps[i].memory.isLoaded = false;
       } else if (
         Game.creeps[i].store.getUsedCapacity() < amountToBuild &&
-        !Game.creeps[i].memory.isLoaded && 
+        !Game.creeps[i].memory.isLoaded &&
         totaledContainerEnergy > 0
       ) {
         for (var e in energyContainers) {
-          Game.creeps[i].moveTo(energyContainers[e]);
-          Game.creeps[i].withdraw(
-            energyContainers[e],
-            RESOURCE_ENERGY,
-            amountToFill
-          );
+          if (energyContainers[e].store.getUsedCapacity() > 50) {
+            Game.creeps[i].moveTo(energyContainers[e]);
+            Game.creeps[i].withdraw(
+              energyContainers[e],
+              RESOURCE_ENERGY,
+              amountToFill
+            );
+          }
         }
       } else if (
         Game.creeps[i].store.getUsedCapacity() < amountToBuild &&
@@ -876,12 +878,14 @@ module.exports.loop = function () {
         !Game.creeps[i].memory.isLoaded
       ) {
         for (var e in energyContainers) {
-          Game.creeps[i].moveTo(energyContainers[e]);
-          Game.creeps[i].withdraw(
-            energyContainers[e],
-            RESOURCE_ENERGY,
-            amountToFill
-          );
+          if (energyContainers[e].store.getUsedCapacity() > 50) {
+            Game.creeps[i].moveTo(energyContainers[e]);
+            Game.creeps[i].withdraw(
+              energyContainers[e],
+              RESOURCE_ENERGY,
+              amountToFill
+            );
+          }
         }
       } else if (Game.creeps[i].memory.isLoaded == true) {
         //find rapair sites
@@ -1060,7 +1064,7 @@ module.exports.loop = function () {
       );
     }
   }
-  
+
   console.log("fillerTargets: " + fillerTargets.length);
   console.log("deadSources: " + deadSources.length);
   console.log("depositTargets: " + depositTargets.length);
