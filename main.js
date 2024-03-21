@@ -795,7 +795,21 @@ module.exports.loop = function () {
         Game.creeps[i].memory.isLoaded = false;
       } else if (
         Game.creeps[i].store.getUsedCapacity() < amountToBuild &&
-        !Game.creeps[i].memory.isLoaded
+        !Game.creeps[i].memory.isLoaded && 
+        totaledContainerEnergy > 0
+      ) {
+        for (var e in energyContainers) {
+          Game.creeps[i].moveTo(energyContainers[e]);
+          Game.creeps[i].withdraw(
+            energyContainers[e],
+            RESOURCE_ENERGY,
+            amountToFill
+          );
+        }
+      } else if (
+        Game.creeps[i].store.getUsedCapacity() < amountToBuild &&
+        !Game.creeps[i].memory.isLoaded &&
+        maxContainerEnergy - totaledContainerEnergy === 0
       ) {
         if (Game.creeps[i].harvest(energySources[1]) === ERR_NOT_IN_RANGE) {
           Game.creeps[i].moveTo(energySources[1], {
