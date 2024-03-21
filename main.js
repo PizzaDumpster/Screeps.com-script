@@ -813,8 +813,8 @@ module.exports.loop = function () {
       } else if (
         Game.creeps[i].store.getUsedCapacity() < amountToBuild &&
         !Game.creeps[i].memory.isLoaded &&
-        totaledContainerEnergy < amountToBuild 
-        ) {
+        totaledContainerEnergy < amountToBuild
+      ) {
         if (Game.creeps[i].harvest(energySources[1]) === ERR_NOT_IN_RANGE) {
           Game.creeps[i].moveTo(energySources[1], {
             visualizePathStyle: {
@@ -877,7 +877,6 @@ module.exports.loop = function () {
         Game.creeps[i].store.getUsedCapacity() < amountToRepair &&
         !Game.creeps[i].memory.isLoaded &&
         totaledContainerEnergy >= amountToRepair
-
       ) {
         for (var e in energyContainers) {
           if (energyContainers[e].store.getUsedCapacity() >= 50) {
@@ -889,13 +888,11 @@ module.exports.loop = function () {
             );
           }
         }
-      }
-      else if (
+      } else if (
         Game.creeps[i].store.getUsedCapacity() < amountToRepair &&
         !Game.creeps[i].memory.isLoaded &&
         totaledContainerEnergy < amountToRepair
-
-      ) { 
+      ) {
         if (Game.creeps[i].harvest(energySources[1]) === ERR_NOT_IN_RANGE) {
           Game.creeps[i].moveTo(energySources[1], {
             visualizePathStyle: {
@@ -907,8 +904,7 @@ module.exports.loop = function () {
             },
           });
         }
-      }
-      else if (Game.creeps[i].memory.isLoaded == true) {
+      } else if (Game.creeps[i].memory.isLoaded == true) {
         //find rapair sites
 
         if (repairTargets.length > 0) {
@@ -946,8 +942,7 @@ module.exports.loop = function () {
             amountToFill
           );
         }
-      }
-      else if (
+      } else if (
         Game.creeps[i].store.getUsedCapacity() < amountToFill &&
         !Game.creeps[i].memory.isLoaded &&
         totaledContainerEnergy < amountToFill
@@ -963,8 +958,7 @@ module.exports.loop = function () {
             },
           });
         }
-      }
-      else if (Game.creeps[i].memory.isLoaded == true) {
+      } else if (Game.creeps[i].memory.isLoaded == true) {
         //find rapair sites
         fillerTargets.sort();
         //fillerTargets.reverse();
