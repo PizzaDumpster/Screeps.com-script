@@ -504,6 +504,7 @@ module.exports.loop = function () {
       )
     );
     number++;
+    //if no towerFillers in room spawn one
   } else if (
     towerFillers.length < numberOfTowerFillers &&
     fillerTargets.length > 0
@@ -538,6 +539,7 @@ module.exports.loop = function () {
       )
     );
     number++;
+    //if no scavangers in room spawn one
   } else if (scavangers.length < numberOfScavangers && amountToScavange > 0) {
     scavangers.push(
       Game.spawns["Spawn1"].spawnCreep(
@@ -548,7 +550,7 @@ module.exports.loop = function () {
     );
     number++;
   }
-
+    //clear non-existing creep memory
   for (var name in Memory.creeps) {
     if (!Game.creeps[name]) {
       delete Memory.creeps[name];
@@ -1058,7 +1060,7 @@ module.exports.loop = function () {
       );
     }
   }
-
+  
   console.log("fillerTargets: " + fillerTargets.length);
   console.log("deadSources: " + deadSources.length);
   console.log("depositTargets: " + depositTargets.length);
