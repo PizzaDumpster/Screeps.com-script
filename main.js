@@ -859,8 +859,14 @@ module.exports.loop = function () {
         Game.creeps[i].store.getUsedCapacity() < amountToRepair &&
         !Game.creeps[i].memory.isLoaded
       ) {
-        Game.creeps[i].moveTo(energySources[1]);
-        Game.creeps[i].harvest(energySources[1]);
+        for (var e in energyContainers) {
+          Game.creeps[i].moveTo(energyContainers[e]);
+          Game.creeps[i].withdraw(
+            energyContainers[e],
+            RESOURCE_ENERGY,
+            amountToFill
+          );
+        }
       } else if (Game.creeps[i].memory.isLoaded == true) {
         //find rapair sites
 
