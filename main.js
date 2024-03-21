@@ -33,6 +33,7 @@ var maxEnergy;
 
 var totaledContainerEnergy;
 var maxContainerEnergy;
+var containerEnergyBuffer = 100; 
 
 var hostiles;
 var towers;
@@ -798,7 +799,7 @@ module.exports.loop = function () {
       } else if (
         Game.creeps[i].store.getUsedCapacity() < amountToBuild &&
         !Game.creeps[i].memory.isLoaded &&
-        totaledContainerEnergy - 100 >= amountToBuild
+        totaledContainerEnergy - containerEnergyBuffer >= amountToBuild
       ) {
         for (var e in energyContainers) {
           if (energyContainers[e].store.getUsedCapacity() >= 50) {
@@ -813,7 +814,7 @@ module.exports.loop = function () {
       } else if (
         Game.creeps[i].store.getUsedCapacity() < amountToBuild &&
         !Game.creeps[i].memory.isLoaded &&
-        totaledContainerEnergy - 100 < amountToBuild
+        totaledContainerEnergy - containerEnergyBuffer < amountToBuild
       ) {
         if (Game.creeps[i].harvest(energySources[1]) === ERR_NOT_IN_RANGE) {
           Game.creeps[i].moveTo(energySources[1], {
@@ -876,7 +877,7 @@ module.exports.loop = function () {
       } else if (
         Game.creeps[i].store.getUsedCapacity() < amountToRepair &&
         !Game.creeps[i].memory.isLoaded &&
-        totaledContainerEnergy - 100 >= amountToRepair
+        totaledContainerEnergy - containerEnergyBuffer >= amountToRepair
       ) {
         for (var e in energyContainers) {
           if (energyContainers[e].store.getUsedCapacity() >= 50) {
@@ -891,7 +892,7 @@ module.exports.loop = function () {
       } else if (
         Game.creeps[i].store.getUsedCapacity() < amountToRepair &&
         !Game.creeps[i].memory.isLoaded &&
-        totaledContainerEnergy - 100 < amountToRepair
+        totaledContainerEnergy - containerEnergyBuffer < amountToRepair
       ) {
         if (Game.creeps[i].harvest(energySources[1]) === ERR_NOT_IN_RANGE) {
           Game.creeps[i].moveTo(energySources[1], {
@@ -932,7 +933,7 @@ module.exports.loop = function () {
       } else if (
         Game.creeps[i].store.getUsedCapacity() < amountToFill &&
         !Game.creeps[i].memory.isLoaded &&
-        totaledContainerEnergy - 100 >= amountToFill
+        totaledContainerEnergy - containerEnergyBuffer >= amountToFill
       ) {
         for (var e in energyContainers) {
           Game.creeps[i].moveTo(energyContainers[e]);
@@ -945,7 +946,7 @@ module.exports.loop = function () {
       } else if (
         Game.creeps[i].store.getUsedCapacity() < amountToFill &&
         !Game.creeps[i].memory.isLoaded &&
-        totaledContainerEnergy - 100 < amountToFill
+        totaledContainerEnergy - containerEnergyBuffer < amountToFill
       ) {
         if (Game.creeps[i].harvest(energySources[1]) === ERR_NOT_IN_RANGE) {
           Game.creeps[i].moveTo(energySources[1], {
