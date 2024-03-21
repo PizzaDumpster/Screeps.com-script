@@ -801,7 +801,7 @@ module.exports.loop = function () {
         totaledContainerEnergy > 0
       ) {
         for (var e in energyContainers) {
-          if (energyContainers[e].store.getUsedCapacity() > 50) {
+          if (energyContainers[e].store.getUsedCapacity() >= 50) {
             Game.creeps[i].moveTo(energyContainers[e]);
             Game.creeps[i].withdraw(
               energyContainers[e],
@@ -878,7 +878,7 @@ module.exports.loop = function () {
         !Game.creeps[i].memory.isLoaded
       ) {
         for (var e in energyContainers) {
-          if (energyContainers[e].store.getUsedCapacity() > 50) {
+          if (energyContainers[e].store.getUsedCapacity() >= 50) {
             Game.creeps[i].moveTo(energyContainers[e]);
             Game.creeps[i].withdraw(
               energyContainers[e],
