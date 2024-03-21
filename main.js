@@ -813,8 +813,8 @@ module.exports.loop = function () {
       } else if (
         Game.creeps[i].store.getUsedCapacity() < amountToBuild &&
         !Game.creeps[i].memory.isLoaded &&
-        maxContainerEnergy - totaledContainerEnergy === 0
-      ) {
+        totaledContainerEnergy < amountToBuild 
+        ) {
         if (Game.creeps[i].harvest(energySources[1]) === ERR_NOT_IN_RANGE) {
           Game.creeps[i].moveTo(energySources[1], {
             visualizePathStyle: {
