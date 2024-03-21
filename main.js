@@ -889,7 +889,26 @@ module.exports.loop = function () {
             );
           }
         }
-      } else if (Game.creeps[i].memory.isLoaded == true) {
+      }
+      else if (
+        Game.creeps[i].store.getUsedCapacity() < amountToRepair &&
+        !Game.creeps[i].memory.isLoaded &&
+        totaledContainerEnergy < amountToRepair
+
+      ) { 
+        if (Game.creeps[i].harvest(energySources[1]) === ERR_NOT_IN_RANGE) {
+          Game.creeps[i].moveTo(energySources[1], {
+            visualizePathStyle: {
+              fill: "transparent",
+              stroke: "#fff",
+              lineStyle: "dashed",
+              strokeWidth: 0.15,
+              opacity: 0.1,
+            },
+          });
+        }
+      }
+      else if (Game.creeps[i].memory.isLoaded == true) {
         //find rapair sites
 
         if (repairTargets.length > 0) {
@@ -927,7 +946,25 @@ module.exports.loop = function () {
             amountToFill
           );
         }
-      } else if (Game.creeps[i].memory.isLoaded == true) {
+      }
+      else if (
+        Game.creeps[i].store.getUsedCapacity() < amountToFill &&
+        !Game.creeps[i].memory.isLoaded &&
+        totaledContainerEnergy < amountToFill
+      ) {
+        if (Game.creeps[i].harvest(energySources[1]) === ERR_NOT_IN_RANGE) {
+          Game.creeps[i].moveTo(energySources[1], {
+            visualizePathStyle: {
+              fill: "transparent",
+              stroke: "#fff",
+              lineStyle: "dashed",
+              strokeWidth: 0.15,
+              opacity: 0.1,
+            },
+          });
+        }
+      }
+      else if (Game.creeps[i].memory.isLoaded == true) {
         //find rapair sites
         fillerTargets.sort();
         //fillerTargets.reverse();
