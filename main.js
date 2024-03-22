@@ -58,7 +58,7 @@ module.exports.loop = function () {
   energySources = Game.spawns.Spawn1.room.find(FIND_SOURCES);
   energySources.sort();
 
-  var deadSources = Game.rooms[myRoomName].find(FIND_TOMBSTONES);
+  var deadSources = Game.rooms[myRoomName].find(FIND_DROPPED_RESOURCES);
   deadSources.sort();
   console.log("Things to scavenge: " + deadSources.length);
   console.log(deadSources);
@@ -1076,18 +1076,18 @@ module.exports.loop = function () {
       }
       if (Game.creeps[i].memory.isLoaded === false) {
         for (var a in deadSources) {
-          if (Game.creeps[i].harvest(deadSources[0]) == ERR_NOT_IN_RANGE) {
+          if (Game.creeps[i].pickup(deadSources[0]) == ERR_NOT_IN_RANGE) {
             Game.creeps[i].moveTo(deadSources[0], {
               visualizePathStyle: { stroke: "#ffaa00" },
             });
           }
-          if (
-            Game.creeps[i].withdraw(
-              deadSources[deadSources.length - a],
+          else if (
+            Game.creeps[i].pickup(
+              deadSources[deadSources.length],
               RESOURCE_ENERGY
             ) == ERR_NOT_IN_RANGE
           ) {
-            Game.creeps[i].moveTo(deadSources[deadSources.length - a], {
+            Game.creeps[i].moveTo(deadSources[deadSources.length], {
               visualizePathStyle: { stroke: "#ffaa00" },
             });
           }
