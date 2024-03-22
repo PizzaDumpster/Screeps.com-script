@@ -523,7 +523,7 @@ module.exports.loop = function () {
   else if (invaders.length < numberOfInvaders && Game.gcl == 2) {
     invaders.push(
       Game.spawns["Spawn1"].spawnCreep(
-        [CLAIM, MOVE],
+        [WORK, CARRY, CLAIM, MOVE],
         "Invader" + number.toString(),
         { memory: { role: "invader", isAttacking: false } }
       )
@@ -1002,6 +1002,48 @@ module.exports.loop = function () {
           },
         });
         if (Game.rooms["E27N8"]) {
+          if (
+            Game.creeps[i].store.getUsedCapacity() == amountToUpgrade &&
+            !Game.creeps[i].memory.isLoaded
+          ) {
+            Game.creeps[i].memory.isLoaded = true;
+          } else if (
+            Game.creeps[i].store.getUsedCapacity() == 0 &&
+            Game.creeps[i].memory.isLoaded
+          ) {
+            Game.creeps[i].memory.isLoaded = false;
+          } else if (
+            Game.creeps[i].store.getUsedCapacity() < amountToUpgrade &&
+            !Game.creeps[i].memory.isLoaded
+          ) {
+            if (Game.creeps[i].harvest(energySources[0]) === ERR_NOT_IN_RANGE) {
+              Game.creeps[i].moveTo(energySources[0], {
+                visualizePathStyle: {
+                  fill: "transparent",
+                  stroke: "#fff",
+                  lineStyle: "dashed",
+                  strokeWidth: 0.15,
+                  opacity: 0.1,
+                },
+              });
+            }
+          } else if (Game.creeps[i].memory.isLoaded == true) {
+            if (
+              Game.creeps[i].upgradeController(
+                Game.rooms["E27N8"].room.controller
+              ) === ERR_NOT_IN_RANGE
+            ) {
+              Game.creeps[i].moveTo(Game.rooms["E27N8"].room.controller, {
+                visualizePathStyle: {
+                  fill: "transparent",
+                  stroke: "#fff",
+                  lineStyle: "dashed",
+                  strokeWidth: 0.15,
+                  opacity: 0.1,
+                },
+              });
+            }
+          }
           Game.creeps[i].moveTo(Game.rooms["E27N8"].controller);
           Game.creeps[i].claimController(Game.rooms["E27N8"].controller);
         }
