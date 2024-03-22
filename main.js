@@ -843,8 +843,8 @@ module.exports.loop = function () {
         Game.creeps[i].store.getUsedCapacity() < amountToRepair &&
         !Game.creeps[i].memory.isLoaded
       ) {
-        if (Game.creeps[i].withdraw(depositTargets[depositTargets.length]) === ERR_NOT_IN_RANGE) {
-          Game.creeps[i].moveTo(depositTargets[depositTargets.length], {
+        if (Game.creeps[i].withdraw(storage[0], RESOURCE_ENERGY, amountToRepair) === ERR_NOT_IN_RANGE) {
+          Game.creeps[i].moveTo(storage[0], {
             visualizePathStyle: {
               fill: "transparent",
               stroke: "#fff",
@@ -853,6 +853,7 @@ module.exports.loop = function () {
               opacity: 0.1,
             },
           });
+          console.log("PING");
         }
       } else if (Game.creeps[i].memory.isLoaded == true) {
         //find rapair sites
