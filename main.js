@@ -33,7 +33,7 @@ var maxEnergy;
 
 var totaledContainerEnergy;
 var maxContainerEnergy;
-var containerEnergyBuffer = 10000; 
+var containerEnergyBuffer = 10000;
 
 var hostiles;
 var towers;
@@ -57,7 +57,7 @@ module.exports.loop = function () {
   energySourcesLength = Game.spawns.Spawn1.room.find(FIND_SOURCES).length;
   energySources = Game.spawns.Spawn1.room.find(FIND_SOURCES);
   energySources.sort();
-
+  
   var deadSources = Game.rooms[myRoomName].find(FIND_DROPPED_RESOURCES);
   deadSources.sort();
   console.log("Things to scavenge: " + deadSources.length);
@@ -568,8 +568,25 @@ module.exports.loop = function () {
   var extensions = Game.spawns.Spawn1.room.find(FIND_MY_STRUCTURES, {
     filter: { structureType: STRUCTURE_EXTENSION },
   });
+  totaledenergy = 0;
+  maxEnergy = extensions.length * 50;
+  for (var m in extensions) {
+    totaledenergy =
+      totaledenergy +
+      extensions[m].store.getUsedCapacity(RESOURCE_ENERGY);
+  }
   var containers = Game.spawns.Spawn1.room.find(FIND_STRUCTURES, {
     filter: { structureType: STRUCTURE_CONTAINER },
+  });
+  totaledContainerEnergy = 0;
+  maxContainerEnergy = containers.length * 2000;
+  for (var l in containers) {
+    totaledContainerEnergy =
+      totaledContainerEnergy +
+      containers[l].store.getUsedCapacity(RESOURCE_ENERGY);
+  }
+  var storage = Game.spawns.Spawn1.room.find(FIND_STRUCTURES, {
+    filter: { structureType: STRUCTURE_STORAGE },
   });
   for (const i in Game.creeps) {
     var depositTargets = Game.creeps[i].room.find(FIND_STRUCTURES, {
@@ -578,6 +595,7 @@ module.exports.loop = function () {
           (structure.structureType == STRUCTURE_EXTENSION ||
             structure.structureType == STRUCTURE_SPAWN ||
             structure.structureType == STRUCTURE_CONTAINER ||
+            structure.structureType == STRUCTURE_STORAGE ||
             structure.structureType == STRUCTURE_TOWER) &&
           structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0
         );
@@ -643,73 +661,20 @@ module.exports.loop = function () {
           RESOURCE_ENERGY,
           Game.spawns["Spawn1"].store.getFreeCapacity()
         );
-      } else if (
-        Game.creeps[i].memory.isLoaded == true &&
-        Game.spawns["Spawn1"].store.getUsedCapacity(RESOURCE_ENERGY) == 300
-      ) {
-        totaledenergy = 0;
-        maxEnergy = extensions.length * 50;
-        for (var j in extensions) {
-          totaledenergy =
-            totaledenergy +
-            extensions[j].store.getUsedCapacity(RESOURCE_ENERGY);
-          if (extensions[j].store.getUsedCapacity(RESOURCE_ENERGY) < 50) {
+      } else if (Game.creeps[i].memory.isLoaded == true) {
+        console.log("Deposit targets: " + depositTargets);
+        if (depositTargets.length > 0) {
+          for (b in depositTargets) {
             if (
-              Game.creeps[i].transfer(
-                extensions[j],
-                RESOURCE_ENERGY,
-                extensions[j].store.getFreeCapacity(RESOURCE_ENERGY) ==
-                  ERR_NOT_IN_RANGE
-              )
+              Game.creeps[i].transfer(depositTargets[b], RESOURCE_ENERGY) ==
+              ERR_NOT_IN_RANGE
             ) {
-              Game.creeps[i].moveTo(extensions[j], {
-                visualizePathStyle: {
-                  fill: "transparent",
-                  stroke: "#fff",
-                  lineStyle: "dashed",
-                  strokeWidth: 0.15,
-                  opacity: 0.1,
-                },
+              Game.creeps[i].moveTo(depositTargets[b], {
+                visualizePathStyle: { stroke: "#ffffff" },
               });
             }
           }
         }
-        totaledContainerEnergy = 0;
-        maxContainerEnergy = containers.length * 2000;
-        for (var l in containers) {
-          totaledContainerEnergy =
-            totaledContainerEnergy +
-            containers[l].store.getUsedCapacity(RESOURCE_ENERGY);
-          if (containers[l].store.getUsedCapacity(RESOURCE_ENERGY) < 2000) {
-            if (
-              Game.creeps[i].transfer(
-                containers[l],
-                RESOURCE_ENERGY,
-                containers[l].store.getFreeCapacity(RESOURCE_ENERGY) ==
-                  ERR_NOT_IN_RANGE
-              )
-            ) {
-              Game.creeps[i].moveTo(containers[l], {
-                visualizePathStyle: {
-                  fill: "transparent",
-                  stroke: "#fff",
-                  lineStyle: "dashed",
-                  strokeWidth: 0.15,
-                  opacity: 0.1,
-                },
-              });
-            }
-          }
-        }
-      } else if (
-        totaledContainerEnergy === maxContainerEnergy &&
-        Game.spawns["Spawn1"].store.getUsedCapacity(RESOURCE_ENERGY) == 300
-      ) {
-        Game.creeps[i].moveTo(Game.rooms["E28N8"].find(STRUCTURE_STORAGE));
-        Game.creeps[i].transfer(
-          Game.rooms["E28N8"].find(STRUCTURE_STORAGE),
-          RESOURCE_ENERGY
-        );
       } else {
         Game.creeps[i].moveTo(Game.spawns.Spawn1.room.controller, {
           visualizePathStyle: {
@@ -1080,8 +1045,7 @@ module.exports.loop = function () {
             Game.creeps[i].moveTo(deadSources[0], {
               visualizePathStyle: { stroke: "#ffaa00" },
             });
-          }
-          else if (
+          } else if (
             Game.creeps[i].pickup(
               deadSources[deadSources.length],
               RESOURCE_ENERGY
@@ -1157,6 +1121,7 @@ module.exports.loop = function () {
       " maxEnergy: " +
       maxContainerEnergy
   );
+  console.log("STORAGE energy: " + storage[0].store.getUsedCapacity(RESOURCE_ENERGY) + " maxEnergy: " + storage[0].store.getCapacity(RESOURCE_ENERGY));
   console.log("Hostiles: " + hostiles.length);
   console.log("-----------------------End Report-----------------------");
 };
