@@ -5,6 +5,7 @@ var PHASE = 0;
 var repairTargets;
 var fillerTargets;
 var myRoomName = "E28N8";
+var mySpawnName = "Spawn1";
 var number = 1;
 var amountToHarvest;
 var amountToUpgrade;
