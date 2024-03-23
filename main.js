@@ -883,8 +883,7 @@ module.exports.loop = function () {
         Game.creeps[i].memory.isLoaded = false;
       } else if (
         Game.creeps[i].store.getUsedCapacity() < amountToFill &&
-        !Game.creeps[i].memory.isLoaded &&
-        totaledContainerEnergy - containerEnergyBuffer < amountToFill
+        !Game.creeps[i].memory.isLoaded
       ) {
         if (Game.creeps[i].withdraw(depositTargets[0], RESOURCE_ENERGY, Game.creeps[i].store.getFreeCapacity(RESOURCE_ENERGY)) === ERR_NOT_IN_RANGE) {
           Game.creeps[i].moveTo(depositTargets[0], {
