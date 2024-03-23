@@ -885,8 +885,8 @@ module.exports.loop = function () {
         Game.creeps[i].store.getUsedCapacity() < amountToFill &&
         !Game.creeps[i].memory.isLoaded
       ) {
-        if (Game.creeps[i].withdraw(depositTargets[0], RESOURCE_ENERGY, Game.creeps[i].store.getFreeCapacity(RESOURCE_ENERGY)) === ERR_NOT_IN_RANGE) {
-          Game.creeps[i].moveTo(depositTargets[0], {
+        if (Game.creeps[i].withdraw(depositTargets[2], RESOURCE_ENERGY, Game.creeps[i].store.getFreeCapacity(RESOURCE_ENERGY)) === ERR_NOT_IN_RANGE) {
+          Game.creeps[i].moveTo(depositTargets[2], {
             visualizePathStyle: {
               fill: "transparent",
               stroke: "#fff",
@@ -897,7 +897,7 @@ module.exports.loop = function () {
           });
         }
       } else if (Game.creeps[i].memory.isLoaded == true) {
-        //find rapair sites
+        //find repair sites
         fillerTargets.sort();
         //fillerTargets.reverse();
         for (var k in fillerTargets) {
@@ -907,7 +907,7 @@ module.exports.loop = function () {
               Game.creeps[i].transfer(
                 fillerTargets[k],
                 RESOURCE_ENERGY,
-                Game.creeps[i].store.getFreeCapacity(RESOURCE_ENERGY)
+                Game.creeps[i].store.getUsedCapacity(RESOURCE_ENERGY)
               ) == ERR_NOT_IN_RANGE
             ) {
               Game.creeps[i].moveTo(fillerTargets[k]);
@@ -918,7 +918,7 @@ module.exports.loop = function () {
               Game.creeps[i].transfer(
                 fillerTargets[k],
                 RESOURCE_ENERGY,
-                Game.creeps[i].store.getFreeCapacity(RESOURCE_ENERGY)
+                Game.creeps[i].store.getUsedCapacity(RESOURCE_ENERGY)
               ) == ERR_NOT_IN_RANGE
             ) {
               Game.creeps[i].moveTo(fillerTargets[k]);
@@ -1103,5 +1103,6 @@ module.exports.loop = function () {
       storage[0].store.getCapacity(RESOURCE_ENERGY)
   );
   console.log("Hostiles: " + hostiles.length);
+  console.log("depositTargets: " + depositTargets);  
   console.log("-----------------------End Report-----------------------");
 };
