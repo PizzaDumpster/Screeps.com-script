@@ -860,10 +860,16 @@ module.exports.loop = function () {
       } else if (Game.creeps[i].memory.isLoaded == true) {
         //find rapair sites
         if (repairTargets.length > 0) {
-          Game.creeps[i].moveTo(repairTargets[0]);
-          Game.creeps[i].moveTo(repairTargets[0]);
           if (Game.creeps[i].repair(repairTargets[0]) == ERR_NOT_IN_RANGE) {
-            Game.creeps[i].moveTo(repairTargets[0]);
+            Game.creeps[i].moveTo(repairTargets[0], {
+              visualizePathStyle: {
+                fill: "transparent",
+                stroke: "#fff",
+                lineStyle: "dashed",
+                strokeWidth: 0.15,
+                opacity: 0.1,
+              },
+            });
           }
         }
       }
