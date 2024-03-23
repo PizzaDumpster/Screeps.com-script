@@ -902,15 +902,15 @@ module.exports.loop = function () {
         //fillerTargets.reverse();
         for (var k in fillerTargets) {
           if (fillerTargets[k].store.getFreeCapacity(RESOURCE_ENERGY) > 0) {
-            Game.creeps[i].moveTo(fillerTargets[k - 1]);
+            Game.creeps[i].moveTo(fillerTargets[k]);
             if (
               Game.creeps[i].transfer(
-                fillerTargets[k - 1],
+                fillerTargets[k],
                 RESOURCE_ENERGY,
                 Game.creeps[i].store.getFreeCapacity(RESOURCE_ENERGY)
               ) == ERR_NOT_IN_RANGE
             ) {
-              Game.creeps[i].moveTo(fillerTargets[k - 1]);
+              Game.creeps[i].moveTo(fillerTargets[k]);
             }
 
             Game.creeps[i].moveTo(fillerTargets[k]);
