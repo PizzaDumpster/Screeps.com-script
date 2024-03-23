@@ -602,6 +602,7 @@ module.exports.loop = function () {
       },
     });
     depositTargets.sort();
+    depositTargets.reverse();
     repairTargets = Game.creeps[i].room.find(FIND_STRUCTURES, {
       filter: (object) => object.hits < object.hitsMax,
     });
