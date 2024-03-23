@@ -55,11 +55,19 @@ module.exports.loop = function () {
     FIND_CONSTRUCTION_SITES
   ).length;
   constructionSites = Game.spawns.Spawn1.room.find(FIND_CONSTRUCTION_SITES);
+  repairSites = Game.spawns.Spawn1.room.find(FIND_STRUCTURES, {
+    filter: (structure) => {
+      return (
+        structure.structureType == STRUCTURE_WALL ||
+        structure.structureType == STRUCTURE_RAMPART
+      );
+    },
+  })
   energySourcesLength = Game.spawns.Spawn1.room.find(FIND_SOURCES).length;
   energySources = Game.spawns.Spawn1.room.find(FIND_SOURCES);
   energySources.sort();
 
-  var deadSources = Game.rooms[myRoomName].find(FIND_DROPPED_RESOURCES);
+  var deadSources = Game.rooms[myRoomName].find(FIND_TOMBSTONES);
   deadSources.sort();
   console.log("Things to scavenge: " + deadSources.length);
   console.log(deadSources);
@@ -876,23 +884,10 @@ module.exports.loop = function () {
       } else if (
         Game.creeps[i].store.getUsedCapacity() < amountToFill &&
         !Game.creeps[i].memory.isLoaded &&
-        totaledContainerEnergy - containerEnergyBuffer >= amountToFill
-      ) {
-        for (var e in energyContainers) {
-          Game.creeps[i].moveTo(energyContainers[e]);
-          Game.creeps[i].withdraw(
-            energyContainers[e],
-            RESOURCE_ENERGY,
-            amountToFill
-          );
-        }
-      } else if (
-        Game.creeps[i].store.getUsedCapacity() < amountToFill &&
-        !Game.creeps[i].memory.isLoaded &&
         totaledContainerEnergy - containerEnergyBuffer < amountToFill
       ) {
-        if (Game.creeps[i].harvest(energySources[1]) === ERR_NOT_IN_RANGE) {
-          Game.creeps[i].moveTo(energySources[1], {
+        if (Game.creeps[i].withdraw(depositTargets[0], RESOURCE_ENERGY, Game.creeps[i].store.getFreeCapacity(RESOURCE_ENERGY)) === ERR_NOT_IN_RANGE) {
+          Game.creeps[i].moveTo(depositTargets[0], {
             visualizePathStyle: {
               fill: "transparent",
               stroke: "#fff",
@@ -958,8 +953,8 @@ module.exports.loop = function () {
             Game.creeps[i].store.getUsedCapacity() < amountToUpgrade &&
             !Game.creeps[i].memory.isLoaded
           ) {
-            if (Game.creeps[i].harvest(energySources[0]) === ERR_NOT_IN_RANGE) {
-              Game.creeps[i].moveTo(energySources[0], {
+            if (Game.creeps[i].withdraw(depositTargets[0], RESOURCE_ENERGY, Game.creeps[i].store.getFreeCapacity()) === ERR_NOT_IN_RANGE) {
+              Game.creeps[i].moveTo(depositTargets[0], {
                 visualizePathStyle: {
                   fill: "transparent",
                   stroke: "#fff",
@@ -1036,6 +1031,7 @@ module.exports.loop = function () {
         }
       } else if (Game.creeps[i].memory.isLoaded == true) {
         console.log("Deposit targets: " + depositTargets);
+        depositTargets.reverse();
         if (depositTargets.length > 0) {
           for (b in depositTargets) {
             if (
@@ -1069,7 +1065,9 @@ module.exports.loop = function () {
         }
       }
     }
-
+    if(repairTargets.length > 0){ 
+      towers.forEach((tower) => tower.repair(repairTargets[0]));
+    }
     //if there are hostiles - attack them
     if (hostiles.length > 0) {
       var username = hostiles[0].owner.username;
