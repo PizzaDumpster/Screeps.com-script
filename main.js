@@ -860,6 +860,7 @@ module.exports.loop = function () {
       } else if (Game.creeps[i].memory.isLoaded == true) {
         //find rapair sites
         if (repairTargets.length > 0) {
+          repairTargets.sort( function(a,b) { return b.hits - a.hits; } );
           if (Game.creeps[i].repair(repairTargets[0]) == ERR_NOT_IN_RANGE) {
             Game.creeps[i].moveTo(repairTargets[0], {
               visualizePathStyle: {
