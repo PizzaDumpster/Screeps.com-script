@@ -68,7 +68,7 @@ module.exports.loop = function () {
   energySources = Game.spawns.Spawn1.room.find(FIND_SOURCES);
   energySources.sort();
 
-  var deadSources = Game.rooms[myRoomName].find(FIND_TOMBSTONES);
+  var deadSources = Game.rooms[myRoomName].find(FIND_DROPPED_RESOURCES);
   deadSources.sort();
   console.log("Things to scavenge: " + deadSources.length);
   console.log(deadSources);
