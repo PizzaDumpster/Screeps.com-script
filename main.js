@@ -4,7 +4,7 @@ const { filter } = require("lodash");
 var PHASE = 0;
 var repairTargets;
 var fillerTargets;
-var myRoomName = "E28N8";
+var myRoomName = "W17S6";
 var mySpawnName = "Spawn1";
 var number = 1;
 var amountToHarvest;
@@ -62,7 +62,7 @@ module.exports.loop = function () {
         structure.structureType == STRUCTURE_RAMPART
       );
     },
-  })
+  });
   energySourcesLength = Game.spawns.Spawn1.room.find(FIND_SOURCES).length;
   energySources = Game.spawns.Spawn1.room.find(FIND_SOURCES);
   energySources.sort();
@@ -121,17 +121,17 @@ module.exports.loop = function () {
     amountToScavange = 50;
   } else if (controller.level == 2) {
     PHASE = 2;
-    numberOfHarvesters = 5;
-    numberOfUpgraders = 9;
+    numberOfHarvesters = 4;
+    numberOfUpgraders = 4;
     numberOfHealers = 0;
-    numberOfBuilders = 2;
+    numberOfBuilders = 3;
     numberOfRepairers = 1;
     numberOfInvaders = 0;
     numberOfTowerFillers = 0;
-    numberOfDefenders = 0;
-    numberOfScavangers = 0;
+    numberOfDefenders = 2;
+    numberOfScavangers = 1;
 
-    amountToHarvest = 100;
+    amountToHarvest = 50;
     amountToUpgrade = 50;
     amountToHeal = 50;
     amountToRepair = 50;
@@ -257,6 +257,8 @@ module.exports.loop = function () {
       numberOfHealers +
       ", numberOfBuilders: " +
       numberOfBuilders +
+      ", numberOfScavangers: " +
+      numberOfScavangers +
       ", numberOfRepairers: " +
       numberOfRepairers +
       ", numberOfInvaders: " +
@@ -321,6 +323,8 @@ module.exports.loop = function () {
       healers.length +
       " Builders: " +
       builders.length +
+      " Scavangers: " +
+      scavangers.length +
       " Repairers: " +
       repairers.length +
       " Invaders: " +
@@ -724,7 +728,10 @@ module.exports.loop = function () {
             },
           });
         }
-      } else if (Game.creeps[i].memory.isLoaded == true) {
+      } else if (
+        Game.creeps[i].memory.isLoaded == true &&
+        Game.spawns["Spawn1"].store.getUsedCapacity(RESOURCE_ENERGY) < 300
+      ) {
         if (
           Game.creeps[i].upgradeController(
             Game.spawns.Spawn1.room.controller
@@ -739,6 +746,32 @@ module.exports.loop = function () {
               opacity: 0.1,
             },
           });
+        }
+      } else if (
+        Game.creeps[i].memory.isLoaded == true &&
+        Game.spawns["Spawn1"].store.getUsedCapacity(RESOURCE_ENERGY) >= 300
+      ) {
+        //find construction sites
+
+        if (constructionSitesLength > 0) {
+          if (
+            Game.creeps[i].build(
+              constructionSites[constructionSites.length - 1]
+            ) === ERR_NOT_IN_RANGE
+          ) {
+            Game.creeps[i].moveTo(
+              constructionSites[constructionSites.length - 1],
+              {
+                visualizePathStyle: {
+                  fill: "transparent",
+                  stroke: "#fff",
+                  lineStyle: "dashed",
+                  strokeWidth: 0.15,
+                  opacity: 0.1,
+                },
+              }
+            );
+          }
         }
       }
     }
@@ -849,8 +882,7 @@ module.exports.loop = function () {
               opacity: 0.1,
             },
           });
-        }
-        else if (
+        } else if (
           Game.creeps[i].withdraw(
             storage[0],
             RESOURCE_ENERGY,
@@ -871,7 +903,9 @@ module.exports.loop = function () {
       } else if (Game.creeps[i].memory.isLoaded == true) {
         //find rapair sites
         if (repairTargets.length > 0) {
-          repairTargets.sort( function(a,b) { return b.hits - a.hits; } );
+          repairTargets.sort(function (a, b) {
+            return b.hits - a.hits;
+          });
           if (Game.creeps[i].repair(repairTargets[0]) == ERR_NOT_IN_RANGE) {
             Game.creeps[i].moveTo(repairTargets[0], {
               visualizePathStyle: {
@@ -903,7 +937,13 @@ module.exports.loop = function () {
         Game.creeps[i].store.getUsedCapacity() < amountToFill &&
         !Game.creeps[i].memory.isLoaded
       ) {
-        if (Game.creeps[i].withdraw(depositTargets[2], RESOURCE_ENERGY, Game.creeps[i].store.getFreeCapacity(RESOURCE_ENERGY)) === ERR_NOT_IN_RANGE) {
+        if (
+          Game.creeps[i].withdraw(
+            depositTargets[2],
+            RESOURCE_ENERGY,
+            Game.creeps[i].store.getFreeCapacity(RESOURCE_ENERGY)
+          ) === ERR_NOT_IN_RANGE
+        ) {
           Game.creeps[i].moveTo(depositTargets[2], {
             visualizePathStyle: {
               fill: "transparent",
@@ -959,7 +999,13 @@ module.exports.loop = function () {
             Game.creeps[i].store.getUsedCapacity() < amountToUpgrade &&
             !Game.creeps[i].memory.isLoaded
           ) {
-            if (Game.creeps[i].withdraw(depositTargets[0], RESOURCE_ENERGY, Game.creeps[i].store.getFreeCapacity()) === ERR_NOT_IN_RANGE) {
+            if (
+              Game.creeps[i].withdraw(
+                depositTargets[0],
+                RESOURCE_ENERGY,
+                Game.creeps[i].store.getFreeCapacity()
+              ) === ERR_NOT_IN_RANGE
+            ) {
               Game.creeps[i].moveTo(depositTargets[0], {
                 visualizePathStyle: {
                   fill: "transparent",
@@ -1071,7 +1117,7 @@ module.exports.loop = function () {
         }
       }
     }
-    if(repairTargets.length > 0){ 
+    if (repairTargets.length > 0) {
       towers.forEach((tower) => tower.repair(repairTargets[0]));
     }
     //if there are hostiles - attack them
@@ -1103,13 +1149,13 @@ module.exports.loop = function () {
       " maxEnergy: " +
       maxContainerEnergy
   );
-  console.log(
-    "STORAGE energy: " +
-      storage[0].store.getUsedCapacity(RESOURCE_ENERGY) +
-      " maxEnergy: " +
-      storage[0].store.getCapacity(RESOURCE_ENERGY)
-  );
+  //console.log(
+  //  "STORAGE energy: " +
+  //    storage[0].store.getUsedCapacity(RESOURCE_ENERGY) +
+  //   " maxEnergy: " +
+  //    storage[0].store.getCapacity(RESOURCE_ENERGY)
+  //);
   console.log("Hostiles: " + hostiles.length);
-  console.log("depositTargets: " + depositTargets);  
+  console.log("depositTargets: " + depositTargets);
   console.log("-----------------------End Report-----------------------");
 };
