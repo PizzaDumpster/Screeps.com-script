@@ -664,6 +664,7 @@ module.exports.loop = function () {
       } else if(Game.creeps[i].memory.isLoaded == true &&
         Game.spawns["Spawn1"].store.getUsedCapacity(RESOURCE_ENERGY) === 300 &&
         depositTargets.length === 0 &&
+        constructionSites.length === 0 &&
         Game.rooms[myRoomName].controller.progress < Game.rooms[myRoomName].controller.progressTotal
         ) {
         if (
