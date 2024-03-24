@@ -65,7 +65,7 @@ module.exports.loop = function () {
   deadSources.sort();
   console.log("Things to scavenge: " + deadSources.length);
   console.log(deadSources);
-  
+
   hostiles = Game.rooms[myRoomName].find(FIND_HOSTILE_CREEPS);
   towers = Game.rooms[myRoomName].find(FIND_MY_STRUCTURES, {
     filter: { structureType: STRUCTURE_TOWER },
@@ -106,8 +106,6 @@ module.exports.loop = function () {
     numberOfTowerFillers = 0;
     numberOfDefenders = 0;
     numberOfScavangers = 0;
-
-  
   } else if (controller.level == 2) {
     PHASE = 2;
     numberOfHarvesters = 4;
@@ -119,8 +117,6 @@ module.exports.loop = function () {
     numberOfTowerFillers = 0;
     numberOfDefenders = 2;
     numberOfScavangers = 1;
-
-   
   } else if (controller.level == 3) {
     PHASE = 3;
     numberOfHarvesters = 7;
@@ -132,7 +128,6 @@ module.exports.loop = function () {
     numberOfTowerFillers = 2;
     numberOfDefenders = 0;
     numberOfScavangers = 0;
-
   } else if (controller.level == 4) {
     PHASE = 4;
     numberOfHarvesters = 6;
@@ -144,7 +139,6 @@ module.exports.loop = function () {
     numberOfTowerFillers = 2;
     numberOfDefenders = 0;
     numberOfScavangers = 0;
-
   } else if (controller.level == 5) {
     PHASE = 5;
     numberOfHarvesters = 7;
@@ -156,7 +150,6 @@ module.exports.loop = function () {
     numberOfTowerFillers = 2;
     numberOfDefenders = 4;
     numberOfScavangers = 2;
-
   } else if (controller.level == 6) {
     PHASE = 6;
     numberOfHarvesters = 7;
@@ -168,7 +161,6 @@ module.exports.loop = function () {
     numberOfTowerFillers = 2;
     numberOfDefenders = 0;
     numberOfScavangers = 0;
-
   } else if (controller.level == 7) {
     PHASE = 7;
     numberOfHarvesters = 7;
@@ -180,7 +172,6 @@ module.exports.loop = function () {
     numberOfTowerFillers = 2;
     numberOfDefenders = 0;
     numberOfScavangers = 0;
-
   } else if (controller.level == 8) {
     PHASE = 8;
     numberOfHarvesters = 7;
@@ -192,7 +183,6 @@ module.exports.loop = function () {
     numberOfTowerFillers = 2;
     numberOfDefenders = 0;
     numberOfScavangers = 0;
-
   }
   console.log("phase: " + PHASE + " controller level: " + controller.level);
   console.log(
@@ -575,18 +565,16 @@ module.exports.loop = function () {
     //send memory role: harvester to spawn1 and drop off RESOURCE_ENERGY
     if (Game.creeps[i].memory.role == "harvester") {
       if (
-        Game.creeps[i].store.getUsedCapacity() < Game.creeps[i].store.getCapacity() &&
-        !Game.creeps[i].memory.isLoaded
+        Game.creeps[i].store.getUsedCapacity() ===
+          Game.creeps[i].store.getCapacity() 
       ) {
         Game.creeps[i].memory.isLoaded = true;
       } else if (
-        Game.creeps[i].store.getUsedCapacity() === 0 &&
-        Game.creeps[i].memory.isLoaded
+        Game.creeps[i].store.getUsedCapacity() === 0 
       ) {
         Game.creeps[i].memory.isLoaded = false;
-      } if (
-        !Game.creeps[i].memory.isLoaded
-      ) {
+      }
+      if (!Game.creeps[i].memory.isLoaded) {
         Game.creeps[i].moveTo(energySources[0], {
           visualizePathStyle: {
             fill: "transparent",
@@ -598,10 +586,9 @@ module.exports.loop = function () {
         });
         Game.creeps[i].harvest(energySources[0]);
       } else if (
-        (Game.creeps[i].memory.isLoaded == true &&
-        Game.spawns["Spawn1"].store.getUsedCapacity(RESOURCE_ENERGY) < 300  &&
-          depositTargets.length >= 0)
-        
+        Game.creeps[i].memory.isLoaded == true &&
+        Game.spawns["Spawn1"].store.getUsedCapacity(RESOURCE_ENERGY) < 300 &&
+        depositTargets.length >= 0
       ) {
         Game.creeps[i].moveTo(Game.spawns["Spawn1"], {
           visualizePathStyle: {
@@ -622,9 +609,11 @@ module.exports.loop = function () {
           RESOURCE_ENERGY,
           Game.spawns["Spawn1"].store.getFreeCapacity()
         );
-      } else if (Game.creeps[i].memory.isLoaded === true &&
-        Game.spawns["Spawn1"].store.getUsedCapacity(RESOURCE_ENERGY) === 300 && 
-        depositTargets.length > 0) {
+      } else if (
+        Game.creeps[i].memory.isLoaded === true &&
+        Game.spawns["Spawn1"].store.getUsedCapacity(RESOURCE_ENERGY) === 300 &&
+        depositTargets.length > 0
+      ) {
         console.log("Deposit targets: " + depositTargets);
         if (depositTargets.length > 0) {
           for (b in depositTargets) {
@@ -640,7 +629,7 @@ module.exports.loop = function () {
         }
       } else if (
         Game.creeps[i].memory.isLoaded == true &&
-        Game.spawns["Spawn1"].store.getUsedCapacity(RESOURCE_ENERGY) === 300 && 
+        Game.spawns["Spawn1"].store.getUsedCapacity(RESOURCE_ENERGY) === 300 &&
         depositTargets.length === 0
       ) {
         //find construction sites
@@ -665,9 +654,7 @@ module.exports.loop = function () {
             );
           }
         }
-      }
-      
-      else {
+      } else {
         Game.creeps[i].moveTo(Game.spawns.Spawn1.room.controller, {
           visualizePathStyle: {
             fill: "transparent",
@@ -683,18 +670,14 @@ module.exports.loop = function () {
 
     if (Game.creeps[i].memory.role == "upgrader") {
       if (
-        Game.creeps[i].store.getUsedCapacity() < Game.creeps[i].store.getCapacity() &&
-        !Game.creeps[i].memory.isLoaded
+        Game.creeps[i].store.getUsedCapacity() ===
+        Game.creeps[i].store.getCapacity()
       ) {
         Game.creeps[i].memory.isLoaded = true;
-      } else if (
-        Game.creeps[i].store.getUsedCapacity() === 0 &&
-        Game.creeps[i].memory.isLoaded
-      ) {
+      } else if (Game.creeps[i].store.getUsedCapacity() === 0) {
         Game.creeps[i].memory.isLoaded = false;
-      } if (
-        !Game.creeps[i].memory.isLoaded
-      ) {
+      }
+      if (!Game.creeps[i].memory.isLoaded) {
         if (Game.creeps[i].harvest(energySources[0]) === ERR_NOT_IN_RANGE) {
           Game.creeps[i].moveTo(energySources[0], {
             visualizePathStyle: {
@@ -706,9 +689,7 @@ module.exports.loop = function () {
             },
           });
         }
-      } else if (
-        Game.creeps[i].memory.isLoaded == true
-      ) {
+      } else if (Game.creeps[i].memory.isLoaded == true) {
         if (
           Game.creeps[i].upgradeController(
             Game.spawns.Spawn1.room.controller
@@ -724,7 +705,7 @@ module.exports.loop = function () {
             },
           });
         }
-      } 
+      }
     }
     if (Game.creeps[i].memory.role == "healer") {
       var hurtCreeps = Game.spawns.Spawn1.room.find(FIND_MY_CREEPS);
@@ -745,19 +726,16 @@ module.exports.loop = function () {
     }
     if (Game.creeps[i].memory.role == "builder") {
       if (
-        Game.creeps[i].store.getUsedCapacity() < Game.creeps[i].store.getCapacity() &&
-        !Game.creeps[i].memory.isLoaded
+        Game.creeps[i].store.getUsedCapacity() ===
+          Game.creeps[i].store.getCapacity() 
       ) {
         Game.creeps[i].memory.isLoaded = true;
       } else if (
-        Game.creeps[i].store.getUsedCapacity() == 0 &&
-        Game.creeps[i].memory.isLoaded
+        Game.creeps[i].store.getUsedCapacity() === 0 
       ) {
         Game.creeps[i].memory.isLoaded = false;
-      } if (
-     
-        !Game.creeps[i].memory.isLoaded
-      ) {
+      }
+      if (!Game.creeps[i].memory.isLoaded) {
         if (Game.creeps[i].harvest(energySources[1]) === ERR_NOT_IN_RANGE) {
           Game.creeps[i].moveTo(energySources[1], {
             visualizePathStyle: {
@@ -808,20 +786,17 @@ module.exports.loop = function () {
       repairTargets.length > 0
     ) {
       if (
-        Game.creeps[i].store.getUsedCapacity() < Game.creeps[i].store.getCapacity() &&
-        !Game.creeps[i].memory.isLoaded
+        Game.creeps[i].store.getUsedCapacity() ===
+          Game.creeps[i].store.getCapacity() 
       ) {
         Game.creeps[i].memory.isLoaded = true;
       } else if (
-        Game.creeps[i].store.getUsedCapacity() == 0 &&
-        Game.creeps[i].memory.isLoaded
+        Game.creeps[i].store.getUsedCapacity() == 0
+      
       ) {
         Game.creeps[i].memory.isLoaded = false;
       }
-      if (
-       
-        !Game.creeps[i].memory.isLoaded
-      ) {
+      if (!Game.creeps[i].memory.isLoaded) {
         if (Game.creeps[i].harvest(energySources[1]) === ERR_NOT_IN_RANGE) {
           Game.creeps[i].moveTo(energySources[1], {
             visualizePathStyle: {
@@ -874,19 +849,16 @@ module.exports.loop = function () {
     // towerFillers fill towers
     else if (Game.creeps[i].memory.role == "towerFiller") {
       if (
-        Game.creeps[i].store.getUsedCapacity() < Game.creeps[i].store.getCapacity() &&
-        !Game.creeps[i].memory.isLoaded
+        Game.creeps[i].store.getUsedCapacity() ===
+          Game.creeps[i].store.getCapacity() 
       ) {
         Game.creeps[i].memory.isLoaded = true;
       } else if (
-        Game.creeps[i].store.getUsedCapacity() === 0 &&
-        Game.creeps[i].memory.isLoaded
+        Game.creeps[i].store.getUsedCapacity() === 0 
       ) {
         Game.creeps[i].memory.isLoaded = false;
-      } if (
-        
-        !Game.creeps[i].memory.isLoaded
-      ) {
+      }
+      if (!Game.creeps[i].memory.isLoaded) {
         if (
           Game.creeps[i].withdraw(
             depositTargets[2],
@@ -936,19 +908,15 @@ module.exports.loop = function () {
         });
         if (Game.rooms["E27N8"]) {
           if (
-            Game.creeps[i].store.getUsedCapacity() < Game.creeps[i].store.getCapacity() &&
-            !Game.creeps[i].memory.isLoaded
+            Game.creeps[i].store.getUsedCapacity() ===
+              Game.creeps[i].store.getCapacity() 
           ) {
             Game.creeps[i].memory.isLoaded = true;
           } else if (
-            Game.creeps[i].store.getUsedCapacity() == 0 &&
-            Game.creeps[i].memory.isLoaded
+            Game.creeps[i].store.getUsedCapacity() == 0 
           ) {
             Game.creeps[i].memory.isLoaded = false;
-          } else if (
-            
-            !Game.creeps[i].memory.isLoaded
-          ) {
+          } else if (!Game.creeps[i].memory.isLoaded) {
             if (
               Game.creeps[i].withdraw(
                 depositTargets[0],
@@ -966,7 +934,7 @@ module.exports.loop = function () {
                 },
               });
             }
-          } else if (Game.creeps[i].memory.isLoaded == true) {
+          } else if (Game.creeps[i].memory.isLoaded === true) {
             if (
               Game.creeps[i].upgradeController(
                 Game.rooms["E27N8"].room.controller
@@ -1004,13 +972,12 @@ module.exports.loop = function () {
       );
     } else if (Game.creeps[i].memory.role == "scavanger") {
       if (
-        Game.creeps[i].store.getUsedCapacity() < Game.creeps[i].store.getCapacity()  &&
-        !Game.creeps[i].memory.isLoaded
+        Game.creeps[i].store.getUsedCapacity() ===
+          Game.creeps[i].store.getCapacity() 
       ) {
         Game.creeps[i].memory.isLoaded = true;
       } else if (
-        Game.creeps[i].store.getUsedCapacity() === 0 &&
-        Game.creeps[i].memory.isLoaded
+        Game.creeps[i].store.getUsedCapacity() === 0 
       ) {
         Game.creeps[i].memory.isLoaded = false;
       }
