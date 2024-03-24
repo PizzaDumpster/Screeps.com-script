@@ -134,7 +134,7 @@ module.exports.loop = function () {
     numberOfScavangers = 1;
 
     amountToHarvest = 50;
-    amountToUpgrade = 50;
+    amountToUpgrade = 100;
     amountToHeal = 50;
     amountToRepair = 50;
     amountToFill = 50;
@@ -630,7 +630,7 @@ module.exports.loop = function () {
     //send memory role: harvester to spawn1 and drop off RESOURCE_ENERGY
     if (Game.creeps[i].memory.role == "harvester") {
       if (
-        Game.creeps[i].store.getUsedCapacity() == amountToHarvest &&
+        Game.creeps[i].store.getUsedCapacity() == Game.creeps[i].store.getFreeCapacity() &&
         !Game.creeps[i].memory.isLoaded
       ) {
         Game.creeps[i].memory.isLoaded = true;
@@ -640,7 +640,7 @@ module.exports.loop = function () {
       ) {
         Game.creeps[i].memory.isLoaded = false;
       } else if (
-        Game.creeps[i].store.getUsedCapacity() < amountToHarvest &&
+        Game.creeps[i].store.getUsedCapacity() < Game.creeps[i].store.getFreeCapacity() &&
         !Game.creeps[i].memory.isLoaded
       ) {
         Game.creeps[i].moveTo(energySources[0], {
@@ -739,7 +739,7 @@ module.exports.loop = function () {
 
     if (Game.creeps[i].memory.role == "upgrader") {
       if (
-        Game.creeps[i].store.getUsedCapacity() == amountToUpgrade &&
+        Game.creeps[i].store.getUsedCapacity() == Game.creeps[i].store.getFreeCapacity()&&
         !Game.creeps[i].memory.isLoaded
       ) {
         Game.creeps[i].memory.isLoaded = true;
@@ -749,7 +749,7 @@ module.exports.loop = function () {
       ) {
         Game.creeps[i].memory.isLoaded = false;
       } else if (
-        Game.creeps[i].store.getUsedCapacity() < amountToUpgrade &&
+        Game.creeps[i].store.getUsedCapacity() < Game.creeps[i].store.getFreeCapacity() &&
         !Game.creeps[i].memory.isLoaded
       ) {
         if (Game.creeps[i].harvest(energySources[0]) === ERR_NOT_IN_RANGE) {
@@ -802,7 +802,7 @@ module.exports.loop = function () {
     }
     if (Game.creeps[i].memory.role == "builder") {
       if (
-        Game.creeps[i].store.getUsedCapacity() == amountToBuild &&
+        Game.creeps[i].store.getUsedCapacity() == Game.creeps[i].store.getFreeCapacity() &&
         !Game.creeps[i].memory.isLoaded
       ) {
         Game.creeps[i].memory.isLoaded = true;
@@ -812,7 +812,7 @@ module.exports.loop = function () {
       ) {
         Game.creeps[i].memory.isLoaded = false;
       } else if (
-        Game.creeps[i].store.getUsedCapacity() < amountToBuild &&
+        Game.creeps[i].store.getUsedCapacity() < Game.creeps[i].store.getFreeCapacity() &&
         !Game.creeps[i].memory.isLoaded &&
         totaledContainerEnergy - containerEnergyBuffer < amountToBuild
       ) {
@@ -866,7 +866,7 @@ module.exports.loop = function () {
       repairTargets.length > 0
     ) {
       if (
-        Game.creeps[i].store.getUsedCapacity() == amountToRepair &&
+        Game.creeps[i].store.getUsedCapacity() == Game.creeps[i].store.getFreeCapacity() &&
         !Game.creeps[i].memory.isLoaded
       ) {
         Game.creeps[i].memory.isLoaded = true;
@@ -877,7 +877,7 @@ module.exports.loop = function () {
         Game.creeps[i].memory.isLoaded = false;
       }
       if (
-        Game.creeps[i].store.getUsedCapacity() < amountToRepair &&
+        Game.creeps[i].store.getUsedCapacity() < Game.creeps[i].store.getFreeCapacity() &&
         !Game.creeps[i].memory.isLoaded
       ) {
         if (Game.creeps[i].harvest(energySources[1]) === ERR_NOT_IN_RANGE) {
@@ -932,7 +932,7 @@ module.exports.loop = function () {
     // towerFillers fill towers
     else if (Game.creeps[i].memory.role == "towerFiller") {
       if (
-        Game.creeps[i].store.getUsedCapacity() == amountToFill &&
+        Game.creeps[i].store.getUsedCapacity() == Game.creeps[i].store.getFreeCapacity() &&
         !Game.creeps[i].memory.isLoaded
       ) {
         Game.creeps[i].memory.isLoaded = true;
@@ -942,7 +942,7 @@ module.exports.loop = function () {
       ) {
         Game.creeps[i].memory.isLoaded = false;
       } else if (
-        Game.creeps[i].store.getUsedCapacity() < amountToFill &&
+        Game.creeps[i].store.getUsedCapacity() < Game.creeps[i].store.getFreeCapacity() &&
         !Game.creeps[i].memory.isLoaded
       ) {
         if (
@@ -994,7 +994,7 @@ module.exports.loop = function () {
         });
         if (Game.rooms["E27N8"]) {
           if (
-            Game.creeps[i].store.getUsedCapacity() == amountToUpgrade &&
+            Game.creeps[i].store.getUsedCapacity() == Game.creeps[i].store.getFreeCapacity() &&
             !Game.creeps[i].memory.isLoaded
           ) {
             Game.creeps[i].memory.isLoaded = true;
@@ -1004,7 +1004,7 @@ module.exports.loop = function () {
           ) {
             Game.creeps[i].memory.isLoaded = false;
           } else if (
-            Game.creeps[i].store.getUsedCapacity() < amountToUpgrade &&
+            Game.creeps[i].store.getUsedCapacity() < Game.creeps[i].store.getFreeCapacity() &&
             !Game.creeps[i].memory.isLoaded
           ) {
             if (
@@ -1062,7 +1062,7 @@ module.exports.loop = function () {
       );
     } else if (Game.creeps[i].memory.role == "scavanger") {
       if (
-        Game.creeps[i].store.getUsedCapacity() === amountToScavange &&
+        Game.creeps[i].store.getUsedCapacity() === Game.creeps[i].store.getFreeCapacity() &&
         !Game.creeps[i].memory.isLoaded
       ) {
         Game.creeps[i].memory.isLoaded = true;
