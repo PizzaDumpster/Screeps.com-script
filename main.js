@@ -654,8 +654,11 @@ module.exports.loop = function () {
         });
         Game.creeps[i].harvest(energySources[0]);
       } else if (
-        Game.creeps[i].memory.isLoaded == true &&
-        Game.spawns["Spawn1"].store.getUsedCapacity(RESOURCE_ENERGY) < 300
+        (Game.creeps[i].memory.isLoaded == true &&
+        Game.spawns["Spawn1"].store.getUsedCapacity(RESOURCE_ENERGY) < 300) ||
+        (Game.creeps[i].memory.isLoaded == true &&
+          depositTargets.length > 0)
+        
       ) {
         Game.creeps[i].moveTo(Game.spawns["Spawn1"], {
           visualizePathStyle: {
