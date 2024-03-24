@@ -67,6 +67,12 @@ module.exports.loop = function () {
   console.log(deadSources);
 
   hostiles = Game.rooms[myRoomName].find(FIND_HOSTILE_CREEPS);
+  for(let hostie in hostiles){
+    //filter hostiles by owner
+    if(hostiles[hostie].owner.username == myFriendName){
+      hostiles.splice(hostile, 1);
+    }
+  }
   towers = Game.rooms[myRoomName].find(FIND_MY_STRUCTURES, {
     filter: { structureType: STRUCTURE_TOWER },
   });
