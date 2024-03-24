@@ -1079,6 +1079,9 @@ module.exports.loop = function () {
   //    storage[0].store.getCapacity(RESOURCE_ENERGY)
   //);
   console.log("Hostiles: " + hostiles.length);
+  if(hostiles.length > 0){
+    console.log("Hostiles name" + hostiles[0].owner.username);
+  }
   console.log("depositTargets: " + depositTargets);
   console.log("-----------------------End Report-----------------------");
 };
