@@ -544,6 +544,7 @@ module.exports.loop = function () {
     filter: { structureType: STRUCTURE_STORAGE },
   });
   for (const i in Game.creeps) {
+    if(Game.creeps[i].ticksToLive < 200) {Game.creeps[i].say("R.I.P.");}
     var depositTargets = Game.creeps[i].room.find(FIND_STRUCTURES, {
       filter: (structure) => {
         return (
