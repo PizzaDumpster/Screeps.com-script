@@ -655,8 +655,7 @@ module.exports.loop = function () {
         Game.creeps[i].harvest(energySources[0]);
       } else if (
         (Game.creeps[i].memory.isLoaded == true &&
-        Game.spawns["Spawn1"].store.getUsedCapacity(RESOURCE_ENERGY) < 300) ||
-        (Game.creeps[i].memory.isLoaded == true &&
+        Game.spawns["Spawn1"].store.getUsedCapacity(RESOURCE_ENERGY) < 300  &&
           depositTargets.length > 0)
         
       ) {
@@ -680,7 +679,7 @@ module.exports.loop = function () {
           Game.spawns["Spawn1"].store.getFreeCapacity()
         );
       } else if (Game.creeps[i].memory.isLoaded == true &&
-        Game.spawns["Spawn1"].store.getUsedCapacity(RESOURCE_ENERGY) < 300 && 
+        Game.spawns["Spawn1"].store.getUsedCapacity(RESOURCE_ENERGY) === 300 && 
         depositTargets.length > 0) {
         console.log("Deposit targets: " + depositTargets);
         if (depositTargets.length > 0) {
@@ -697,7 +696,8 @@ module.exports.loop = function () {
         }
       } else if (
         Game.creeps[i].memory.isLoaded == true &&
-        Game.spawns["Spawn1"].store.getUsedCapacity(RESOURCE_ENERGY) === 300
+        Game.spawns["Spawn1"].store.getUsedCapacity(RESOURCE_ENERGY) === 300 && 
+        depositTargets.length === 0
       ) {
         //find construction sites
 
