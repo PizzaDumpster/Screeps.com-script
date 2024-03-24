@@ -839,7 +839,18 @@ module.exports.loop = function () {
         Game.creeps[i].store.getUsedCapacity() < amountToRepair &&
         !Game.creeps[i].memory.isLoaded
       ) {
-        if (
+        if (Game.creeps[i].harvest(energySources[1]) === ERR_NOT_IN_RANGE) {
+          Game.creeps[i].moveTo(energySources[1], {
+            visualizePathStyle: {
+              fill: "transparent",
+              stroke: "#fff",
+              lineStyle: "dashed",
+              strokeWidth: 0.15,
+              opacity: 0.1,
+            },
+          });
+        }
+        else if (
           Game.creeps[i].withdraw(
             storage[0],
             RESOURCE_ENERGY,
