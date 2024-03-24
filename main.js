@@ -8,13 +8,6 @@ var myRoomName = "W17S6";
 var mySpawnName = "Spawn1";
 var myFriendName = "pallSmenis";
 var number = 1;
-var amountToHarvest;
-var amountToUpgrade;
-var amountToHeal;
-var amountToRepair;
-var amountToFill;
-var amountToBuild;
-var amountToScavange;
 
 var numberOfHarvesters;
 var numberOfUpgraders;
@@ -114,13 +107,7 @@ module.exports.loop = function () {
     numberOfDefenders = 0;
     numberOfScavangers = 0;
 
-    amountToHarvest = 50;
-    amountToUpgrade = 50;
-    amountToHeal = 50;
-    amountToRepair = 50;
-    amountToFill = 50;
-    amountToBuild = 50;
-    amountToScavange = 50;
+  
   } else if (controller.level == 2) {
     PHASE = 2;
     numberOfHarvesters = 4;
@@ -133,13 +120,7 @@ module.exports.loop = function () {
     numberOfDefenders = 2;
     numberOfScavangers = 1;
 
-    amountToHarvest = 50;
-    amountToUpgrade = 100;
-    amountToHeal = 50;
-    amountToRepair = 50;
-    amountToFill = 50;
-    amountToBuild = 50;
-    amountToScavange = 50;
+   
   } else if (controller.level == 3) {
     PHASE = 3;
     numberOfHarvesters = 7;
@@ -151,13 +132,7 @@ module.exports.loop = function () {
     numberOfTowerFillers = 2;
     numberOfDefenders = 0;
     numberOfScavangers = 0;
-    amountToHarvest = 50;
-    amountToUpgrade = 50;
-    amountToHeal = 50;
-    amountToRepair = 50;
-    amountToFill = 50;
-    amountToBuild = 50;
-    amountToScavange = 50;
+
   } else if (controller.level == 4) {
     PHASE = 4;
     numberOfHarvesters = 6;
@@ -169,13 +144,7 @@ module.exports.loop = function () {
     numberOfTowerFillers = 2;
     numberOfDefenders = 0;
     numberOfScavangers = 0;
-    amountToHarvest = 50;
-    amountToUpgrade = 100;
-    amountToHeal = 50;
-    amountToRepair = 100;
-    amountToFill = 100;
-    amountToBuild = 100;
-    amountToScavange = 100;
+
   } else if (controller.level == 5) {
     PHASE = 5;
     numberOfHarvesters = 7;
@@ -187,13 +156,7 @@ module.exports.loop = function () {
     numberOfTowerFillers = 2;
     numberOfDefenders = 4;
     numberOfScavangers = 2;
-    amountToHarvest = 100;
-    amountToUpgrade = 100;
-    amountToHeal = 50;
-    amountToRepair = 100;
-    amountToFill = 100;
-    amountToBuild = 50;
-    amountToScavange = 50;
+
   } else if (controller.level == 6) {
     PHASE = 6;
     numberOfHarvesters = 7;
@@ -205,13 +168,7 @@ module.exports.loop = function () {
     numberOfTowerFillers = 2;
     numberOfDefenders = 0;
     numberOfScavangers = 0;
-    amountToHarvest = 200;
-    amountToUpgrade = 100;
-    amountToHeal = 50;
-    amountToRepair = 100;
-    amountToFill = 100;
-    amountToBuild = 100;
-    amountToScavange = 100;
+
   } else if (controller.level == 7) {
     PHASE = 7;
     numberOfHarvesters = 7;
@@ -223,13 +180,7 @@ module.exports.loop = function () {
     numberOfTowerFillers = 2;
     numberOfDefenders = 0;
     numberOfScavangers = 0;
-    amountToHarvest = 200;
-    amountToUpgrade = 100;
-    amountToHeal = 50;
-    amountToRepair = 100;
-    amountToFill = 100;
-    amountToBuild = 100;
-    amountToScavange = 100;
+
   } else if (controller.level == 8) {
     PHASE = 8;
     numberOfHarvesters = 7;
@@ -241,13 +192,7 @@ module.exports.loop = function () {
     numberOfTowerFillers = 2;
     numberOfDefenders = 0;
     numberOfScavangers = 0;
-    amountToHarvest = 200;
-    amountToUpgrade = 100;
-    amountToHeal = 50;
-    amountToRepair = 100;
-    amountToFill = 100;
-    amountToBuild = 100;
-    amountToScavange = 100;
+
   }
   console.log("phase: " + PHASE + " controller level: " + controller.level);
   console.log(
@@ -814,7 +759,7 @@ module.exports.loop = function () {
       } else if (
         Game.creeps[i].store.getUsedCapacity() < Game.creeps[i].store.getFreeCapacity() &&
         !Game.creeps[i].memory.isLoaded &&
-        totaledContainerEnergy - containerEnergyBuffer < amountToBuild
+        totaledContainerEnergy - containerEnergyBuffer < Game.creeps[i].store.getFreeCapacity()
       ) {
         if (Game.creeps[i].harvest(energySources[1]) === ERR_NOT_IN_RANGE) {
           Game.creeps[i].moveTo(energySources[1], {
@@ -894,7 +839,7 @@ module.exports.loop = function () {
           Game.creeps[i].withdraw(
             storage[0],
             RESOURCE_ENERGY,
-            amountToRepair
+            Game.creeps[i].store.getFreeCapacity()
           ) === ERR_NOT_IN_RANGE
         ) {
           Game.creeps[i].moveTo(storage[0], {
