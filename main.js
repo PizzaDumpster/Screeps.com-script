@@ -128,12 +128,12 @@ module.exports.loop = function () {
     numberOfHarvesters = 7;
     numberOfUpgraders = 7;
     numberOfHealers = 0;
-    numberOfBuilders = 1;
+    numberOfBuilders = 4;
     numberOfRepairers = 1;
     numberOfInvaders = 0;
     numberOfTowerFillers = 2;
-    numberOfDefenders = 0;
-    numberOfScavangers = 0;
+    numberOfDefenders = 2;
+    numberOfScavangers = 1;
   } else if (controller.level == 4) {
     PHASE = 4;
     numberOfHarvesters = 6;
@@ -441,10 +441,73 @@ module.exports.loop = function () {
     number++;
   }
   //if no builders in room spawn one
-  else if (builders.length < numberOfBuilders && constructionSites.length > 0) {
+  else if (builders.length < numberOfBuilders && constructionSites.length > 0 && PHASE == 1) {
     builders.push(
       Game.spawns[mySpawnName].spawnCreep(
         [WORK, CARRY, MOVE],
+        "Builder" + number.toString(),
+        { memory: { role: "builder", isLoaded: false } }
+      )
+    );
+    number++;
+  } else if (builders.length < numberOfBuilders && constructionSites.length > 0 && PHASE == 2) {
+    builders.push(
+      Game.spawns[mySpawnName].spawnCreep(
+        [WORK, CARRY, MOVE, MOVE],
+        "Builder" + number.toString(),
+        { memory: { role: "builder", isLoaded: false } }
+      )
+    );
+    number++;
+  } else if (builders.length < numberOfBuilders && constructionSites.length > 0 && PHASE == 3) {
+    builders.push(
+      Game.spawns[mySpawnName].spawnCreep(
+        [WORK, CARRY, MOVE, MOVE, MOVE],
+        "Builder" + number.toString(),
+        { memory: { role: "builder", isLoaded: false } }
+      )
+    );
+    number++;
+  } else if (builders.length < numberOfBuilders && constructionSites.length > 0 && PHASE == 4) {
+    builders.push(
+      Game.spawns[mySpawnName].spawnCreep(
+        [WORK, CARRY, MOVE, MOVE, MOVE, MOVE],
+        "Builder" + number.toString(),
+        { memory: { role: "builder", isLoaded: false } }
+      )
+    );
+    number++;
+  } else if (builders.length < numberOfBuilders && constructionSites.length > 0 && PHASE == 5) {
+    builders.push(
+      Game.spawns[mySpawnName].spawnCreep(
+        [WORK, CARRY, MOVE, MOVE, MOVE, MOVE],
+        "Builder" + number.toString(),
+        { memory: { role: "builder", isLoaded: false } }
+      )
+    );
+    number++;
+  } else if (builders.length < numberOfBuilders && constructionSites.length > 0 && PHASE == 6) {
+    builders.push(
+      Game.spawns[mySpawnName].spawnCreep(
+        [WORK, CARRY, MOVE, MOVE, MOVE, MOVE],
+        "Builder" + number.toString(),
+        { memory: { role: "builder", isLoaded: false } }
+      )
+    );
+    number++;
+  } else if (builders.length < numberOfBuilders && constructionSites.length > 0 && PHASE == 7) {
+    builders.push(
+      Game.spawns[mySpawnName].spawnCreep(
+        [WORK, CARRY, MOVE, MOVE, MOVE, MOVE],
+        "Builder" + number.toString(),
+        { memory: { role: "builder", isLoaded: false } }
+      )
+    );
+    number++;
+  } else if (builders.length < numberOfBuilders && constructionSites.length > 0 && PHASE == 8) {
+    builders.push(
+      Game.spawns[mySpawnName].spawnCreep(
+        [WORK, CARRY, MOVE, MOVE, MOVE, MOVE],
         "Builder" + number.toString(),
         { memory: { role: "builder", isLoaded: false } }
       )
