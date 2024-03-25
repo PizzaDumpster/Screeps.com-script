@@ -125,13 +125,13 @@ module.exports.loop = function () {
     numberOfScavangers = 1;
   } else if (controller.level == 3) {
     PHASE = 3;
-    numberOfHarvesters = 7;
-    numberOfUpgraders = 7;
+    numberOfHarvesters = 5;
+    numberOfUpgraders = 5;
     numberOfHealers = 0;
-    numberOfBuilders = 4;
+    numberOfBuilders = 3;
     numberOfRepairers = 1;
     numberOfInvaders = 0;
-    numberOfTowerFillers = 2;
+    numberOfTowerFillers = 1;
     numberOfDefenders = 2;
     numberOfScavangers = 1;
   } else if (controller.level == 4) {
@@ -304,7 +304,7 @@ module.exports.loop = function () {
   } else if (harvesters.length < numberOfHarvesters && PHASE == 3) {
     harvesters.push(
       Game.spawns["Spawn1"].spawnCreep(
-        [WORK, CARRY, MOVE, MOVE, MOVE, MOVE],
+        [WORK, CARRY, WORK, MOVE, MOVE, MOVE],
         "Harvester" + number.toString(),
         { memory: { role: "harvester", isLoaded: false } }
       )
@@ -388,7 +388,7 @@ module.exports.loop = function () {
   } else if (upgraders.length < numberOfUpgraders && PHASE == 3) {
     upgraders.push(
       Game.spawns["Spawn1"].spawnCreep(
-        [WORK, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE],
+        [WORK, WORK, CARRY, MOVE, MOVE, MOVE],
         "Upgrader" + number.toString(),
         { memory: { role: "upgrader", isLoaded: false } }
       )
@@ -817,8 +817,8 @@ module.exports.loop = function () {
         Game.creeps[i].memory.isLoaded = false;
       }
       if (!Game.creeps[i].memory.isLoaded && constructionSites.length > 0) {
-        if (Game.creeps[i].harvest(energySources[0]) === ERR_NOT_IN_RANGE) {
-          Game.creeps[i].moveTo(energySources[0], {
+        if (Game.creeps[i].harvest(energySources[1]) === ERR_NOT_IN_RANGE) {
+          Game.creeps[i].moveTo(energySources[1], {
             visualizePathStyle: {
               fill: "transparent",
               stroke: "#fff",
