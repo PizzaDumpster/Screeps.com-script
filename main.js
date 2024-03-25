@@ -304,7 +304,7 @@ module.exports.loop = function () {
   } else if (harvesters.length < numberOfHarvesters && PHASE == 3) {
     harvesters.push(
       Game.spawns["Spawn1"].spawnCreep(
-        [WORK, CARRY, MOVE, MOVE, MOVE],
+        [WORK, CARRY, MOVE, MOVE, MOVE, MOVE],
         "Harvester" + number.toString(),
         { memory: { role: "harvester", isLoaded: false } }
       )
@@ -313,7 +313,7 @@ module.exports.loop = function () {
   } else if (harvesters.length < numberOfHarvesters && PHASE == 4) {
     harvesters.push(
       Game.spawns["Spawn1"].spawnCreep(
-        [WORK, CARRY, MOVE, MOVE, MOVE],
+        [WORK, CARRY, MOVE, MOVE, MOVE, MOVE],
         "Harvester" + number.toString(),
         { memory: { role: "harvester", isLoaded: false } }
       )
@@ -1078,7 +1078,8 @@ module.exports.loop = function () {
             });
           }
         }
-      } else if (Game.creeps[i].memory.isLoaded == true) {
+      } else if (Game.creeps[i].memory.isLoaded == true &&
+        depositTargets.length > 0) {
         console.log("Deposit targets: " + depositTargets);
         depositTargets.reverse();
         if (depositTargets.length > 0) {
@@ -1095,7 +1096,8 @@ module.exports.loop = function () {
         }
       } else if (
         Game.creeps[i].memory.isLoaded == true &&
-        Game.spawns["Spawn1"].store.getUsedCapacity(RESOURCE_ENERGY) === 300
+        Game.spawns["Spawn1"].store.getUsedCapacity(RESOURCE_ENERGY) === 300 &&
+        depositTargets.length === 0
       ) {
         if (
           Game.creeps[i].upgradeController(
