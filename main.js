@@ -695,7 +695,7 @@ module.exports.loop = function () {
       } else if (Game.creeps[i].store.getUsedCapacity() === 0) {
         Game.creeps[i].memory.isLoaded = false;
       }
-      if (!Game.creeps[i].memory.isLoaded) {
+      if (!Game.creeps[i].memory.isLoaded  && constructionSites.length > 0) {
         if (Game.creeps[i].harvest(energySources[0]) === ERR_NOT_IN_RANGE) {
           Game.creeps[i].moveTo(energySources[0], {
             visualizePathStyle: {
@@ -707,7 +707,20 @@ module.exports.loop = function () {
             },
           });
         }
-      } else if (Game.creeps[i].memory.isLoaded == true) {
+      }else if (!Game.creeps[i].memory.isLoaded  && constructionSites.length === 0) {
+        if (Game.creeps[i].harvest(energySources[1]) === ERR_NOT_IN_RANGE) {
+          Game.creeps[i].moveTo(energySources[1], {
+            visualizePathStyle: {
+              fill: "transparent",
+              stroke: "#fff",
+              lineStyle: "dashed",
+              strokeWidth: 0.15,
+              opacity: 0.1,
+            },
+          });
+        }
+      } 
+      else if (Game.creeps[i].memory.isLoaded == true) {
         if (
           Game.creeps[i].upgradeController(
             Game.spawns.Spawn1.room.controller
