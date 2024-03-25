@@ -406,7 +406,7 @@ module.exports.loop = function () {
   } else if (upgraders.length < numberOfUpgraders && PHASE == 5) {
     upgraders.push(
       Game.spawns["Spawn1"].spawnCreep(
-        [WORK, CARRY, CARRY, MOVE, MOVE, MOVE],
+        [WORK, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE],
         "Upgrader" + number.toString(),
         { memory: { role: "upgrader", isLoaded: false } }
       )
@@ -415,7 +415,7 @@ module.exports.loop = function () {
   } else if (upgraders.length < numberOfUpgraders && PHASE == 6) {
     upgraders.push(
       Game.spawns["Spawn1"].spawnCreep(
-        [WORK, CARRY, CARRY, MOVE, MOVE, MOVE],
+        [WORK, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE],
         "Upgrader" + number.toString(),
         { memory: { role: "upgrader", isLoaded: false } }
       )
@@ -424,7 +424,7 @@ module.exports.loop = function () {
   } else if (upgraders.length < numberOfUpgraders && PHASE == 7) {
     upgraders.push(
       Game.spawns["Spawn1"].spawnCreep(
-        [WORK, CARRY, CARRY, MOVE, MOVE, MOVE],
+        [WORK, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE],
         "Upgrader" + number.toString(),
         { memory: { role: "upgrader", isLoaded: false } }
       )
@@ -433,7 +433,7 @@ module.exports.loop = function () {
   } else if (upgraders.length < numberOfUpgraders && PHASE == 8) {
     upgraders.push(
       Game.spawns["Spawn1"].spawnCreep(
-        [WORK, CARRY, CARRY, MOVE, MOVE, MOVE],
+        [WORK, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE],
         "Upgrader" + number.toString(),
         { memory: { role: "upgrader", isLoaded: false } }
       )
@@ -497,10 +497,66 @@ module.exports.loop = function () {
     );
     number++;
     //if no scavangers in room spawn one
-  } else if (scavangers.length < numberOfScavangers && deadSources.length > 0) {
+  } else if (
+    scavangers.length < numberOfScavangers &&
+    deadSources.length > 0 &&
+    PHASE == 1
+  ) {
     scavangers.push(
       Game.spawns["Spawn1"].spawnCreep(
         [WORK, CARRY, MOVE],
+        "Scavanger" + number.toString(),
+        { memory: { role: "scavanger", isLoaded: false, maxCapacity: 50 } }
+      )
+    );
+    number++;
+  } else if (
+    scavangers.length < numberOfScavangers &&
+    deadSources.length > 0 &&
+    PHASE == 2
+  ) {
+    scavangers.push(
+      Game.spawns["Spawn1"].spawnCreep(
+        [WORK, CARRY, MOVE, MOVE],
+        "Scavanger" + number.toString(),
+        { memory: { role: "scavanger", isLoaded: false, maxCapacity: 50 } }
+      )
+    );
+    number++;
+  } else if (
+    scavangers.length < numberOfScavangers &&
+    deadSources.length > 0 &&
+    PHASE == 3
+  ) {
+    scavangers.push(
+      Game.spawns["Spawn1"].spawnCreep(
+        [WORK, CARRY, MOVE, MOVE, MOVE],
+        "Scavanger" + number.toString(),
+        { memory: { role: "scavanger", isLoaded: false, maxCapacity: 50 } }
+      )
+    );
+    number++;
+  } else if (
+    scavangers.length < numberOfScavangers &&
+    deadSources.length > 0 &&
+    PHASE == 4
+  ) {
+    scavangers.push(
+      Game.spawns["Spawn1"].spawnCreep(
+        [WORK, CARRY, MOVE, MOVE, MOVE],
+        "Scavanger" + number.toString(),
+        { memory: { role: "scavanger", isLoaded: false, maxCapacity: 50 } }
+      )
+    );
+    number++;
+  } else if (
+    scavangers.length < numberOfScavangers &&
+    deadSources.length > 0 &&
+    PHASE == 5
+  ) {
+    scavangers.push(
+      Game.spawns["Spawn1"].spawnCreep(
+        [WORK, CARRY, MOVE, MOVE, MOVE, MOVE],
         "Scavanger" + number.toString(),
         { memory: { role: "scavanger", isLoaded: false, maxCapacity: 50 } }
       )
