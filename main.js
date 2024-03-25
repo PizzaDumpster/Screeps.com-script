@@ -527,7 +527,7 @@ module.exports.loop = function () {
     //if no towerFillers in room spawn one
   } else if (
     towerFillers.length < numberOfTowerFillers &&
-    fillerTargets.length > 0
+    towers[0].store.getUsedCapacity(RESOURCE_ENERGY) < towers[0].store.getCapacity(RESOURCE_ENERGY)
   ) {
     towerFillers.push(
       Game.spawns["Spawn1"].spawnCreep(
@@ -1017,7 +1017,7 @@ module.exports.loop = function () {
             },
           });
         }
-        
+
       } else if (Game.creeps[i].memory.isLoaded == true) {
         //find repair sites
         fillerTargets.sort();
