@@ -1006,14 +1006,8 @@ module.exports.loop = function () {
         Game.creeps[i].memory.isLoaded = false;
       }
       if (!Game.creeps[i].memory.isLoaded) {
-        if (
-          Game.creeps[i].withdraw(
-            depositTargets[2],
-            RESOURCE_ENERGY,
-            Game.creeps[i].store.getFreeCapacity(RESOURCE_ENERGY)
-          ) === ERR_NOT_IN_RANGE
-        ) {
-          Game.creeps[i].moveTo(depositTargets[2], {
+        if(Game.creeps[i].harvest(energySources[1]) === ERR_NOT_IN_RANGE) {
+          Game.creeps[i].moveTo(energySources[1], {
             visualizePathStyle: {
               fill: "transparent",
               stroke: "#fff",
@@ -1023,6 +1017,7 @@ module.exports.loop = function () {
             },
           });
         }
+        
       } else if (Game.creeps[i].memory.isLoaded == true) {
         //find repair sites
         fillerTargets.sort();
