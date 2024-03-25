@@ -544,7 +544,9 @@ module.exports.loop = function () {
     filter: { structureType: STRUCTURE_STORAGE },
   });
   for (const i in Game.creeps) {
-    if(Game.creeps[i].ticksToLive < 200) {Game.creeps[i].say("R.I.P.");}
+    if (Game.creeps[i].ticksToLive < 200) {
+      Game.creeps[i].say("R.I.P.");
+    }
     var depositTargets = Game.creeps[i].room.find(FIND_STRUCTURES, {
       filter: (structure) => {
         return (
@@ -637,8 +639,6 @@ module.exports.loop = function () {
         Game.spawns["Spawn1"].store.getUsedCapacity(RESOURCE_ENERGY) === 300 &&
         depositTargets.length === 0 &&
         constructionSites.length > 0
-
-        
       ) {
         //find construction sites
 
@@ -662,12 +662,14 @@ module.exports.loop = function () {
             );
           }
         }
-      } else if(Game.creeps[i].memory.isLoaded == true &&
+      } else if (
+        Game.creeps[i].memory.isLoaded == true &&
         Game.spawns["Spawn1"].store.getUsedCapacity(RESOURCE_ENERGY) === 300 &&
         depositTargets.length === 0 &&
         constructionSites.length === 0 &&
-        Game.rooms[myRoomName].controller.progress < Game.rooms[myRoomName].controller.progressTotal
-        ) {
+        Game.rooms[myRoomName].controller.progress <
+          Game.rooms[myRoomName].controller.progressTotal
+      ) {
         if (
           Game.creeps[i].upgradeController(
             Game.spawns.Spawn1.room.controller
@@ -695,7 +697,7 @@ module.exports.loop = function () {
       } else if (Game.creeps[i].store.getUsedCapacity() === 0) {
         Game.creeps[i].memory.isLoaded = false;
       }
-      if (!Game.creeps[i].memory.isLoaded  && constructionSites.length > 0) {
+      if (!Game.creeps[i].memory.isLoaded && constructionSites.length > 0) {
         if (Game.creeps[i].harvest(energySources[0]) === ERR_NOT_IN_RANGE) {
           Game.creeps[i].moveTo(energySources[0], {
             visualizePathStyle: {
@@ -707,7 +709,10 @@ module.exports.loop = function () {
             },
           });
         }
-      }else if (!Game.creeps[i].memory.isLoaded  && constructionSites.length === 0) {
+      } else if (
+        !Game.creeps[i].memory.isLoaded &&
+        constructionSites.length === 0
+      ) {
         if (Game.creeps[i].harvest(energySources[1]) === ERR_NOT_IN_RANGE) {
           Game.creeps[i].moveTo(energySources[1], {
             visualizePathStyle: {
@@ -719,8 +724,7 @@ module.exports.loop = function () {
             },
           });
         }
-      } 
-      else if (Game.creeps[i].memory.isLoaded == true) {
+      } else if (Game.creeps[i].memory.isLoaded == true) {
         if (
           Game.creeps[i].upgradeController(
             Game.spawns.Spawn1.room.controller
