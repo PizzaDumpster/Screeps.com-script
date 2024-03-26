@@ -66,7 +66,7 @@ module.exports.loop = function () {
   energySources.sort();
 
   var deadSources = Game.rooms[myRoomName].find(FIND_DROPPED_RESOURCES);
-  var deadSourcesRoomTwo = Game.rooms[myRoomTwoName].find(FIND_RUINS);
+  var deadSourcesRoomTwo = Game.rooms[myRoomTwoName].find(FIND_DROPPED_RESOURCES);
   deadSources.sort();
   console.log("Things to scavenge: " + deadSources.length);
   console.log(deadSources);
@@ -131,7 +131,7 @@ module.exports.loop = function () {
   } else if (controller.level == 3) {
     PHASE = 3;
     numberOfHarvesters = 7;
-    numberOfUpgraders = 7;
+    numberOfUpgraders = 9;
     numberOfHealers = 0;
     numberOfBuilders = 4;
     numberOfRepairers = 1;
@@ -407,7 +407,7 @@ module.exports.loop = function () {
       )
     );
     number++;
-  } else if (upgraders.length < numberOfUpgraders && PHASE == 3) {
+  } if (upgraders.length < numberOfUpgraders && PHASE == 3) {
     upgraders.push(
       Game.spawns["Spawn1"].spawnCreep(
         [WORK, WORK, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE],
