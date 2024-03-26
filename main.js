@@ -193,11 +193,11 @@ module.exports.loop = function () {
     numberOfDefenders = 0;
     numberOfScavangers = 0;
 
-    numberOfHarvestersRoomTwo = 0;
-    numberOfUpgradersRoomTwo = 0;
-    numberOfBuildersRoomTwo = 0;
+    numberOfHarvestersRoomTwo = 2;
+    numberOfUpgradersRoomTwo = 4;
+    numberOfBuildersRoomTwo = 2;
     numberOfRepairersRoomTwo = 0;
-    numberOfTowerFillersRoomTwo = 0;
+    numberOfTowerFillersRoomTwo = 1;
     numberOfDefendersRoomTwo = 0;
     numberOfScavangersRoomTwo = 0;
 
