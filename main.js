@@ -580,7 +580,7 @@ module.exports.loop = function () {
   ) {
     scavangers.push(
       Game.spawns["Spawn1"].spawnCreep(
-        [WORK, CARRY, MOVE, MOVE],
+        [WORK,WORK,CARRY, CARRY, MOVE, MOVE],
         "Scavanger" + number.toString(),
         { memory: { role: "scavanger", isLoaded: false, maxCapacity: 50 } }
       )
@@ -593,7 +593,7 @@ module.exports.loop = function () {
   ) {
     scavangers.push(
       Game.spawns["Spawn1"].spawnCreep(
-        [WORK, CARRY, MOVE, MOVE, MOVE],
+        [WORK,WORK,CARRY, CARRY, MOVE, MOVE],
         "Scavanger" + number.toString(),
         { memory: { role: "scavanger", isLoaded: false, maxCapacity: 50 } }
       )
@@ -606,7 +606,7 @@ module.exports.loop = function () {
   ) {
     scavangers.push(
       Game.spawns["Spawn1"].spawnCreep(
-        [WORK, CARRY, MOVE, MOVE, MOVE],
+        [WORK,WORK,CARRY, CARRY, MOVE, MOVE],
         "Scavanger" + number.toString(),
         { memory: { role: "scavanger", isLoaded: false, maxCapacity: 50 } }
       )
@@ -619,7 +619,7 @@ module.exports.loop = function () {
   ) {
     scavangers.push(
       Game.spawns["Spawn1"].spawnCreep(
-        [WORK, CARRY, MOVE, MOVE, MOVE, MOVE],
+        [WORK,WORK,CARRY, CARRY, MOVE, MOVE],
         "Scavanger" + number.toString(),
         { memory: { role: "scavanger", isLoaded: false, maxCapacity: 50 } }
       )
