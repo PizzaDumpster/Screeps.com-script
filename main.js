@@ -462,7 +462,7 @@ module.exports.loop = function () {
     );
     number++;
   }
-  if (builders.length < numberOfBuilders && constructionSites.length > 0 ) {
+  if (builders.length < numberOfBuilders && constructionSites2.length > 0 ) {
     builders.push(
       Game.spawns["Spawn2"].spawnCreep(
         [WORK, CARRY, MOVE, MOVE],
