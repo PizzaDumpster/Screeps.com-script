@@ -126,8 +126,8 @@ module.exports.loop = function () {
     numberOfScavangers = 1;
   } else if (controller.level == 3) {
     PHASE = 3;
-    numberOfHarvesters = 8;
-    numberOfUpgraders = 8;
+    numberOfHarvesters = 7;
+    numberOfUpgraders = 7;
     numberOfHealers = 0;
     numberOfBuilders = 4;
     numberOfRepairers = 1;
@@ -246,7 +246,9 @@ module.exports.loop = function () {
       healers.push(Game.creeps[i]);
     } else if (Game.creeps[i].memory.role == "builder") {
       builders.push(Game.creeps[i]);
-    } else if (Game.creeps[i].memory.role == "repairer") {
+    } else if (Game.creeps[i].memory.role == "builder2") {
+      builders.push(Game.creeps[i]);
+    }else if (Game.creeps[i].memory.role == "repairer") {
       repairers.push(Game.creeps[i]);
     } else if (Game.creeps[i].memory.role == "towerFiller") {
       towerFillers.push(Game.creeps[i]);
@@ -360,7 +362,7 @@ module.exports.loop = function () {
       )
     );
     number++;
-  } else if (harvesters.length < numberOfHarvesters && PHASE == 3) {
+  } if (harvesters.length < numberOfHarvesters) {
     harvesters.push(
       Game.spawns["Spawn2"].spawnCreep(
         [WORK, CARRY, MOVE],
@@ -372,12 +374,12 @@ module.exports.loop = function () {
   }
 
   // if no upgraders in room spawn one
-  else if (upgraders.length < numberOfUpgraders && PHASE == 0) {
+  if (upgraders.length < numberOfUpgraders) {
     upgraders.push(
-      Game.spawns["Spawn1"].spawnCreep(
+      Game.spawns["Spawn2"].spawnCreep(
         [WORK, CARRY, MOVE],
         "Upgrader" + number.toString(),
-        { memory: { role: "upgrader", isLoaded: false } }
+        { memory: { role: "upgrader2", isLoaded: false } }
       )
     );
     number++;
@@ -450,6 +452,16 @@ module.exports.loop = function () {
         [WORK, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE],
         "Upgrader" + number.toString(),
         { memory: { role: "upgrader", isLoaded: false } }
+      )
+    );
+    number++;
+  }
+  if ( constructionSites.length > 0 ) {
+    builders.push(
+      Game.spawns["Spawn2"].spawnCreep(
+        [WORK, CARRY, MOVE, MOVE],
+        "Builder" + number.toString(),
+        { memory: { role: "builder2", isLoaded: false } }
       )
     );
     number++;
@@ -841,9 +853,9 @@ module.exports.loop = function () {
         });
         Game.creeps[i].harvest(energySourcesRoomTwo[0]);
       } else if (
-        Game.creeps[i].memory.isLoaded == true &&
-        Game.spawns["Spawn1"].store.getUsedCapacity(RESOURCE_ENERGY) < 300 &&
-        depositTargets.length >= 0
+        Game.creeps[i].memory.isLoaded == true //&&
+        //Game.spawns["Spawn2"].store.getUsedCapacity(RESOURCE_ENERGY) < 300 &&
+        //depositTargets.length >= 0
       ) {
         Game.creeps[i].moveTo(Game.spawns["Spawn2"], {
           visualizePathStyle: {
@@ -884,8 +896,6 @@ module.exports.loop = function () {
         }
       } else if (
         Game.creeps[i].memory.isLoaded == true &&
-        Game.spawns["Spawn1"].store.getUsedCapacity(RESOURCE_ENERGY) === 300 &&
-        depositTargets.length === 0 &&
         constructionSites.length > 0
       ) {
         //find construction sites
@@ -1133,7 +1143,64 @@ module.exports.loop = function () {
           });
         }
       }
-    } else if (
+    }     if (Game.creeps[i].memory.role == "builder2") {
+      if (
+        Game.creeps[i].store.getUsedCapacity() ===
+        Game.creeps[i].store.getCapacity()
+      ) {
+        Game.creeps[i].memory.isLoaded = true;
+      } else if (Game.creeps[i].store.getUsedCapacity() === 0) {
+        Game.creeps[i].memory.isLoaded = false;
+      }
+      if (!Game.creeps[i].memory.isLoaded) {
+        if (Game.creeps[i].harvest(energySourcesRoomTwo[0]) === ERR_NOT_IN_RANGE) {
+          Game.creeps[i].moveTo(energySourcesRoomTwo[0], {
+            visualizePathStyle: {
+              fill: "transparent",
+              stroke: "#fff",
+              lineStyle: "dashed",
+              strokeWidth: 0.15,
+              opacity: 0.1,
+            },
+          });
+        }
+      } else if (Game.creeps[i].memory.isLoaded == true) {
+        //find construction sites
+
+        if (constructionSites.length > 0) {
+          if (
+            Game.creeps[i].build(
+              constructionSites[constructionSites.length - 1]
+            ) === ERR_NOT_IN_RANGE
+          ) {
+            Game.creeps[i].moveTo(
+              constructionSites[constructionSites.length - 1],
+              {
+                visualizePathStyle: {
+                  fill: "transparent",
+                  stroke: "#fff",
+                  lineStyle: "dashed",
+                  strokeWidth: 0.15,
+                  opacity: 0.1,
+                },
+              }
+            );
+          }
+        } else {
+          Game.creeps[i].moveTo(14, 20, {
+            visualizePathStyle: {
+              fill: "transparent",
+              stroke: "#fff",
+              lineStyle: "dashed",
+              strokeWidth: 0.15,
+              opacity: 0.1,
+            },
+          });
+        }
+      }
+    }
+    
+    else if (
       Game.creeps[i].memory.role == "repairer" &&
       repairTargets.length > 0
     ) {
