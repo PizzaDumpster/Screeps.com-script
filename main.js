@@ -324,7 +324,7 @@ module.exports.loop = function () {
   defenders = [];
   scavangersRoomTwo = [];
   scavangers = [];
-  
+
 
   hurtCreeps = [];
   // sort current creeps by role and put them into arrays
@@ -343,17 +343,17 @@ module.exports.loop = function () {
       harvesters.push(Game.creeps[i]);
     } else if (Game.creeps[i].memory.role == "harvester2") {
       harvestersRoomTwo.push(Game.creeps[i]);
-    }else if (Game.creeps[i].memory.role == "upgrader") {
+    } else if (Game.creeps[i].memory.role == "upgrader") {
       upgraders.push(Game.creeps[i]);
     } else if (Game.creeps[i].memory.role == "upgrader2") {
       upgradersRoomTwo.push(Game.creeps[i]);
-    }else if (Game.creeps[i].memory.role == "healer") {
+    } else if (Game.creeps[i].memory.role == "healer") {
       healers.push(Game.creeps[i]);
     } else if (Game.creeps[i].memory.role == "builder") {
       builders.push(Game.creeps[i]);
     } else if (Game.creeps[i].memory.role == "builder2") {
       buildersRoomTwo.push(Game.creeps[i]);
-    }else if (Game.creeps[i].memory.role == "repairer") {
+    } else if (Game.creeps[i].memory.role == "repairer") {
       repairers.push(Game.creeps[i]);
     } else if (Game.creeps[i].memory.role == "towerFiller") {
       towerFillers.push(Game.creeps[i]);
@@ -363,7 +363,7 @@ module.exports.loop = function () {
       defenders.push(Game.creeps[i]);
     } else if (Game.creeps[i].memory.role == "scavanger") {
       scavangers.push(Game.creeps[i]);
-    }else if (Game.creeps[i].memory.role == "scavanger2") {
+    } else if (Game.creeps[i].memory.role == "scavanger2") {
       scavangers.push(Game.creeps[i]);
     }
   }
@@ -396,16 +396,16 @@ module.exports.loop = function () {
     defendersRoomTwo.length +
     " towerFillersRoomTwo: " +
     towerFillersRoomTwo.length +
-    
+
     " BuildersRoomTwo: " +
     buildersRoomTwo.length +
     " ScavangersRoomTwo: " +
     scavangersRoomTwo.length +
     " RepairersRoomTwo: " +
-    repairersRoomTwo.length 
-   
+    repairersRoomTwo.length
+
   );
-  
+
   // if no harvesters in room spawn one
   if (harvesters.length < numberOfHarvesters && PHASE == 0) {
     harvesters.push(
@@ -582,7 +582,7 @@ module.exports.loop = function () {
     );
     number++;
   }
-  if (buildersRoomTwo.length < numberOfBuildersRoomTwo && constructionSites2.length > 0 ) {
+  if (buildersRoomTwo.length < numberOfBuildersRoomTwo && constructionSites2.length > 0) {
     builders.push(
       Game.spawns["Spawn2"].spawnCreep(
         [WORK, CARRY, MOVE, MOVE],
@@ -777,9 +777,9 @@ module.exports.loop = function () {
       )
     );
     number++;
-  }if (
+  } if (
     scavangers.length < numberOfScavangers &&
-    deadSourcesRoomTwo.length > 0 
+    deadSourcesRoomTwo.length > 0
   ) {
     scavangers.push(
       Game.spawns["Spawn2"].spawnCreep(
@@ -844,6 +844,18 @@ module.exports.loop = function () {
     });
     depositTargets.sort();
     depositTargets.reverse();
+    var depositTargets2 = Game.rooms[myRoomTwoName].find(FIND_STRUCTURES, {
+      filter: (structure) => {
+        return (
+          (structure.structureType == STRUCTURE_EXTENSION ||
+            structure.structureType == STRUCTURE_SPAWN ||
+            structure.structureType == STRUCTURE_CONTAINER ||
+            structure.structureType == STRUCTURE_STORAGE ||
+            structure.structureType == STRUCTURE_TOWER) &&
+          structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0
+        );
+      },
+    })
     repairTargets = Game.creeps[i].room.find(FIND_STRUCTURES, {
       filter: (object) => object.hits < object.hitsMax,
     });
@@ -1016,24 +1028,25 @@ module.exports.loop = function () {
         );
       } else if (
         Game.creeps[i].memory.isLoaded === true &&
-        Game.spawns["Spawn2"].store.getUsedCapacity(RESOURCE_ENERGY) === 300 
-        && depositTargets.length === 0
+        Game.spawns["Spawn2"].store.getUsedCapacity(RESOURCE_ENERGY) === 300 &&
+        depositTargets2.length > 0
       ) {
-
-        if (Game.spawns.Spawn2) {
-
-          if (
-            Game.creeps[i].transfer(Game.spawns.Spawn2, RESOURCE_ENERGY) ==
-            ERR_NOT_IN_RANGE
-          ) {
-            Game.creeps[i].moveTo(Game.spawns.Spawn2, {
-              visualizePathStyle: { stroke: "#ffffff" },
-            });
+        console.log("Deposit targets: " + depositTargets2);
+        if (depositTargets2.length > 0) {
+          for (y in depositTargets2) {
+            if (
+              Game.creeps[i].transfer(depositTargets2[y], RESOURCE_ENERGY) ==
+              ERR_NOT_IN_RANGE
+            ) {
+              Game.creeps[i].moveTo(depositTargets2[y], {
+                visualizePathStyle: { stroke: "#ffffff" },
+              });
+            }
           }
-
         }
       } else if (
         Game.creeps[i].memory.isLoaded == true &&
+        Game.spawns["Spawn2"].store.getUsedCapacity(RESOURCE_ENERGY) === 300 &&
         constructionSites2.length > 0
       ) {
         //find construction sites
@@ -1281,7 +1294,7 @@ module.exports.loop = function () {
           });
         }
       }
-    }     if (Game.creeps[i].memory.role == "builder2") {
+    } if (Game.creeps[i].memory.role == "builder2") {
       if (
         Game.creeps[i].store.getUsedCapacity() ===
         Game.creeps[i].store.getCapacity()
@@ -1337,7 +1350,7 @@ module.exports.loop = function () {
         }
       }
     }
-    
+
     else if (
       Game.creeps[i].memory.role == "repairer" &&
       repairTargets.length > 0
@@ -1545,7 +1558,7 @@ module.exports.loop = function () {
           });
         }
       }
-    }else if (Game.creeps[i].memory.role == "scavanger2") {
+    } else if (Game.creeps[i].memory.role == "scavanger2") {
       if (
         Game.creeps[i].store.getUsedCapacity() ===
         Game.creeps[i].store.getCapacity()
