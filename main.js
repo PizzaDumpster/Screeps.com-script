@@ -45,7 +45,7 @@ var towerFillers = [];
 var defenders = [];
 var scavangers = [];
 
-var rooomToInvade = Game.flags.invade
+var rooomToInvade = Game.flags.Flag1
 
 module.exports.loop = function () {
   console.log("-----------------------Report-----------------------");
@@ -1323,9 +1323,9 @@ module.exports.loop = function () {
         }
       }
     } else if (Game.creeps[i].memory.role == "invader") {
-      if (Game.creeps[i].claimController(Game.rooms["W18S7"].controller) == ERR_NOT_IN_RANGE) {
+      if (Game.creeps[i].claimController(rooomToInvade.controller) == ERR_NOT_IN_RANGE) {
 
-        Game.creeps[i].moveTo(Game.rooms["W18S7"].controller, {
+        Game.creeps[i].moveTo(rooomToInvade.controller, {
           visualizePathStyle: {
             fill: "transparent",
             stroke: "#fff",
