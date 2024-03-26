@@ -277,7 +277,7 @@ module.exports.loop = function () {
   if (harvesters.length < numberOfHarvesters && PHASE == 0) {
     harvesters.push(
       Game.spawns["Spawn1"].spawnCreep(
-        [WORK, CARRY, MOVE],
+        [WORK, CARRY, MOVE, MOVE],
         "Harvester" + number.toString(),
         { memory: { role: "harvester", isLoaded: false } }
       )
@@ -295,7 +295,7 @@ module.exports.loop = function () {
   } else if (harvesters.length < numberOfHarvesters && PHASE == 2) {
     harvesters.push(
       Game.spawns["Spawn1"].spawnCreep(
-        [WORK, CARRY, MOVE, MOVE, MOVE],
+        [WORK, CARRY, MOVE, MOVE],
         "Harvester" + number.toString(),
         { memory: { role: "harvester", isLoaded: false } }
       )
@@ -304,7 +304,7 @@ module.exports.loop = function () {
   } else if (harvesters.length < numberOfHarvesters && PHASE == 3) {
     harvesters.push(
       Game.spawns["Spawn1"].spawnCreep(
-        [WORK, CARRY, WORK, MOVE, MOVE, MOVE, MOVE],
+        [WORK, CARRY, WORK,CARRY, MOVE, MOVE, MOVE, MOVE],
         "Harvester" + number.toString(),
         { memory: { role: "harvester", isLoaded: false } }
       )
@@ -313,7 +313,7 @@ module.exports.loop = function () {
   } else if (harvesters.length < numberOfHarvesters && PHASE == 4) {
     harvesters.push(
       Game.spawns["Spawn1"].spawnCreep(
-        [WORK, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE],
+        [WORK, CARRY, CARRY, WORK, MOVE, MOVE, MOVE,MOVE],
         "Harvester" + number.toString(),
         { memory: { role: "harvester", isLoaded: false } }
       )
@@ -379,7 +379,7 @@ module.exports.loop = function () {
   } else if (upgraders.length < numberOfUpgraders && PHASE == 2) {
     upgraders.push(
       Game.spawns["Spawn1"].spawnCreep(
-        [WORK, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE],
+        [WORK, CARRY, CARRY, WORK, MOVE, MOVE, MOVE, MOVE],
         "Upgrader" + number.toString(),
         { memory: { role: "upgrader", isLoaded: false } }
       )
@@ -388,7 +388,7 @@ module.exports.loop = function () {
   } else if (upgraders.length < numberOfUpgraders && PHASE == 3) {
     upgraders.push(
       Game.spawns["Spawn1"].spawnCreep(
-        [WORK, WORK, CARRY, MOVE, MOVE, MOVE, MOVE],
+        [WORK, WORK, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE],
         "Upgrader" + number.toString(),
         { memory: { role: "upgrader", isLoaded: false } }
       )
@@ -444,7 +444,7 @@ module.exports.loop = function () {
   else if (builders.length < numberOfBuilders && constructionSites.length > 0 && PHASE == 1) {
     builders.push(
       Game.spawns[mySpawnName].spawnCreep(
-        [WORK, CARRY, MOVE],
+        [WORK, CARRY, MOVE, MOVE],
         "Builder" + number.toString(),
         { memory: { role: "builder", isLoaded: false } }
       )
@@ -462,7 +462,7 @@ module.exports.loop = function () {
   } else if (builders.length < numberOfBuilders && constructionSites.length > 0 && PHASE == 3) {
     builders.push(
       Game.spawns[mySpawnName].spawnCreep(
-        [WORK, CARRY, MOVE, MOVE, MOVE],
+        [WORK, CARRY, CARRY,WORK,MOVE,MOVE, MOVE, MOVE],
         "Builder" + number.toString(),
         { memory: { role: "builder", isLoaded: false } }
       )
@@ -480,7 +480,7 @@ module.exports.loop = function () {
   } else if (builders.length < numberOfBuilders && constructionSites.length > 0 && PHASE == 5) {
     builders.push(
       Game.spawns[mySpawnName].spawnCreep(
-        [WORK, CARRY, MOVE, MOVE, MOVE, MOVE],
+        [WORK, CARRY, CARRY, WORK, MOVE, MOVE, MOVE, MOVE],
         "Builder" + number.toString(),
         { memory: { role: "builder", isLoaded: false } }
       )
@@ -489,7 +489,7 @@ module.exports.loop = function () {
   } else if (builders.length < numberOfBuilders && constructionSites.length > 0 && PHASE == 6) {
     builders.push(
       Game.spawns[mySpawnName].spawnCreep(
-        [WORK, CARRY, MOVE, MOVE, MOVE, MOVE],
+        [WORK, CARRY,CARRY,WORK, MOVE, MOVE, MOVE, MOVE, MOVE],
         "Builder" + number.toString(),
         { memory: { role: "builder", isLoaded: false } }
       )
@@ -498,7 +498,7 @@ module.exports.loop = function () {
   } else if (builders.length < numberOfBuilders && constructionSites.length > 0 && PHASE == 7) {
     builders.push(
       Game.spawns[mySpawnName].spawnCreep(
-        [WORK, CARRY, MOVE, MOVE, MOVE, MOVE],
+        [WORK, CARRY,CARRY,WORK, MOVE, MOVE, MOVE, MOVE, MOVE],
         "Builder" + number.toString(),
         { memory: { role: "builder", isLoaded: false } }
       )
@@ -507,7 +507,7 @@ module.exports.loop = function () {
   } else if (builders.length < numberOfBuilders && constructionSites.length > 0 && PHASE == 8) {
     builders.push(
       Game.spawns[mySpawnName].spawnCreep(
-        [WORK, CARRY, MOVE, MOVE, MOVE, MOVE],
+        [WORK, CARRY,CARRY,WORK, MOVE, MOVE, MOVE, MOVE, MOVE],
         "Builder" + number.toString(),
         { memory: { role: "builder", isLoaded: false } }
       )
@@ -518,7 +518,7 @@ module.exports.loop = function () {
   else if (repairers.length < numberOfRepairers && repairTargets.length > 0) {
     repairers.push(
       Game.spawns["Spawn1"].spawnCreep(
-        [WORK, CARRY, CARRY, MOVE, MOVE],
+        [WORK, CARRY, CARRY, MOVE, MOVE, MOVE],
         "Repairer" + number.toString(),
         { memory: { role: "repairer", isLoaded: false } }
       )
@@ -531,7 +531,7 @@ module.exports.loop = function () {
   ) {
     towerFillers.push(
       Game.spawns["Spawn1"].spawnCreep(
-        [WORK, CARRY, CARRY, MOVE, MOVE],
+        [WORK, CARRY, CARRY, MOVE, MOVE,MOVE],
         "TowerFiller" + number.toString(),
         { memory: { role: "towerFiller", isLoaded: false } }
       )
