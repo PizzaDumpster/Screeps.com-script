@@ -5,7 +5,9 @@ var PHASE = 0;
 var repairTargets;
 var fillerTargets;
 var myRoomName = "W17S6";
+var myRoomTwoName = "W18S7";
 var mySpawnName = "Spawn1";
+var myRoomTwoSpawnName = "Spawn2";
 var myFriendName = "pallSmenis";
 var number = 1;
 
@@ -48,7 +50,8 @@ var rooomToInvade = Game.flags.invade
 module.exports.loop = function () {
   console.log("-----------------------Report-----------------------");
 
-  constructionSites = Game.rooms["W18S7"].find(FIND_CONSTRUCTION_SITES);
+  constructionSites = Game.spawns.Spawn1.room.find(FIND_CONSTRUCTION_SITES);
+  constructionSites2 = Game.rooms["W18S7"].find(FIND_CONSTRUCTION_SITES);
   repairSites = Game.spawns.Spawn1.room.find(FIND_STRUCTURES, {
     filter: (structure) => {
       return (
@@ -853,8 +856,8 @@ module.exports.loop = function () {
         });
         Game.creeps[i].harvest(energySourcesRoomTwo[0]);
       } else if (
-        Game.creeps[i].memory.isLoaded == true //&&
-        //Game.spawns["Spawn2"].store.getUsedCapacity(RESOURCE_ENERGY) < 300 &&
+        Game.creeps[i].memory.isLoaded == true &&
+        Game.spawns["Spawn2"].store.getUsedCapacity(RESOURCE_ENERGY) < 300 
         //depositTargets.length >= 0
       ) {
         Game.creeps[i].moveTo(Game.spawns["Spawn2"], {
@@ -878,8 +881,7 @@ module.exports.loop = function () {
         );
       } else if (
         Game.creeps[i].memory.isLoaded === true &&
-        Game.spawns["Spawn2"].store.getUsedCapacity(RESOURCE_ENERGY) === 300 &&
-        depositTargets.length > 0
+        Game.spawns["Spawn2"].store.getUsedCapacity(RESOURCE_ENERGY) === 300 
       ) {
 
         if (Game.spawns.Spawn2) {
@@ -896,18 +898,18 @@ module.exports.loop = function () {
         }
       } else if (
         Game.creeps[i].memory.isLoaded == true &&
-        constructionSites.length > 0
+        constructionSites2.length > 0
       ) {
         //find construction sites
 
-        if (constructionSites.length > 0) {
+        if (constructionSites2.length > 0) {
           if (
             Game.creeps[i].build(
-              constructionSites[constructionSites.length - 1]
+              constructionSites2[constructionSites2.length - 1]
             ) === ERR_NOT_IN_RANGE
           ) {
             Game.creeps[i].moveTo(
-              constructionSites[constructionSites.length - 1],
+              constructionSites2[constructionSites2.length - 1],
               {
                 visualizePathStyle: {
                   fill: "transparent",
@@ -922,18 +924,18 @@ module.exports.loop = function () {
         }
       } else if (
         Game.creeps[i].memory.isLoaded == true &&
-        Game.spawns["Spawn1"].store.getUsedCapacity(RESOURCE_ENERGY) === 300 &&
+        Game.spawns["Spawn2"].store.getUsedCapacity(RESOURCE_ENERGY) === 300 &&
         depositTargets.length === 0 &&
-        constructionSites.length === 0 &&
-        Game.rooms[myRoomName].controller.progress <
-        Game.rooms[myRoomName].controller.progressTotal
+        constructionSites2.length === 0 &&
+        Game.rooms[myRoomTwoName].controller.progress <
+        Game.rooms[myRoomTwoName].controller.progressTotal
       ) {
         if (
           Game.creeps[i].upgradeController(
-            Game.spawns.Spawn1.room.controller
+            Game.spawns.Spawn2.room.controller
           ) === ERR_NOT_IN_RANGE
         ) {
-          Game.creeps[i].moveTo(Game.spawns.Spawn1.room.controller, {
+          Game.creeps[i].moveTo(Game.spawns.Spawn2.room.controller, {
             visualizePathStyle: {
               fill: "transparent",
               stroke: "#fff",
@@ -1112,14 +1114,14 @@ module.exports.loop = function () {
       } else if (Game.creeps[i].memory.isLoaded == true) {
         //find construction sites
 
-        if (constructionSites.length > 0) {
+        if (constructionSites2.length > 0) {
           if (
             Game.creeps[i].build(
-              constructionSites[constructionSites.length - 1]
+              constructionSites2[constructionSites2.length - 1]
             ) === ERR_NOT_IN_RANGE
           ) {
             Game.creeps[i].moveTo(
-              constructionSites[constructionSites.length - 1],
+              constructionSites2[constructionSites2.length - 1],
               {
                 visualizePathStyle: {
                   fill: "transparent",
@@ -1167,14 +1169,14 @@ module.exports.loop = function () {
       } else if (Game.creeps[i].memory.isLoaded == true) {
         //find construction sites
 
-        if (constructionSites.length > 0) {
+        if (constructionSites2.length > 0) {
           if (
             Game.creeps[i].build(
-              constructionSites[constructionSites.length - 1]
+              constructionSites2[constructionSites2.length - 1]
             ) === ERR_NOT_IN_RANGE
           ) {
             Game.creeps[i].moveTo(
-              constructionSites[constructionSites.length - 1],
+              constructionSites2[constructionSites2.length - 1],
               {
                 visualizePathStyle: {
                   fill: "transparent",
