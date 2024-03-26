@@ -138,7 +138,7 @@ module.exports.loop = function () {
     numberOfInvaders = 1;
     numberOfTowerFillers = 1;
     numberOfDefenders = 2;
-    numberOfScavangers = 1;
+    numberOfScavangers = 2;
   } else if (controller.level == 4) {
     PHASE = 4;
     numberOfHarvesters = 6;
