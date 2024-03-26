@@ -12,14 +12,21 @@ var myFriendName = "pallSmenis";
 var number = 1;
 
 var numberOfHarvesters;
+var numberOfHarvestersRoomTwo;
 var numberOfUpgraders;
+var numberOfUpgradersRoomTwo;
 var numberOfHealers;
 var numberOfBuilders;
+var numberOfBuildersRoomTwo;
 var numberOfRepairers;
+var numberOfRepairersRoomTwo;
 var numberOfInvaders;
 var numberOfTowerFillers;
+var numberOfTowerFillersRoomTwo;
 var numberOfDefenders;
+var numberOfDefendersRoomTwo;
 var numberOfScavangers;
+var numberOfScavangersRoomTwo;
 
 var energyContainers;
 var energySources;
@@ -36,14 +43,21 @@ var hostiles;
 var towers;
 
 var harvesters = [];
+var harvestersRoomTwo = [];
 var upgraders = [];
+var upgradersRoomTwo = [];
 var healers = [];
 var builders = [];
+var buildersRoomTwo = [];
 var repairers = [];
+var repairersRoomTwo = [];
 var invaders = [];
 var towerFillers = [];
+var towerFillersRoomTwo = [];
 var defenders = [];
+var defendersRoomTwo = [];
 var scavangers = [];
+var scavangersRoomTwo = [];
 
 var rooomToInvade = Game.flags.Flag1
 
@@ -109,14 +123,22 @@ module.exports.loop = function () {
     PHASE = 1;
 
     numberOfHarvesters = 2;
+    numberOfHarvestersRoomTwo = 0;
     numberOfUpgraders = 2;
+    numberOfUpgradersRoomTwo = 0;
     numberOfHealers = 0;
     numberOfBuilders = 0;
+    numberOfBuildersRoomTwo = 0;
     numberOfRepairers = 0;
+    numberOfRepairersRoomTwo = 0;
     numberOfInvaders = 0;
     numberOfTowerFillers = 0;
+    numberOfTowerFillersRoomTwo = 0;
     numberOfDefenders = 0;
+    numberOfDefendersRoomTwo = 0;
     numberOfScavangers = 0;
+    numberOfScavangersRoomTwo = 0;
+
   } else if (controller.level == 2) {
     PHASE = 2;
     numberOfHarvesters = 4;
@@ -128,6 +150,16 @@ module.exports.loop = function () {
     numberOfTowerFillers = 0;
     numberOfDefenders = 2;
     numberOfScavangers = 1;
+
+    numberOfHarvestersRoomTwo = 0;
+    numberOfUpgradersRoomTwo = 0;
+    numberOfBuildersRoomTwo = 0;
+    numberOfRepairersRoomTwo = 0;
+    numberOfTowerFillersRoomTwo = 0;
+    numberOfDefendersRoomTwo = 0;
+    numberOfScavangersRoomTwo = 0;
+
+
   } else if (controller.level == 3) {
     PHASE = 3;
     numberOfHarvesters = 7;
@@ -139,6 +171,16 @@ module.exports.loop = function () {
     numberOfTowerFillers = 1;
     numberOfDefenders = 2;
     numberOfScavangers = 2;
+
+    numberOfHarvestersRoomTwo = 2;
+    numberOfUpgradersRoomTwo = 4;
+    numberOfBuildersRoomTwo = 2;
+    numberOfRepairersRoomTwo = 0;
+    numberOfTowerFillersRoomTwo = 0;
+    numberOfDefendersRoomTwo = 0;
+    numberOfScavangersRoomTwo = 0;
+
+
   } else if (controller.level == 4) {
     PHASE = 4;
     numberOfHarvesters = 6;
@@ -150,6 +192,16 @@ module.exports.loop = function () {
     numberOfTowerFillers = 2;
     numberOfDefenders = 0;
     numberOfScavangers = 0;
+
+    numberOfHarvestersRoomTwo = 0;
+    numberOfUpgradersRoomTwo = 0;
+    numberOfBuildersRoomTwo = 0;
+    numberOfRepairersRoomTwo = 0;
+    numberOfTowerFillersRoomTwo = 0;
+    numberOfDefendersRoomTwo = 0;
+    numberOfScavangersRoomTwo = 0;
+
+
   } else if (controller.level == 5) {
     PHASE = 5;
     numberOfHarvesters = 7;
@@ -161,6 +213,16 @@ module.exports.loop = function () {
     numberOfTowerFillers = 2;
     numberOfDefenders = 4;
     numberOfScavangers = 2;
+
+    numberOfHarvestersRoomTwo = 0;
+    numberOfUpgradersRoomTwo = 0;
+    numberOfBuildersRoomTwo = 0;
+    numberOfRepairersRoomTwo = 0;
+    numberOfTowerFillersRoomTwo = 0;
+    numberOfDefendersRoomTwo = 0;
+    numberOfScavangersRoomTwo = 0;
+
+
   } else if (controller.level == 6) {
     PHASE = 6;
     numberOfHarvesters = 7;
@@ -172,6 +234,16 @@ module.exports.loop = function () {
     numberOfTowerFillers = 2;
     numberOfDefenders = 0;
     numberOfScavangers = 0;
+
+    numberOfHarvestersRoomTwo = 0;
+    numberOfUpgradersRoomTwo = 0;
+    numberOfBuildersRoomTwo = 0;
+    numberOfRepairersRoomTwo = 0;
+    numberOfTowerFillersRoomTwo = 0;
+    numberOfDefendersRoomTwo = 0;
+    numberOfScavangersRoomTwo = 0;
+
+
   } else if (controller.level == 7) {
     PHASE = 7;
     numberOfHarvesters = 7;
@@ -183,6 +255,16 @@ module.exports.loop = function () {
     numberOfTowerFillers = 2;
     numberOfDefenders = 0;
     numberOfScavangers = 0;
+
+    numberOfHarvestersRoomTwo = 0;
+    numberOfUpgradersRoomTwo = 0;
+    numberOfBuildersRoomTwo = 0;
+    numberOfRepairersRoomTwo = 0;
+    numberOfTowerFillersRoomTwo = 0;
+    numberOfDefendersRoomTwo = 0;
+    numberOfScavangersRoomTwo = 0;
+
+
   } else if (controller.level == 8) {
     PHASE = 8;
     numberOfHarvesters = 7;
@@ -194,6 +276,16 @@ module.exports.loop = function () {
     numberOfTowerFillers = 2;
     numberOfDefenders = 0;
     numberOfScavangers = 0;
+
+    numberOfHarvestersRoomTwo = 0;
+    numberOfUpgradersRoomTwo = 0;
+    numberOfBuildersRoomTwo = 0;
+    numberOfRepairersRoomTwo = 0;
+    numberOfTowerFillersRoomTwo = 0;
+    numberOfDefendersRoomTwo = 0;
+    numberOfScavangersRoomTwo = 0;
+
+
   }
   console.log("phase: " + PHASE + " controller level: " + controller.level);
   console.log(
@@ -216,14 +308,23 @@ module.exports.loop = function () {
   );
 
   harvesters = [];
+  harvestersRoomTwo = [];
   upgraders = [];
+  upgradersRoomTwo = [];
   builders = [];
+  buildersRoomTwo = [];
   repairers = [];
+  repairersRoomTwo = [];
   healers = [];
+
   invaders = [];
+  towerFillersRoomTwo = [];
   towerFillers = [];
+  defendersRoomTwo = [];
   defenders = [];
+  scavangersRoomTwo = [];
   scavangers = [];
+  
 
   hurtCreeps = [];
   // sort current creeps by role and put them into arrays
@@ -241,17 +342,17 @@ module.exports.loop = function () {
     if (Game.creeps[i].memory.role == "harvester") {
       harvesters.push(Game.creeps[i]);
     } else if (Game.creeps[i].memory.role == "harvester2") {
-      harvesters.push(Game.creeps[i]);
+      harvestersRoomTwo.push(Game.creeps[i]);
     }else if (Game.creeps[i].memory.role == "upgrader") {
       upgraders.push(Game.creeps[i]);
     } else if (Game.creeps[i].memory.role == "upgrader2") {
-      upgraders.push(Game.creeps[i]);
+      upgradersRoomTwo.push(Game.creeps[i]);
     }else if (Game.creeps[i].memory.role == "healer") {
       healers.push(Game.creeps[i]);
     } else if (Game.creeps[i].memory.role == "builder") {
       builders.push(Game.creeps[i]);
     } else if (Game.creeps[i].memory.role == "builder2") {
-      builders.push(Game.creeps[i]);
+      buildersRoomTwo.push(Game.creeps[i]);
     }else if (Game.creeps[i].memory.role == "repairer") {
       repairers.push(Game.creeps[i]);
     } else if (Game.creeps[i].memory.role == "towerFiller") {
@@ -286,6 +387,25 @@ module.exports.loop = function () {
     " Invaders: " +
     invaders.length
   );
+  console.log(
+    "HarvestersRoomTwo: " +
+    harvestersRoomTwo.length +
+    " UpgradersRoomTwo: " +
+    upgradersRoomTwo.length +
+    " DefendersRoomTwo: " +
+    defendersRoomTwo.length +
+    " towerFillersRoomTwo: " +
+    towerFillersRoomTwo.length +
+    
+    " BuildersRoomTwo: " +
+    buildersRoomTwo.length +
+    " ScavangersRoomTwo: " +
+    scavangersRoomTwo.length +
+    " RepairersRoomTwo: " +
+    repairersRoomTwo.length 
+   
+  );
+  
   // if no harvesters in room spawn one
   if (harvesters.length < numberOfHarvesters && PHASE == 0) {
     harvesters.push(
@@ -368,7 +488,7 @@ module.exports.loop = function () {
       )
     );
     number++;
-  } if (harvesters.length < numberOfHarvesters) {
+  } if (harvestersRoomTwo.length < numberOfHarvestersRoomTwo) {
     harvesters.push(
       Game.spawns["Spawn2"].spawnCreep(
         [WORK, CARRY, MOVE],
@@ -380,7 +500,7 @@ module.exports.loop = function () {
   }
 
   // if no upgraders in room spawn one
-  if (upgraders.length < numberOfUpgraders) {
+  if (upgradersRoomTwo.length < numberOfUpgradersRoomTwo) {
     upgraders.push(
       Game.spawns["Spawn2"].spawnCreep(
         [WORK, CARRY, MOVE],
@@ -462,7 +582,7 @@ module.exports.loop = function () {
     );
     number++;
   }
-  if (builders.length < numberOfBuilders && constructionSites2.length > 0 ) {
+  if (buildersRoomTwo.length < numberOfBuildersRoomTwo && constructionSites2.length > 0 ) {
     builders.push(
       Game.spawns["Spawn2"].spawnCreep(
         [WORK, CARRY, MOVE, MOVE],
