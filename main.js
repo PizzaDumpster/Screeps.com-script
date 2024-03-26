@@ -66,6 +66,7 @@ module.exports.loop = function () {
   energySources.sort();
 
   var deadSources = Game.rooms[myRoomName].find(FIND_DROPPED_RESOURCES);
+  var deadSourcesRoomTwo = Game.rooms[myRoomTwoName].find(FIND_RUINS);
   deadSources.sort();
   console.log("Things to scavenge: " + deadSources.length);
   console.log(deadSources);
@@ -260,6 +261,8 @@ module.exports.loop = function () {
     } else if (Game.creeps[i].memory.role == "defender") {
       defenders.push(Game.creeps[i]);
     } else if (Game.creeps[i].memory.role == "scavanger") {
+      scavangers.push(Game.creeps[i]);
+    }else if (Game.creeps[i].memory.role == "scavanger2") {
       scavangers.push(Game.creeps[i]);
     }
   }
@@ -654,6 +657,18 @@ module.exports.loop = function () {
       )
     );
     number++;
+  }if (
+    scavangers.length < numberOfScavangers &&
+    deadSourcesRoomTwo.length > 0 
+  ) {
+    scavangers.push(
+      Game.spawns["Spawn2"].spawnCreep(
+        [WORK, WORK, CARRY, CARRY, MOVE, MOVE],
+        "Scavanger" + number.toString(),
+        { memory: { role: "scavanger2", isLoaded: false, maxCapacity: 50 } }
+      )
+    );
+    number++;
   }
   //clear non-existing creep memory
   for (var name in Memory.creeps) {
@@ -857,8 +872,8 @@ module.exports.loop = function () {
         Game.creeps[i].harvest(energySourcesRoomTwo[0]);
       } else if (
         Game.creeps[i].memory.isLoaded == true &&
-        Game.spawns["Spawn2"].store.getUsedCapacity(RESOURCE_ENERGY) < 300 
-        //depositTargets.length >= 0
+        Game.spawns["Spawn2"].store.getUsedCapacity(RESOURCE_ENERGY) < 300 &&
+        depositTargets.length >= 0
       ) {
         Game.creeps[i].moveTo(Game.spawns["Spawn2"], {
           visualizePathStyle: {
@@ -882,6 +897,7 @@ module.exports.loop = function () {
       } else if (
         Game.creeps[i].memory.isLoaded === true &&
         Game.spawns["Spawn2"].store.getUsedCapacity(RESOURCE_ENERGY) === 300 
+        && depositTargets.length === 0
       ) {
 
         if (Game.spawns.Spawn2) {
@@ -1399,6 +1415,69 @@ module.exports.loop = function () {
           ) == ERR_NOT_IN_RANGE
         ) {
           Game.creeps[i].moveTo(Game.spawns.Spawn1.room.controller, {
+            visualizePathStyle: {
+              fill: "transparent",
+              stroke: "#fff",
+              lineStyle: "dashed",
+              strokeWidth: 0.15,
+              opacity: 0.1,
+            },
+          });
+        }
+      }
+    }else if (Game.creeps[i].memory.role == "scavanger2") {
+      if (
+        Game.creeps[i].store.getUsedCapacity() ===
+        Game.creeps[i].store.getCapacity()
+      ) {
+        Game.creeps[i].memory.isLoaded = true;
+      } else if (Game.creeps[i].store.getUsedCapacity() === 0) {
+        Game.creeps[i].memory.isLoaded = false;
+      }
+      if (Game.creeps[i].memory.isLoaded === false) {
+        for (var z in deadSourcesRoomTwo) {
+          if (Game.creeps[i].pickup(deadSourcesRoomTwo[0]) == ERR_NOT_IN_RANGE) {
+            Game.creeps[i].moveTo(deadSourcesRoomTwo[0], {
+              visualizePathStyle: { stroke: "#ffaa00" },
+            });
+          } else if (
+            Game.creeps[i].pickup(
+              deadSourcesRoomTwo[deadSourcesRoomTwo.length],
+              RESOURCE_ENERGY
+            ) == ERR_NOT_IN_RANGE
+          ) {
+            Game.creeps[i].moveTo(deadSourcesRoomTwo[deadSourcesRoomTwo.length], {
+              visualizePathStyle: { stroke: "#ffaa00" },
+            });
+          }
+        }
+      } else if (Game.creeps[i].memory.isLoaded == true &&
+        depositTargets.length > 0) {
+        console.log("Deposit targets: " + depositTargets);
+        depositTargets.reverse();
+        if (depositTargets.length > 0) {
+          for (b in depositTargets) {
+            if (
+              Game.creeps[i].transfer(depositTargets[b], RESOURCE_ENERGY) ==
+              ERR_NOT_IN_RANGE
+            ) {
+              Game.creeps[i].moveTo(depositTargets[b], {
+                visualizePathStyle: { stroke: "#ffffff" },
+              });
+            }
+          }
+        }
+      } else if (
+        Game.creeps[i].memory.isLoaded == true &&
+        Game.spawns["Spawn2"].store.getUsedCapacity(RESOURCE_ENERGY) === 300 &&
+        depositTargets.length === 0
+      ) {
+        if (
+          Game.creeps[i].upgradeController(
+            Game.spawns.Spawn2.room.controller
+          ) == ERR_NOT_IN_RANGE
+        ) {
+          Game.creeps[i].moveTo(Game.spawns.Spawn2.room.controller, {
             visualizePathStyle: {
               fill: "transparent",
               stroke: "#fff",
