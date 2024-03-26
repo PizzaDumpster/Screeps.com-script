@@ -388,7 +388,7 @@ module.exports.loop = function () {
   } else if (upgraders.length < numberOfUpgraders && PHASE == 3) {
     upgraders.push(
       Game.spawns["Spawn1"].spawnCreep(
-        [WORK, WORK, CARRY, MOVE, MOVE, MOVE],
+        [WORK, WORK, CARRY, MOVE, MOVE, MOVE, MOVE],
         "Upgrader" + number.toString(),
         { memory: { role: "upgrader", isLoaded: false } }
       )
@@ -397,7 +397,7 @@ module.exports.loop = function () {
   } else if (upgraders.length < numberOfUpgraders && PHASE == 4) {
     upgraders.push(
       Game.spawns["Spawn1"].spawnCreep(
-        [WORK, CARRY, CARRY, MOVE, MOVE],
+        [WORK, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE],
         "Upgrader" + number.toString(),
         { memory: { role: "upgrader", isLoaded: false } }
       )
