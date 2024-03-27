@@ -1249,8 +1249,8 @@ module.exports.loop = function () {
         Game.creeps[i].memory.isLoaded = false;
       }
       if (!Game.creeps[i].memory.isLoaded) {
-        if (Game.creeps[i].harvest(energySourcesRoomTwo[0]) === ERR_NOT_IN_RANGE) {
-          Game.creeps[i].moveTo(energySourcesRoomTwo[0], {
+        if (Game.creeps[i].harvest(energySources[0]) === ERR_NOT_IN_RANGE) {
+          Game.creeps[i].moveTo(energySources[0], {
             visualizePathStyle: {
               fill: "transparent",
               stroke: "#fff",
@@ -1266,11 +1266,11 @@ module.exports.loop = function () {
         if (constructionSites2.length > 0) {
           if (
             Game.creeps[i].build(
-              constructionSites2[constructionSites2.length - 1]
+              constructionSites[constructionSites.length - 1]
             ) === ERR_NOT_IN_RANGE
           ) {
             Game.creeps[i].moveTo(
-              constructionSites2[constructionSites2.length - 1],
+              constructionSites[constructionSites.length - 1],
               {
                 visualizePathStyle: {
                   fill: "transparent",
