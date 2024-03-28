@@ -5,6 +5,7 @@ var PHASE = 0;
 var repairTargets;
 var repairTargetsRoomTwo;
 var fillerTargets;
+var fillerTargetsRoomTwo;
 var myRoomName = "W17S6";
 var myRoomTwoName = "W18S7";
 var mySpawnName = "Spawn1";
@@ -209,10 +210,10 @@ module.exports.loop = function () {
     numberOfHarvestersRoomTwo = 2;
     numberOfUpgradersRoomTwo = 4;
     numberOfBuildersRoomTwo = 2;
-    numberOfRepairersRoomTwo = 0;
+    numberOfRepairersRoomTwo = 1;
     numberOfTowerFillersRoomTwo = 1;
-    numberOfDefendersRoomTwo = 0;
-    numberOfScavangersRoomTwo = 0;
+    numberOfDefendersRoomTwo = 1;
+    numberOfScavangersRoomTwo = 1;
 
 
   } else if (controller.level == 5) {
@@ -353,7 +354,10 @@ module.exports.loop = function () {
 
     repairTargets.sort((a, b) => a.hits - b.hits);
 
-    fillerTargets = Game.creeps[i].room.find(FIND_STRUCTURES, {
+    fillerTargets = Game.rooms[myRoomName].find(FIND_STRUCTURES, {
+      filter: (object) => object.structureType == STRUCTURE_TOWER,
+    });
+    fillerTargetsRoomTwo = Game.rooms[myRoomTwoName].find(FIND_STRUCTURES, {
       filter: (object) => object.structureType == STRUCTURE_TOWER,
     });
 
@@ -375,7 +379,9 @@ module.exports.loop = function () {
       repairers.push(Game.creeps[i]);
     } else if (Game.creeps[i].memory.role == "towerFiller") {
       towerFillers.push(Game.creeps[i]);
-    } else if (Game.creeps[i].memory.role == "invader") {
+    } else if (Game.creeps[i].memory.role == "towerFiller2") {
+      towerFillersRoomTwo.push(Game.creeps[i]);
+    }else if (Game.creeps[i].memory.role == "invader") {
       invaders.push(Game.creeps[i]);
     } else if (Game.creeps[i].memory.role == "defender") {
       defenders.push(Game.creeps[i]);
@@ -704,6 +710,19 @@ module.exports.loop = function () {
         [WORK, CARRY, CARRY, MOVE, MOVE, MOVE],
         "TowerFiller" + number.toString(),
         { memory: { role: "towerFiller", isLoaded: false } }
+      )
+    );
+    number++;
+  }
+  if (
+    towerFillersRoomTwo.length < numberOfTowerFillersRoomTwo &&
+    towersRoomTwo[0].store.getUsedCapacity(RESOURCE_ENERGY) < towersRoomTwo[0].store.getCapacity(RESOURCE_ENERGY)
+  ) {
+    towerFillersRoomTwo.push(
+      Game.spawns["Spawn2"].spawnCreep(
+        [WORK, CARRY, CARRY, MOVE, MOVE, MOVE],
+        "TowerFiller" + number.toString(),
+        { memory: { role: "towerFiller2", isLoaded: false } }
       )
     );
     number++;
@@ -1473,7 +1492,49 @@ module.exports.loop = function () {
           }
         }
       }
-    } else if (Game.creeps[i].memory.role == "invader") {
+    }else if (Game.creeps[i].memory.role == "towerFiller2") {
+      if (
+        Game.creeps[i].store.getUsedCapacity() ===
+        Game.creeps[i].store.getCapacity()
+      ) {
+        Game.creeps[i].memory.isLoaded = true;
+      } else if (Game.creeps[i].store.getUsedCapacity() === 0) {
+        Game.creeps[i].memory.isLoaded = false;
+      }
+      if (!Game.creeps[i].memory.isLoaded) {
+        if (Game.creeps[i].harvest(energySourcesRoomTwo[1]) === ERR_NOT_IN_RANGE) {
+          Game.creeps[i].moveTo(energySourcesRoomTwo[1], {
+            visualizePathStyle: {
+              fill: "transparent",
+              stroke: "#fff",
+              lineStyle: "dashed",
+              strokeWidth: 0.15,
+              opacity: 0.1,
+            },
+          });
+        }
+
+      } else if (Game.creeps[i].memory.isLoaded == true) {
+        //find repair sites
+        fillerTargetsRoomTwo.sort();
+        //fillerTargets.reverse();
+        for (var k in fillerTargets) {
+          if (fillerTargetsRoomTwo[k].store.getFreeCapacity(RESOURCE_ENERGY) > 0) {
+            Game.creeps[i].moveTo(fillerTargetsRoomTwo[k]);
+            if (
+              Game.creeps[i].transfer(
+                fillerTargetsRoomTwo[k],
+                RESOURCE_ENERGY,
+                Game.creeps[i].store.getUsedCapacity(RESOURCE_ENERGY)
+              ) == ERR_NOT_IN_RANGE
+            ) {
+              Game.creeps[i].moveTo(fillerTargetsRoomTwo[k]);
+            }
+          }
+        }
+      }
+    } 
+    else if (Game.creeps[i].memory.role == "invader") {
       if (Game.creeps[i].claimController(rooomToInvade.controller) == ERR_NOT_IN_RANGE) {
 
         Game.creeps[i].moveTo(rooomToInvade.controller, {
