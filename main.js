@@ -3,6 +3,7 @@ const { filter } = require("lodash");
 // BODYPART_COST: { "move": 50, "work": 100, "attack": 80, "carry": 50, "heal": 250, "ranged_attack": 150, "tough": 10, "claim": 600 }
 var PHASE = 0;
 var repairTargets;
+var repairTargetsRoomTwo;
 var fillerTargets;
 var myRoomName = "W17S6";
 var myRoomTwoName = "W18S7";
@@ -40,7 +41,9 @@ var maxContainerEnergy;
 var containerEnergyBuffer = 10000;
 
 var hostiles;
+var hostilesRoomTwo;
 var towers;
+var towersRoomTwo;
 
 var harvesters = [];
 var harvestersRoomTwo = [];
@@ -92,9 +95,19 @@ module.exports.loop = function () {
       hostiles.splice(hostile, 1);
     }
   }
+  hostilesRoomTwo = Game.rooms[myRoomTwoName].find(FIND_HOSTILE_CREEPS);
+  for (let hostie2 in hostilesRoomTwo) {
+    //filter hostiles by owner
+    if (hostilesRoomTwo[hostie2].owner.username == myFriendName) {
+      hostiles.splice(hostile2, 1);
+    }
+  }
   towers = Game.rooms[myRoomName].find(FIND_MY_STRUCTURES, {
     filter: { structureType: STRUCTURE_TOWER },
   });
+  towersRoomTwo = Game.rooms[myRoomTwoName].find(FIND_MY_STRUCTURES, {
+    filter: { structureType: STRUCTURE_TOWER },
+  })
   towers.sort();
   towers.reverse();
 
@@ -329,7 +342,12 @@ module.exports.loop = function () {
   hurtCreeps = [];
   // sort current creeps by role and put them into arrays
   for (const i in Game.creeps) {
-    repairTargets = Game.creeps[i].room.find(FIND_STRUCTURES, {
+    repairTargets = Game.rooms[myRoomName].find(FIND_STRUCTURES, {
+      filter: (object) => object.hits < object.hitsMax,
+    });
+
+    repairTargets.sort((a, b) => a.hits - b.hits);
+    repairTargetsRoomTwo = Game.rooms[myRoomTwoName].find(FIND_STRUCTURES, {
       filter: (object) => object.hits < object.hitsMax,
     });
 
@@ -1625,6 +1643,9 @@ module.exports.loop = function () {
     if (repairTargets.length > 0) {
       towers.forEach((tower) => tower.repair(repairTargets[0]));
     }
+    if (repairTargetsRoomTwo.length > 0) {
+      towersRoomTwo.forEach((tower) => tower.repair(repairTargetsRoomTwo[0]));
+    }
     //if there are hostiles - attack them
     if (hostiles.length > 0) {
       var username = hostiles[0].owner.username;
@@ -1633,6 +1654,17 @@ module.exports.loop = function () {
         " ALERT!!!! WE ARE UNDER ATTACK!!!!! ALERT!!!! WE ARE UNDER ATTACK!!!!! ALERT!!!! WE ARE UNDER ATTACK!!!!! ALERT!!!! WE ARE UNDER ATTACK!!!!! "
       );
       towers.forEach((tower) => tower.attack(hostiles[0]));
+      console.log(
+        "ALERT!!!! WE ARE UNDER ATTACK!!!!! ALERT!!!! WE ARE UNDER ATTACK!!!!! ALERT!!!! WE ARE UNDER ATTACK!!!!! ALERT!!!! WE ARE UNDER ATTACK!!!!! "
+      );
+    }
+    if (hostilesRoomTwo.length > 0) {
+      var username = hostilesRoomTwo[0].owner.username;
+      Game.notify(
+        `User ${username} spotted in room ${myRoomName}` +
+        " ALERT!!!! WE ARE UNDER ATTACK!!!!! ALERT!!!! WE ARE UNDER ATTACK!!!!! ALERT!!!! WE ARE UNDER ATTACK!!!!! ALERT!!!! WE ARE UNDER ATTACK!!!!! "
+      );
+      towersRoomTwo.forEach((tower) => tower.attack(hostilesRoomTwo[0]));
       console.log(
         "ALERT!!!! WE ARE UNDER ATTACK!!!!! ALERT!!!! WE ARE UNDER ATTACK!!!!! ALERT!!!! WE ARE UNDER ATTACK!!!!! ALERT!!!! WE ARE UNDER ATTACK!!!!! "
       );
