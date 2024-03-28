@@ -1300,7 +1300,7 @@ module.exports.loop = function () {
       } else if (Game.creeps[i].memory.isLoaded == true) {
         //find construction sites
 
-        if (constructionSites2.length > 0) {
+        if (constructionSites.length > 0) {
           if (
             Game.creeps[i].build(
               constructionSites[constructionSites.length - 1]
