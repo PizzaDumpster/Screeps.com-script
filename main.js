@@ -29,6 +29,8 @@ var numberOfDefenders;
 var numberOfDefendersRoomTwo;
 var numberOfScavangers;
 var numberOfScavangersRoomTwo;
+var numberOfAttackers;
+var numberOfAttackersRoomTwo;
 
 var energyContainers;
 var energySources;
@@ -62,6 +64,8 @@ var defenders = [];
 var defendersRoomTwo = [];
 var scavangers = [];
 var scavangersRoomTwo = [];
+var attackers = [];
+var attackersRoomTwo = [];
 
 var rooomToInvade = Game.flags.Flag1
 
@@ -103,6 +107,7 @@ module.exports.loop = function () {
       hostiles.splice(hostile2, 1);
     }
   }
+  
   towers = Game.rooms[myRoomName].find(FIND_MY_STRUCTURES, {
     filter: { structureType: STRUCTURE_TOWER },
   });
@@ -185,6 +190,7 @@ module.exports.loop = function () {
     numberOfTowerFillers = 1;
     numberOfDefenders = 2;
     numberOfScavangers = 2;
+    numberOfAttackers = 1;
 
     numberOfHarvestersRoomTwo = 2;
     numberOfUpgradersRoomTwo = 4;
@@ -193,6 +199,7 @@ module.exports.loop = function () {
     numberOfTowerFillersRoomTwo = 0;
     numberOfDefendersRoomTwo = 0;
     numberOfScavangersRoomTwo = 0;
+    numberOfAttackersRoomTwo = 0;
 
 
   } else if (controller.level == 4) {
@@ -206,6 +213,7 @@ module.exports.loop = function () {
     numberOfTowerFillers = 2;
     numberOfDefenders = 0;
     numberOfScavangers = 0;
+    numberOfAttackers = 1;
 
     numberOfHarvestersRoomTwo = 2;
     numberOfUpgradersRoomTwo = 4;
@@ -214,6 +222,7 @@ module.exports.loop = function () {
     numberOfTowerFillersRoomTwo = 1;
     numberOfDefendersRoomTwo = 1;
     numberOfScavangersRoomTwo = 1;
+    numberOfAttackersRoomTwo = 1;
 
 
   } else if (controller.level == 5) {
@@ -338,6 +347,8 @@ module.exports.loop = function () {
   defenders = [];
   scavangersRoomTwo = [];
   scavangers = [];
+  attackersRoomTwo = [];
+  attackers = [];
 
 
   hurtCreeps = [];
@@ -381,7 +392,7 @@ module.exports.loop = function () {
       towerFillers.push(Game.creeps[i]);
     } else if (Game.creeps[i].memory.role == "towerFiller2") {
       towerFillersRoomTwo.push(Game.creeps[i]);
-    }else if (Game.creeps[i].memory.role == "invader") {
+    } else if (Game.creeps[i].memory.role == "invader") {
       invaders.push(Game.creeps[i]);
     } else if (Game.creeps[i].memory.role == "defender") {
       defenders.push(Game.creeps[i]);
@@ -389,6 +400,10 @@ module.exports.loop = function () {
       scavangers.push(Game.creeps[i]);
     } else if (Game.creeps[i].memory.role == "scavanger2") {
       scavangers.push(Game.creeps[i]);
+    } else if (Game.creeps[i].memory.role == "attacker") {
+      attackers.push(Game.creeps[i]);
+    } else if (Game.creeps[i].memory.role == "attacker2") {
+      attackersRoomTwo.push(Game.creeps[i]);
     }
   }
   console.log(
@@ -409,7 +424,9 @@ module.exports.loop = function () {
     " Repairers: " +
     repairers.length +
     " Invaders: " +
-    invaders.length
+    invaders.length +
+    " Attackers: " +
+    attackers.length
   );
   console.log(
     "HarvestersRoomTwo: " +
@@ -426,7 +443,9 @@ module.exports.loop = function () {
     " ScavangersRoomTwo: " +
     scavangersRoomTwo.length +
     " RepairersRoomTwo: " +
-    repairersRoomTwo.length
+    repairersRoomTwo.length +
+    " AttackersRoomTwo: " +
+    attackersRoomTwo.length
 
   );
 
@@ -823,6 +842,26 @@ module.exports.loop = function () {
         [WORK, WORK, CARRY, CARRY, MOVE, MOVE],
         "Scavanger" + number.toString(),
         { memory: { role: "scavanger2", isLoaded: false, maxCapacity: 50 } }
+      )
+    );
+    number++;
+  }
+  if (attackers.length < numberOfAttackers) {
+    attackers.push(
+      Game.spawns["Spawn1"].spawnCreep(
+        [MOVE, MOVE, TOUGH, TOUGH, TOUGH, TOUGH, ATTACK, ATTACK],
+        "Attacker" + number.toString(),
+        { memory: { role: "attacker", isAttacking: false } }
+      )
+    );
+    number++;
+  }
+  if (attackersRoomTwo.length < numberOfAttackersRoomTwo) {
+    attackersRoomTwo.push(
+      Game.spawns["Spawn2"].spawnCreep(
+        [MOVE, MOVE, TOUGH, TOUGH, TOUGH, TOUGH, ATTACK, ATTACK],
+        "Attacker" + number.toString(),
+        { memory: { role: "attacker2", isAttacking: false } }
       )
     );
     number++;
@@ -1492,7 +1531,7 @@ module.exports.loop = function () {
           }
         }
       }
-    }else if (Game.creeps[i].memory.role == "towerFiller2") {
+    } else if (Game.creeps[i].memory.role == "towerFiller2") {
       if (
         Game.creeps[i].store.getUsedCapacity() ===
         Game.creeps[i].store.getCapacity()
@@ -1533,7 +1572,7 @@ module.exports.loop = function () {
           }
         }
       }
-    } 
+    }
     else if (Game.creeps[i].memory.role == "invader") {
       if (Game.creeps[i].claimController(rooomToInvade.controller) == ERR_NOT_IN_RANGE) {
 
@@ -1701,6 +1740,36 @@ module.exports.loop = function () {
         }
       }
     }
+    if (Game.creeps[i].memory.role == "attacker") {
+      if (hostiles.length > 0) {
+        Game.creeps[i].moveTo(Game.flags.AttackFlag, {
+          visualizePathStyle: { stroke: "#ff0000" }
+        });
+      } else {
+        if (Game.creeps[i].attack(hostiles[0]) == ERR_NOT_IN_RANGE) {
+          Game.creeps[i].moveTo(hostiles[0], {
+            visualizePathStyle: { stroke: "#ff0000" }
+          });
+        }
+      }
+
+    }
+    if (Game.creeps[i].memory.role == "attacker2") {
+      if (hostilesRoomTwo.length > 0) {
+        Game.creeps[i].moveTo(Game.flags.AttackFlag, {
+          visualizePathStyle: { stroke: "#ff0000" }
+        });
+      } else {
+        if (Game.creeps[i].attack(hostilesRoomTwo[0]) == ERR_NOT_IN_RANGE) {
+          Game.creeps[i].moveTo(hostilesRoomTwo[0], {
+            visualizePathStyle: { stroke: "#ff0000" }
+          });
+        }
+      }
+    }
+
+
+
     if (repairTargets.length > 0) {
       towers.forEach((tower) => tower.repair(repairTargets[0]));
     }
@@ -1760,3 +1829,4 @@ module.exports.loop = function () {
   console.log("depositTargets: " + depositTargets);
   console.log("-----------------------End Report-----------------------");
 };
+
