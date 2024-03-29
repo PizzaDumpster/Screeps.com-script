@@ -213,7 +213,7 @@ module.exports.loop = function () {
     numberOfTowerFillers = 2;
     numberOfDefenders = 0;
     numberOfScavangers = 0;
-    numberOfAttackers = 1;
+    numberOfAttackers = 4;
 
     numberOfHarvestersRoomTwo = 2;
     numberOfUpgradersRoomTwo = 4;
@@ -222,7 +222,7 @@ module.exports.loop = function () {
     numberOfTowerFillersRoomTwo = 1;
     numberOfDefendersRoomTwo = 1;
     numberOfScavangersRoomTwo = 1;
-    numberOfAttackersRoomTwo = 1;
+    numberOfAttackersRoomTwo = 3;
 
 
   } else if (controller.level == 5) {
@@ -1740,30 +1740,38 @@ module.exports.loop = function () {
         }
       }
     }
+    var enemies = Game.creeps[i].room.find(FIND_HOSTILE_CREEPS);
+    var closestEnemy = Game.creeps[i].pos.findClosestByPath(enemies);
+
     if (Game.creeps[i].memory.role == "attacker") {
-      if (hostiles.length > 0) {
+      if (enemies.length == 0) {
         Game.creeps[i].moveTo(Game.flags.AttackFlag, {
           visualizePathStyle: { stroke: "#ff0000" }
         });
       } else {
-        if (Game.creeps[i].attack(hostiles[0]) == ERR_NOT_IN_RANGE) {
-          Game.creeps[i].moveTo(hostiles[0], {
+        if (Game.creeps[i].attack(enemies[0]) == ERR_NOT_IN_RANGE) {
+          Game.creeps[i].moveTo(enemies[0], {
             visualizePathStyle: { stroke: "#ff0000" }
           });
-        }
+          Game.creeps[i].attack(enemies[0]);
+        }else{
+          Game.creeps[i].attack(enemies[0]);}
       }
 
     }
     if (Game.creeps[i].memory.role == "attacker2") {
-      if (hostilesRoomTwo.length > 0) {
+      if (enemies.length == 0) {
         Game.creeps[i].moveTo(Game.flags.AttackFlag, {
           visualizePathStyle: { stroke: "#ff0000" }
         });
       } else {
-        if (Game.creeps[i].attack(hostilesRoomTwo[0]) == ERR_NOT_IN_RANGE) {
-          Game.creeps[i].moveTo(hostilesRoomTwo[0], {
+        if (Game.creeps[i].attack(enemies[1]) == ERR_NOT_IN_RANGE) {
+          Game.creeps[i].moveTo(enemies[1], {
             visualizePathStyle: { stroke: "#ff0000" }
           });
+          Game.creeps[i].attack(enemies[1]);
+        }else{
+          Game.creeps[i].attack(enemies[1]);
         }
       }
     }
