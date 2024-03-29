@@ -211,18 +211,18 @@ module.exports.loop = function () {
     numberOfRepairers = 2;
     numberOfInvaders = 1;
     numberOfTowerFillers = 2;
-    numberOfDefenders = 0;
+    numberOfDefenders = 2;
     numberOfScavangers = 0;
-    numberOfAttackers = 4;
+    numberOfAttackers = 0;
 
     numberOfHarvestersRoomTwo = 2;
     numberOfUpgradersRoomTwo = 4;
     numberOfBuildersRoomTwo = 2;
     numberOfRepairersRoomTwo = 1;
     numberOfTowerFillersRoomTwo = 1;
-    numberOfDefendersRoomTwo = 1;
+    numberOfDefendersRoomTwo = 2;
     numberOfScavangersRoomTwo = 1;
-    numberOfAttackersRoomTwo = 3;
+    numberOfAttackersRoomTwo = 0;
 
 
   } else if (controller.level == 5) {
