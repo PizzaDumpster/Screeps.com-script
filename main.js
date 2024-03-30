@@ -96,15 +96,15 @@ module.exports.loop = function () {
   hostiles = Game.rooms[myRoomName].find(FIND_HOSTILE_CREEPS);
   for (let hostie in hostiles) {
     //filter hostiles by owner
-    if (hostiles[hostie].owner.username == myFriendName) {
+    if (hostiles[hostie].owner.username === myFriendName) {
       hostiles.splice(hostile, 1);
     }
   }
   hostilesRoomTwo = Game.rooms[myRoomTwoName].find(FIND_HOSTILE_CREEPS);
   for (let hostie2 in hostilesRoomTwo) {
     //filter hostiles by owner
-    if (hostilesRoomTwo[hostie2].owner.username == myFriendName) {
-      hostiles.splice(hostile2, 1);
+    if (hostilesRoomTwo[hostie2].owner.username === myFriendName) {
+      hostilesRoomTwo.splice(hostile2, 1);
     }
   }
   
@@ -204,8 +204,8 @@ module.exports.loop = function () {
 
   } else if (controller.level == 4) {
     PHASE = 4;
-    numberOfHarvesters = 6;
-    numberOfUpgraders = 7;
+    numberOfHarvesters = 5;
+    numberOfUpgraders = 5;
     numberOfHealers = 0;
     numberOfBuilders = 2;
     numberOfRepairers = 2;
@@ -213,16 +213,16 @@ module.exports.loop = function () {
     numberOfTowerFillers = 2;
     numberOfDefenders = 2;
     numberOfScavangers = 0;
-    numberOfAttackers = 0;
+    numberOfAttackers = 4;
 
     numberOfHarvestersRoomTwo = 2;
     numberOfUpgradersRoomTwo = 4;
     numberOfBuildersRoomTwo = 2;
     numberOfRepairersRoomTwo = 1;
-    numberOfTowerFillersRoomTwo = 1;
+    numberOfTowerFillersRoomTwo = 2;
     numberOfDefendersRoomTwo = 2;
     numberOfScavangersRoomTwo = 1;
-    numberOfAttackersRoomTwo = 0;
+    numberOfAttackersRoomTwo = 4;
 
 
   } else if (controller.level == 5) {
@@ -489,7 +489,7 @@ module.exports.loop = function () {
   } else if (harvesters.length < numberOfHarvesters && PHASE == 4) {
     harvesters.push(
       Game.spawns["Spawn1"].spawnCreep(
-        [WORK, CARRY, CARRY, WORK, MOVE, MOVE, MOVE, MOVE],
+        [WORK, CARRY, MOVE],
         "Harvester" + number.toString(),
         { memory: { role: "harvester", isLoaded: false } }
       )
@@ -582,7 +582,7 @@ module.exports.loop = function () {
   } else if (upgraders.length < numberOfUpgraders && PHASE == 4) {
     upgraders.push(
       Game.spawns["Spawn1"].spawnCreep(
-        [WORK, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE],
+        [WORK, CARRY, MOVE],
         "Upgrader" + number.toString(),
         { memory: { role: "upgrader", isLoaded: false } }
       )
@@ -734,12 +734,11 @@ module.exports.loop = function () {
     number++;
   }
   if (
-    towerFillersRoomTwo.length < numberOfTowerFillersRoomTwo &&
-    towersRoomTwo[0].store.getUsedCapacity(RESOURCE_ENERGY) < towersRoomTwo[0].store.getCapacity(RESOURCE_ENERGY)
+    towerFillersRoomTwo.length < numberOfTowerFillersRoomTwo 
   ) {
     towerFillersRoomTwo.push(
       Game.spawns["Spawn2"].spawnCreep(
-        [WORK, CARRY, CARRY, MOVE, MOVE, MOVE],
+        [WORK, CARRY, MOVE, MOVE],
         "TowerFiller" + number.toString(),
         { memory: { role: "towerFiller2", isLoaded: false } }
       )
@@ -849,7 +848,7 @@ module.exports.loop = function () {
   if (attackers.length < numberOfAttackers) {
     attackers.push(
       Game.spawns["Spawn1"].spawnCreep(
-        [MOVE, MOVE, TOUGH, TOUGH, TOUGH, TOUGH, ATTACK, ATTACK],
+        [MOVE, MOVE,MOVE,MOVE, TOUGH, TOUGH, TOUGH, TOUGH, ATTACK, ATTACK],
         "Attacker" + number.toString(),
         { memory: { role: "attacker", isAttacking: false } }
       )
@@ -859,7 +858,7 @@ module.exports.loop = function () {
   if (attackersRoomTwo.length < numberOfAttackersRoomTwo) {
     attackersRoomTwo.push(
       Game.spawns["Spawn2"].spawnCreep(
-        [MOVE, MOVE, TOUGH, TOUGH, TOUGH, TOUGH, ATTACK, ATTACK],
+        [MOVE, MOVE,MOVE,MOVE, TOUGH, TOUGH, TOUGH, TOUGH, ATTACK, ATTACK],
         "Attacker" + number.toString(),
         { memory: { role: "attacker2", isAttacking: false } }
       )
