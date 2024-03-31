@@ -215,8 +215,8 @@ module.exports.loop = function () {
     numberOfScavangers = 0;
     numberOfAttackers = 4;
 
-    numberOfHarvestersRoomTwo = 2;
-    numberOfUpgradersRoomTwo = 4;
+    numberOfHarvestersRoomTwo = 3;
+    numberOfUpgradersRoomTwo = 5;
     numberOfBuildersRoomTwo = 2;
     numberOfRepairersRoomTwo = 1;
     numberOfTowerFillersRoomTwo = 2;
@@ -227,8 +227,8 @@ module.exports.loop = function () {
 
   } else if (controller.level == 5) {
     PHASE = 5;
-    numberOfHarvesters = 7;
-    numberOfUpgraders = 7;
+    numberOfHarvesters = 5;
+    numberOfUpgraders = 5;
     numberOfHealers = 0;
     numberOfBuilders = 4;
     numberOfRepairers = 2;
@@ -237,13 +237,13 @@ module.exports.loop = function () {
     numberOfDefenders = 4;
     numberOfScavangers = 2;
 
-    numberOfHarvestersRoomTwo = 0;
-    numberOfUpgradersRoomTwo = 0;
-    numberOfBuildersRoomTwo = 0;
-    numberOfRepairersRoomTwo = 0;
-    numberOfTowerFillersRoomTwo = 0;
-    numberOfDefendersRoomTwo = 0;
-    numberOfScavangersRoomTwo = 0;
+    numberOfHarvestersRoomTwo = 3;
+    numberOfUpgradersRoomTwo = 5;
+    numberOfBuildersRoomTwo = 2;
+    numberOfRepairersRoomTwo = 1;
+    numberOfTowerFillersRoomTwo = 2;
+    numberOfDefendersRoomTwo = 2;
+    numberOfScavangersRoomTwo = 4;
 
 
   } else if (controller.level == 6) {
