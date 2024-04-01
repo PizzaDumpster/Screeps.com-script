@@ -524,7 +524,7 @@ module.exports.loop = function () {
   } if (harvesters.length < numberOfHarvesters && PHASE == 5) {
     harvesters.push(
       Game.spawns["Spawn1"].spawnCreep(
-        [WORK, CARRY, MOVE, MOVE],
+        [WORK, CARRY, MOVE],
         "Harvester" + number.toString(),
         { memory: { role: "harvester", isLoaded: false } }
       )
