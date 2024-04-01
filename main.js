@@ -97,14 +97,14 @@ module.exports.loop = function () {
   for (let hostie in hostiles) {
     //filter hostiles by owner
     if (hostiles[hostie].owner.username === myFriendName) {
-      hostiles.splice(hostile, 1);
+      hostiles.splice(hostie, 1);
     }
   }
   hostilesRoomTwo = Game.rooms[myRoomTwoName].find(FIND_HOSTILE_CREEPS);
   for (let hostie2 in hostilesRoomTwo) {
     //filter hostiles by owner
     if (hostilesRoomTwo[hostie2].owner.username === myFriendName) {
-      hostilesRoomTwo.splice(hostile2, 1);
+      hostilesRoomTwo.splice(hostie2, 1);
     }
   }
   
