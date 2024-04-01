@@ -852,7 +852,7 @@ module.exports.loop = function () {
   ) {
     scavangers.push(
       Game.spawns["Spawn1"].spawnCreep(
-        [WORK, WORK, CARRY, CARRY, MOVE, MOVE],
+        [WORK, CARRY, MOVE, MOVE],
         "Scavanger" + number.toString(),
         { memory: { role: "scavanger", isLoaded: false, maxCapacity: 50 } }
       )
@@ -1794,14 +1794,14 @@ module.exports.loop = function () {
       } else if (Game.creeps[i].store.getUsedCapacity() === 0) {
         Game.creeps[i].memory.isLoaded = false;
       }
-      if(Game.creeps[i].memory.isLoaded === false){
-        if(Game.creeps[i].withdraw(storage[0],
+      if (Game.creeps[i].memory.isLoaded === false) {
+        if (Game.creeps[i].withdraw(storage[0],
           RESOURCE_ENERGY,
-          Game.creeps[i].store.getFreeCapacity()) === ERR_NOT_IN_RANGE){
-            Game.creeps[i].moveTo(storage[0]);
-          }
-      }else if(Game.creeps[i].memory.isLoaded === true){
-        if(Game.creeps[i].transfer(Game.getObjectById("660b0f40955d662f42c25f54"))=== ERR_NOT_IN_RANGE){
+          Game.creeps[i].store.getFreeCapacity()) === ERR_NOT_IN_RANGE) {
+          Game.creeps[i].moveTo(storage[0]);
+        }
+      } else if (Game.creeps[i].memory.isLoaded === true) {
+        if (Game.creeps[i].transfer(Game.getObjectById("660b0f40955d662f42c25f54")) === ERR_NOT_IN_RANGE) {
           Game.creeps[i].moveTo(Game.getObjectById("660b0f40955d662f42c25f54"));
         }
       }
@@ -1815,11 +1815,12 @@ module.exports.loop = function () {
       } else if (Game.creeps[i].store.getUsedCapacity() === 0) {
         Game.creeps[i].memory.isLoaded = false;
       }
-      if(Game.creeps[i].memory.isLoaded === false){
-         if(Game.creeps[i].withdraw(Game.getObjectById("660aecada8e937549627008d"))=== ERR_NOT_IN_RANGE){
+      if (Game.creeps[i].memory.isLoaded === false) {
+        Game.creeps[i].moveTo(Game.getObjectById("660aecada8e937549627008d"));
+        if (Game.creeps[i].withdraw(Game.getObjectById("660aecada8e937549627008d")) === ERR_NOT_IN_RANGE) {
           Game.creeps[i].moveTo(Game.getObjectById("660aecada8e937549627008d"));
         }
-      }else if(Game.creeps[i].memory.isLoaded === true){
+      } else if (Game.creeps[i].memory.isLoaded === true) {
         if (
           Game.creeps[i].upgradeController(
             Game.spawns.Spawn1.room.controller
