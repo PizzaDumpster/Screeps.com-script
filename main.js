@@ -31,6 +31,8 @@ var numberOfScavangers;
 var numberOfScavangersRoomTwo;
 var numberOfAttackers;
 var numberOfAttackersRoomTwo;
+var numberOfLinkSenders;
+var numberOfLinkReceivers;
 
 var energyContainers;
 var energySources;
@@ -66,6 +68,8 @@ var scavangers = [];
 var scavangersRoomTwo = [];
 var attackers = [];
 var attackersRoomTwo = [];
+var linkReceivers = [];
+var linkSenders = [];
 
 var rooomToInvade = Game.flags.Flag1
 
@@ -107,7 +111,7 @@ module.exports.loop = function () {
       hostilesRoomTwo.splice(hostie2, 1);
     }
   }
-  
+
   towers = Game.rooms[myRoomName].find(FIND_MY_STRUCTURES, {
     filter: { structureType: STRUCTURE_TOWER },
   });
@@ -157,6 +161,8 @@ module.exports.loop = function () {
     numberOfDefendersRoomTwo = 0;
     numberOfScavangers = 0;
     numberOfScavangersRoomTwo = 0;
+    numberOfLinkSenders = 0;
+    numberOfLinkReceivers = 0;
 
   } else if (controller.level == 2) {
     PHASE = 2;
@@ -169,6 +175,8 @@ module.exports.loop = function () {
     numberOfTowerFillers = 0;
     numberOfDefenders = 2;
     numberOfScavangers = 1;
+    numberOfLinkSenders = 0;
+    numberOfLinkReceivers = 0;
 
     numberOfHarvestersRoomTwo = 0;
     numberOfUpgradersRoomTwo = 0;
@@ -191,6 +199,8 @@ module.exports.loop = function () {
     numberOfDefenders = 2;
     numberOfScavangers = 2;
     numberOfAttackers = 1;
+    numberOfLinkSenders = 0;
+    numberOfLinkReceivers = 0;
 
     numberOfHarvestersRoomTwo = 2;
     numberOfUpgradersRoomTwo = 4;
@@ -214,6 +224,8 @@ module.exports.loop = function () {
     numberOfDefenders = 2;
     numberOfScavangers = 0;
     numberOfAttackers = 4;
+    numberOfLinkSenders = 0;
+    numberOfLinkReceivers = 0;
 
     numberOfHarvestersRoomTwo = 3;
     numberOfUpgradersRoomTwo = 5;
@@ -236,6 +248,8 @@ module.exports.loop = function () {
     numberOfTowerFillers = 2;
     numberOfDefenders = 4;
     numberOfScavangers = 2;
+    numberOfLinkSenders = 1;
+    numberOfLinkReceivers = 1;
 
     numberOfHarvestersRoomTwo = 3;
     numberOfUpgradersRoomTwo = 5;
@@ -257,6 +271,8 @@ module.exports.loop = function () {
     numberOfTowerFillers = 2;
     numberOfDefenders = 0;
     numberOfScavangers = 0;
+    numberOfLinkSenders = 0;
+    numberOfLinkReceivers = 0;
 
     numberOfHarvestersRoomTwo = 3;
     numberOfUpgradersRoomTwo = 5;
@@ -278,6 +294,8 @@ module.exports.loop = function () {
     numberOfTowerFillers = 2;
     numberOfDefenders = 0;
     numberOfScavangers = 0;
+    numberOfLinkSenders = 0;
+    numberOfLinkReceivers = 0;
 
     numberOfHarvestersRoomTwo = 0;
     numberOfUpgradersRoomTwo = 0;
@@ -299,6 +317,8 @@ module.exports.loop = function () {
     numberOfTowerFillers = 2;
     numberOfDefenders = 0;
     numberOfScavangers = 0;
+    numberOfLinkSenders = 0;
+    numberOfLinkReceivers = 0;
 
     numberOfHarvestersRoomTwo = 0;
     numberOfUpgradersRoomTwo = 0;
@@ -349,6 +369,8 @@ module.exports.loop = function () {
   scavangers = [];
   attackersRoomTwo = [];
   attackers = [];
+  linkSenders = {};
+  linkReceivers = [];
 
 
   hurtCreeps = [];
@@ -404,6 +426,10 @@ module.exports.loop = function () {
       attackers.push(Game.creeps[i]);
     } else if (Game.creeps[i].memory.role == "attacker2") {
       attackersRoomTwo.push(Game.creeps[i]);
+    } else if (Game.creeps[i].memory.role == "linkSender") {
+      linkSenders.push(Game.creeps[i]);
+    } else if (Game.creeps[i].memory.role == "linkReceiver") {
+      linkReceivers.push(Game.creeps[i]);
     }
   }
   console.log(
@@ -675,7 +701,7 @@ module.exports.loop = function () {
   } else if (builders.length < numberOfBuilders && constructionSites.length > 0 && PHASE == 5) {
     builders.push(
       Game.spawns[mySpawnName].spawnCreep(
-        [WORK, CARRY, CARRY, WORK, MOVE, MOVE, MOVE, MOVE],
+        [WORK, CARRY, MOVE, MOVE],
         "Builder" + number.toString(),
         { memory: { role: "builder", isLoaded: false } }
       )
@@ -734,7 +760,7 @@ module.exports.loop = function () {
     number++;
   }
   if (
-    towerFillersRoomTwo.length < numberOfTowerFillersRoomTwo 
+    towerFillersRoomTwo.length < numberOfTowerFillersRoomTwo
   ) {
     towerFillersRoomTwo.push(
       Game.spawns["Spawn2"].spawnCreep(
@@ -848,7 +874,7 @@ module.exports.loop = function () {
   if (attackers.length < numberOfAttackers) {
     attackers.push(
       Game.spawns["Spawn1"].spawnCreep(
-        [MOVE, MOVE,MOVE,MOVE, TOUGH, TOUGH, TOUGH, TOUGH, ATTACK, ATTACK],
+        [MOVE, MOVE, MOVE, MOVE, TOUGH, TOUGH, TOUGH, TOUGH, ATTACK, ATTACK],
         "Attacker" + number.toString(),
         { memory: { role: "attacker", isAttacking: false } }
       )
@@ -858,9 +884,29 @@ module.exports.loop = function () {
   if (attackersRoomTwo.length < numberOfAttackersRoomTwo) {
     attackersRoomTwo.push(
       Game.spawns["Spawn2"].spawnCreep(
-        [MOVE, MOVE,MOVE,MOVE, TOUGH, TOUGH, TOUGH, TOUGH, ATTACK, ATTACK],
+        [MOVE, MOVE, MOVE, MOVE, TOUGH, TOUGH, TOUGH, TOUGH, ATTACK, ATTACK],
         "Attacker" + number.toString(),
         { memory: { role: "attacker2", isAttacking: false } }
+      )
+    );
+    number++;
+  }
+  if (linkSenders.length < numberOfLinkSenders) {
+    linkSenders.push(
+      Game.spawns["Spawn1"].spawnCreep(
+        [MOVE, MOVE, CARRY, WORK],
+        "LinkSender" + number.toString(),
+        { memory: { role: "linkSender", isLoaded: false } }
+      )
+    );
+    number++;
+  }
+  if (linkReceivers.length < numberOfLinkReceivers) {
+    linkReceivers.push(
+      Game.spawns["Spawn1"].spawnCreep(
+        [MOVE, MOVE, CARRY, WORK],
+        "linkReceiver" + number.toString(),
+        { memory: { role: "linkReceiver", isLoaded: false } }
       )
     );
     number++;
@@ -1739,6 +1785,59 @@ module.exports.loop = function () {
         }
       }
     }
+    if (Game.creeps[i].memory.role === "linkSender") {
+      if (
+        Game.creeps[i].store.getUsedCapacity() ===
+        Game.creeps[i].store.getCapacity()
+      ) {
+        Game.creeps[i].memory.isLoaded = true;
+      } else if (Game.creeps[i].store.getUsedCapacity() === 0) {
+        Game.creeps[i].memory.isLoaded = false;
+      }
+      if(Game.creeps[i].memory.isLoaded === false){
+        if(Game.creeps[i].withdraw(storage[0],
+          RESOURCE_ENERGY,
+          Game.creeps[i].store.getFreeCapacity()) === ERR_NOT_IN_RANGE){
+            Game.creeps[i].moveTo(storage[0]);
+          }
+      }else if(Game.creeps[i].memory.isLoaded === true){
+        if(Game.creeps[i].transfer(Game.getObjectById("660b0f40955d662f42c25f54"))=== ERR_NOT_IN_RANGE){
+          Game.creeps[i].moveTo(Game.getObjectById("660b0f40955d662f42c25f54"));
+        }
+      }
+    }
+    if (Game.creeps[i].memory.role === "linkReceiver") {
+      if (
+        Game.creeps[i].store.getUsedCapacity() ===
+        Game.creeps[i].store.getCapacity()
+      ) {
+        Game.creeps[i].memory.isLoaded = true;
+      } else if (Game.creeps[i].store.getUsedCapacity() === 0) {
+        Game.creeps[i].memory.isLoaded = false;
+      }
+      if(Game.creeps[i].memory.isLoaded === false){
+         if(Game.creeps[i].withdraw(Game.getObjectById("660aecada8e937549627008d"))=== ERR_NOT_IN_RANGE){
+          Game.creeps[i].moveTo(Game.getObjectById("660aecada8e937549627008d"));
+        }
+      }else if(Game.creeps[i].memory.isLoaded === true){
+        if (
+          Game.creeps[i].upgradeController(
+            Game.spawns.Spawn1.room.controller
+          ) === ERR_NOT_IN_RANGE
+        ) {
+          Game.creeps[i].moveTo(Game.spawns.Spawn1.room.controller, {
+            visualizePathStyle: {
+              fill: "transparent",
+              stroke: "#fff",
+              lineStyle: "dashed",
+              strokeWidth: 0.15,
+              opacity: 0.1,
+            },
+          });
+        }
+      }
+    }
+
     var enemies = Game.creeps[i].room.find(FIND_HOSTILE_CREEPS);
     var closestEnemy = Game.creeps[i].pos.findClosestByPath(enemies);
 
@@ -1753,8 +1852,9 @@ module.exports.loop = function () {
             visualizePathStyle: { stroke: "#ff0000" }
           });
           Game.creeps[i].attack(enemies[0]);
-        }else{
-          Game.creeps[i].attack(enemies[0]);}
+        } else {
+          Game.creeps[i].attack(enemies[0]);
+        }
       }
 
     }
@@ -1769,7 +1869,7 @@ module.exports.loop = function () {
             visualizePathStyle: { stroke: "#ff0000" }
           });
           Game.creeps[i].attack(enemies[1]);
-        }else{
+        } else {
           Game.creeps[i].attack(enemies[1]);
         }
       }
