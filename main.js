@@ -258,13 +258,13 @@ module.exports.loop = function () {
     numberOfDefenders = 0;
     numberOfScavangers = 0;
 
-    numberOfHarvestersRoomTwo = 0;
-    numberOfUpgradersRoomTwo = 0;
-    numberOfBuildersRoomTwo = 0;
-    numberOfRepairersRoomTwo = 0;
-    numberOfTowerFillersRoomTwo = 0;
-    numberOfDefendersRoomTwo = 0;
-    numberOfScavangersRoomTwo = 0;
+    numberOfHarvestersRoomTwo = 3;
+    numberOfUpgradersRoomTwo = 5;
+    numberOfBuildersRoomTwo = 2;
+    numberOfRepairersRoomTwo = 1;
+    numberOfTowerFillersRoomTwo = 2;
+    numberOfDefendersRoomTwo = 2;
+    numberOfScavangersRoomTwo = 4;
 
 
   } else if (controller.level == 7) {
@@ -495,10 +495,10 @@ module.exports.loop = function () {
       )
     );
     number++;
-  } else if (harvesters.length < numberOfHarvesters && PHASE == 5) {
+  } if (harvesters.length < numberOfHarvesters && PHASE == 5) {
     harvesters.push(
       Game.spawns["Spawn1"].spawnCreep(
-        [WORK, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE],
+        [WORK, CARRY, MOVE, MOVE],
         "Harvester" + number.toString(),
         { memory: { role: "harvester", isLoaded: false } }
       )
@@ -570,7 +570,7 @@ module.exports.loop = function () {
       )
     );
     number++;
-  } if (upgraders.length < numberOfUpgraders && PHASE == 3) {
+  } else if (upgraders.length < numberOfUpgraders && PHASE == 3) {
     upgraders.push(
       Game.spawns["Spawn1"].spawnCreep(
         [WORK, WORK, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE],
@@ -588,10 +588,10 @@ module.exports.loop = function () {
       )
     );
     number++;
-  } else if (upgraders.length < numberOfUpgraders && PHASE == 5) {
+  } if (upgraders.length < numberOfUpgraders && PHASE == 5) {
     upgraders.push(
       Game.spawns["Spawn1"].spawnCreep(
-        [WORK, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE],
+        [WORK, CARRY, MOVE, MOVE],
         "Upgrader" + number.toString(),
         { memory: { role: "upgrader", isLoaded: false } }
       )
