@@ -248,8 +248,9 @@ module.exports.loop = function () {
     numberOfTowerFillers = 2;
     numberOfDefenders = 4;
     numberOfScavangers = 2;
-    numberOfLinkSenders = 1;
-    numberOfLinkReceivers = 1;
+    numberOfLinkSenders = 5;
+    numberOfLinkReceivers = 8;
+    numberOfAttackers = 4;
 
     numberOfHarvestersRoomTwo = 3;
     numberOfUpgradersRoomTwo = 5;
@@ -258,6 +259,7 @@ module.exports.loop = function () {
     numberOfTowerFillersRoomTwo = 2;
     numberOfDefendersRoomTwo = 2;
     numberOfScavangersRoomTwo = 4;
+    numberOfAttackersRoomTwo = 4;
 
 
   } else if (controller.level == 6) {
