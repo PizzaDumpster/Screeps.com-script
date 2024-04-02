@@ -369,11 +369,19 @@ module.exports.loop = function () {
   scavangers = [];
   attackersRoomTwo = [];
   attackers = [];
-  linkSenders = {};
+  linkSenders = [];
   linkReceivers = [];
 
 
   hurtCreeps = [];
+
+
+  const linkFrom = Game.getObjectById("660b0f40955d662f42c25f54");
+
+  const linkTo = Game.getObjectById("660aecada8e937549627008d");
+  
+  linkFrom.transferEnergy(linkTo);
+  
   // sort current creeps by role and put them into arrays
   for (const i in Game.creeps) {
     repairTargets = Game.rooms[myRoomName].find(FIND_STRUCTURES, {
@@ -845,7 +853,7 @@ module.exports.loop = function () {
       )
     );
     number++;
-  } else if (
+  } if (
     scavangers.length < numberOfScavangers &&
     deadSources.length > 0 &&
     PHASE == 5
@@ -1800,12 +1808,13 @@ module.exports.loop = function () {
           Game.creeps[i].store.getFreeCapacity()) === ERR_NOT_IN_RANGE) {
           Game.creeps[i].moveTo(storage[0]);
         }
-      } else if (Game.creeps[i].memory.isLoaded === true) {
-        if (Game.creeps[i].transfer(Game.getObjectById("660b0f40955d662f42c25f54")) === ERR_NOT_IN_RANGE) {
-          Game.creeps[i].moveTo(Game.getObjectById("660b0f40955d662f42c25f54"));
+      } if (Game.creeps[i].memory.isLoaded === true) {
+        Game.creeps[i].moveTo(Game.getObjectById("660b0f40955d662f42c25f54"));
+        Game.creeps[i].transfer(Game.getObjectById("660b0f40955d662f42c25f54"), RESOURCE_ENERGY);
+          
         }
       }
-    }
+    
     if (Game.creeps[i].memory.role === "linkReceiver") {
       if (
         Game.creeps[i].store.getUsedCapacity() ===
@@ -1817,7 +1826,7 @@ module.exports.loop = function () {
       }
       if (Game.creeps[i].memory.isLoaded === false) {
         Game.creeps[i].moveTo(Game.getObjectById("660aecada8e937549627008d"));
-        if (Game.creeps[i].withdraw(Game.getObjectById("660aecada8e937549627008d")) === ERR_NOT_IN_RANGE) {
+        if (Game.creeps[i].withdraw(Game.getObjectById("660aecada8e937549627008d"), RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
           Game.creeps[i].moveTo(Game.getObjectById("660aecada8e937549627008d"));
         }
       } else if (Game.creeps[i].memory.isLoaded === true) {
@@ -1877,10 +1886,11 @@ module.exports.loop = function () {
     }
 
 
-
-    if (repairTargets.length > 0) {
-      towers.forEach((tower) => tower.repair(repairTargets[0]));
-    }
+    /*
+        if (repairTargets.length > 0) {
+          towers.forEach((tower) => tower.repair(repairTargets[0]));
+        }
+        */
     if (repairTargetsRoomTwo.length > 0) {
       towersRoomTwo.forEach((tower) => tower.repair(repairTargetsRoomTwo[0]));
     }
