@@ -381,9 +381,9 @@ module.exports.loop = function () {
   const linkFrom = Game.getObjectById("660b0f40955d662f42c25f54");
 
   const linkTo = Game.getObjectById("660aecada8e937549627008d");
-  
+
   linkFrom.transferEnergy(linkTo);
-  
+
   // sort current creeps by role and put them into arrays
   for (const i in Game.creeps) {
     repairTargets = Game.rooms[myRoomName].find(FIND_STRUCTURES, {
@@ -894,7 +894,7 @@ module.exports.loop = function () {
   if (attackersRoomTwo.length < numberOfAttackersRoomTwo) {
     attackersRoomTwo.push(
       Game.spawns["Spawn2"].spawnCreep(
-        [MOVE, MOVE, MOVE, MOVE, TOUGH, TOUGH, TOUGH, TOUGH, ATTACK, ATTACK],
+        [MOVE, MOVE, MOVE, MOVE, TOUGH, ATTACK],
         "Attacker" + number.toString(),
         { memory: { role: "attacker2", isAttacking: false } }
       )
@@ -1805,18 +1805,16 @@ module.exports.loop = function () {
         Game.creeps[i].memory.isLoaded = false;
       }
       if (Game.creeps[i].memory.isLoaded === false) {
-        if (Game.creeps[i].withdraw(storage[0],
-          RESOURCE_ENERGY,
-          Game.creeps[i].store.getFreeCapacity()) === ERR_NOT_IN_RANGE) {
-          Game.creeps[i].moveTo(storage[0]);
+        if (Game.creeps[i].harvest(energySources[1]) === ERR_NOT_IN_RANGE) {
+          Game.creeps[i].moveTo(energySources[1]);
         }
       } if (Game.creeps[i].memory.isLoaded === true) {
         Game.creeps[i].moveTo(Game.getObjectById("660b0f40955d662f42c25f54"));
         Game.creeps[i].transfer(Game.getObjectById("660b0f40955d662f42c25f54"), RESOURCE_ENERGY);
-          
-        }
+
       }
-    
+    }
+
     if (Game.creeps[i].memory.role === "linkReceiver") {
       if (
         Game.creeps[i].store.getUsedCapacity() ===
@@ -1851,15 +1849,31 @@ module.exports.loop = function () {
     }
 
     var enemies = Game.creeps[i].room.find(FIND_HOSTILE_CREEPS);
-    var closestEnemy = Game.creeps[i].pos.findClosestByPath(enemies);
 
-    if (Game.creeps[i].memory.role == "attacker") {
-      if (enemies.length == 0) {
+    if (Game.creeps[i].memory.role === "attacker") {
+      if (Game.creeps[i].attack(Game.getObjectById("660c906c6a91840012519538")) === ERR_NOT_IN_RANGE) {
+        Game.creeps[i].moveTo(Game.getObjectById("660c906c6a91840012519538"), {
+          visualizePathStyle: { stroke: "#ff0000" }
+        });
+      } else {
+        if (Game.creeps[i].attack(Game.getObjectById("660c906c6a91840012519538")) === ERR_NOT_IN_RANGE) {
+          Game.creeps[i].moveTo(Game.getObjectById("660c906c6a91840012519538"), {
+            visualizePathStyle: { stroke: "#ff0000" }
+          });
+          Game.creeps[i].attack(Game.getObjectById("660c906c6a91840012519538"));
+        } else {
+          Game.creeps[i].attack(Game.getObjectById("660c906c6a91840012519538"));
+        }
+      }
+
+    }
+    if (Game.creeps[i].memory.role === "attacker2") {
+      if (enemies.length === 0) {
         Game.creeps[i].moveTo(Game.flags.AttackFlag, {
           visualizePathStyle: { stroke: "#ff0000" }
         });
       } else {
-        if (Game.creeps[i].attack(enemies[0]) == ERR_NOT_IN_RANGE) {
+        if (Game.creeps[i].attack(enemies[0]) === ERR_NOT_IN_RANGE) {
           Game.creeps[i].moveTo(enemies[0], {
             visualizePathStyle: { stroke: "#ff0000" }
           });
@@ -1868,57 +1882,39 @@ module.exports.loop = function () {
           Game.creeps[i].attack(enemies[0]);
         }
       }
-
     }
-    if (Game.creeps[i].memory.role == "attacker2") {
-      if (enemies.length == 0) {
-        Game.creeps[i].moveTo(Game.flags.AttackFlag, {
-          visualizePathStyle: { stroke: "#ff0000" }
-        });
-      } else {
-        if (Game.creeps[i].attack(enemies[1]) == ERR_NOT_IN_RANGE) {
-          Game.creeps[i].moveTo(enemies[1], {
-            visualizePathStyle: { stroke: "#ff0000" }
-          });
-          Game.creeps[i].attack(enemies[1]);
-        } else {
-          Game.creeps[i].attack(enemies[1]);
-        }
-      }
-    }
+  }
 
-
-    /*
+  /*
         if (repairTargets.length > 0) {
           towers.forEach((tower) => tower.repair(repairTargets[0]));
         }
         */
-    if (repairTargetsRoomTwo.length > 0) {
-      towersRoomTwo.forEach((tower) => tower.repair(repairTargetsRoomTwo[0]));
-    }
-    //if there are hostiles - attack them
-    if (hostiles.length > 0) {
-      var username = hostiles[0].owner.username;
-      Game.notify(
-        `User ${username} spotted in room ${myRoomName}` +
-        " ALERT!!!! WE ARE UNDER ATTACK!!!!! ALERT!!!! WE ARE UNDER ATTACK!!!!! ALERT!!!! WE ARE UNDER ATTACK!!!!! ALERT!!!! WE ARE UNDER ATTACK!!!!! "
-      );
-      towers.forEach((tower) => tower.attack(hostiles[0]));
-      console.log(
-        "ALERT!!!! WE ARE UNDER ATTACK!!!!! ALERT!!!! WE ARE UNDER ATTACK!!!!! ALERT!!!! WE ARE UNDER ATTACK!!!!! ALERT!!!! WE ARE UNDER ATTACK!!!!! "
-      );
-    }
-    if (hostilesRoomTwo.length > 0) {
-      var username = hostilesRoomTwo[0].owner.username;
-      Game.notify(
-        `User ${username} spotted in room ${myRoomName}` +
-        " ALERT!!!! WE ARE UNDER ATTACK!!!!! ALERT!!!! WE ARE UNDER ATTACK!!!!! ALERT!!!! WE ARE UNDER ATTACK!!!!! ALERT!!!! WE ARE UNDER ATTACK!!!!! "
-      );
-      towersRoomTwo.forEach((tower) => tower.attack(hostilesRoomTwo[0]));
-      console.log(
-        "ALERT!!!! WE ARE UNDER ATTACK!!!!! ALERT!!!! WE ARE UNDER ATTACK!!!!! ALERT!!!! WE ARE UNDER ATTACK!!!!! ALERT!!!! WE ARE UNDER ATTACK!!!!! "
-      );
-    }
+  if (repairTargetsRoomTwo.length > 0) {
+    towersRoomTwo.forEach((tower) => tower.repair(repairTargetsRoomTwo[0]));
+  }
+  //if there are hostiles - attack them
+  if (hostiles.length > 0) {
+    var username = hostiles[0].owner.username;
+    Game.notify(
+      `User ${username} spotted in room ${myRoomName}` +
+      " ALERT!!!! WE ARE UNDER ATTACK!!!!! ALERT!!!! WE ARE UNDER ATTACK!!!!! ALERT!!!! WE ARE UNDER ATTACK!!!!! ALERT!!!! WE ARE UNDER ATTACK!!!!! "
+    );
+    towers.forEach((tower) => tower.attack(hostiles[0]));
+    console.log(
+      "ALERT!!!! WE ARE UNDER ATTACK!!!!! ALERT!!!! WE ARE UNDER ATTACK!!!!! ALERT!!!! WE ARE UNDER ATTACK!!!!! ALERT!!!! WE ARE UNDER ATTACK!!!!! "
+    );
+  }
+  if (hostilesRoomTwo.length > 0) {
+    var username = hostilesRoomTwo[0].owner.username;
+    Game.notify(
+      `User ${username} spotted in room ${myRoomName}` +
+      " ALERT!!!! WE ARE UNDER ATTACK!!!!! ALERT!!!! WE ARE UNDER ATTACK!!!!! ALERT!!!! WE ARE UNDER ATTACK!!!!! ALERT!!!! WE ARE UNDER ATTACK!!!!! "
+    );
+    towersRoomTwo.forEach((towerR2) => towerR2.attack(hostilesRoomTwo[0]));
+    console.log(
+      "ALERT!!!! WE ARE UNDER ATTACK!!!!! ALERT!!!! WE ARE UNDER ATTACK!!!!! ALERT!!!! WE ARE UNDER ATTACK!!!!! ALERT!!!! WE ARE UNDER ATTACK!!!!! "
+    );
   }
 
   console.log("fillerTargets: " + fillerTargets.length);
