@@ -76,6 +76,11 @@ var linkReceiversRoomTwo = [];
 var rooomToInvade = Game.flags.Flag1
 
 module.exports.loop = function () {
+  console.log(Game.cpu.tickLimit);
+  console.log(Game.cpu.bucket);
+  if (Game.cpu.bucket >= 10000) {
+    Game.cpu.generatePixel();
+  }
 
 
   constructionSites = Game.spawns.Spawn1.room.find(FIND_CONSTRUCTION_SITES);
@@ -2025,6 +2030,9 @@ module.exports.loop = function () {
     console.log("Hostiles name" + hostiles[0].owner.username);
   }
   console.log("depositTargets: " + depositTargets);
+  console.log(Game.cpu.getUsed());
   console.log("-----------------------End Report-----------------------");
+
+  
 }
 
