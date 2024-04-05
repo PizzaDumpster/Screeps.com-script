@@ -1887,8 +1887,8 @@ module.exports.loop = function () {
         Game.creeps[i].memory.isLoaded = false;
       }
       if (Game.creeps[i].memory.isLoaded === false) {
-        if (Game.creeps[i].harvest(energySourcesRoomTwo[1]) === ERR_NOT_IN_RANGE) {
-          Game.creeps[i].moveTo(energySourcesRoomTwo[1]);
+        if (Game.creeps[i].withdraw(Game.getObjectById("6608608c416bc24ad50a8b1d"), RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
+          Game.creeps[i].moveTo(Game.getObjectById("6608608c416bc24ad50a8b1d"), RESOURCE_ENERGY);
         }
       } if (Game.creeps[i].memory.isLoaded === true) {
         Game.creeps[i].moveTo(Game.getObjectById("660f352851357a90ab4e9636"));
