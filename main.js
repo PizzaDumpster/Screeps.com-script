@@ -70,11 +70,13 @@ var attackers = [];
 var attackersRoomTwo = [];
 var linkReceivers = [];
 var linkSenders = [];
+var linkSendersRoomTwo = [];
+var linkReceiversRoomTwo = [];
 
 var rooomToInvade = Game.flags.Flag1
 
 module.exports.loop = function () {
-  console.log("-----------------------Report-----------------------");
+
 
   constructionSites = Game.spawns.Spawn1.room.find(FIND_CONSTRUCTION_SITES);
   constructionSites2 = Game.rooms["W18S7"].find(FIND_CONSTRUCTION_SITES);
@@ -132,14 +134,6 @@ module.exports.loop = function () {
     },
   });
   energyContainers.sort();
-  for (let i in Game.creeps) {
-    console.log(
-      "name: " +
-      Game.creeps[i].name +
-      ", ticksToLive: " +
-      Game.creeps[i].ticksToLive
-    );
-  }
 
   var controller = Game.rooms[myRoomName].controller;
   if (controller.level == 1) {
@@ -163,6 +157,8 @@ module.exports.loop = function () {
     numberOfScavangersRoomTwo = 0;
     numberOfLinkSenders = 0;
     numberOfLinkReceivers = 0;
+    numberOfLinkSendersRoomTwo = 0;
+    numberOfLinkReceiversRoomTwo = 0;
 
   } else if (controller.level == 2) {
     PHASE = 2;
@@ -185,6 +181,8 @@ module.exports.loop = function () {
     numberOfTowerFillersRoomTwo = 0;
     numberOfDefendersRoomTwo = 0;
     numberOfScavangersRoomTwo = 0;
+    numberOfLinkSendersRoomTwo = 0;
+    numberOfLinkReceiversRoomTwo = 0;
 
 
   } else if (controller.level == 3) {
@@ -210,6 +208,8 @@ module.exports.loop = function () {
     numberOfDefendersRoomTwo = 0;
     numberOfScavangersRoomTwo = 0;
     numberOfAttackersRoomTwo = 0;
+    numberOfLinkSendersRoomTwo = 0;
+    numberOfLinkReceiversRoomTwo = 0;
 
 
   } else if (controller.level == 4) {
@@ -235,22 +235,24 @@ module.exports.loop = function () {
     numberOfDefendersRoomTwo = 2;
     numberOfScavangersRoomTwo = 1;
     numberOfAttackersRoomTwo = 4;
+    numberOfLinkSendersRoomTwo = 0;
+    numberOfLinkReceiversRoomTwo = 0;
 
 
   } else if (controller.level == 5) {
     PHASE = 5;
-    numberOfHarvesters = 5;
-    numberOfUpgraders = 5;
+    numberOfHarvesters = 3;
+    numberOfUpgraders = 2;
     numberOfHealers = 0;
-    numberOfBuilders = 4;
-    numberOfRepairers = 2;
-    numberOfInvaders = 2;
-    numberOfTowerFillers = 2;
-    numberOfDefenders = 4;
-    numberOfScavangers = 2;
-    numberOfLinkSenders = 5;
-    numberOfLinkReceivers = 8;
-    numberOfAttackers = 4;
+    numberOfBuilders = 2;
+    numberOfRepairers = 1;
+    numberOfInvaders = 1;
+    numberOfTowerFillers = 1;
+    numberOfDefenders = 1;
+    numberOfScavangers = 1;
+    numberOfLinkSenders = 3;
+    numberOfLinkReceivers = 4;
+    numberOfAttackers = 1;
 
     numberOfHarvestersRoomTwo = 3;
     numberOfUpgradersRoomTwo = 5;
@@ -258,31 +260,37 @@ module.exports.loop = function () {
     numberOfRepairersRoomTwo = 1;
     numberOfTowerFillersRoomTwo = 2;
     numberOfDefendersRoomTwo = 2;
-    numberOfScavangersRoomTwo = 4;
-    numberOfAttackersRoomTwo = 4;
+    numberOfScavangersRoomTwo = 1;
+    numberOfAttackersRoomTwo = 1;
+    numberOfLinkSendersRoomTwo = 2;
+    numberOfLinkReceiversRoomTwo = 2;
 
 
   } else if (controller.level == 6) {
     PHASE = 6;
-    numberOfHarvesters = 7;
-    numberOfUpgraders = 9;
+    numberOfHarvesters = 3;
+    numberOfUpgraders = 3;
     numberOfHealers = 0;
     numberOfBuilders = 3;
     numberOfRepairers = 2;
     numberOfInvaders = 0;
     numberOfTowerFillers = 2;
-    numberOfDefenders = 0;
-    numberOfScavangers = 0;
-    numberOfLinkSenders = 0;
-    numberOfLinkReceivers = 0;
+    numberOfDefenders = 1;
+    numberOfScavangers = 1;
+    numberOfLinkSenders = 5;
+    numberOfLinkReceivers = 8;
+    numberOfAttackers = 1;
 
     numberOfHarvestersRoomTwo = 3;
-    numberOfUpgradersRoomTwo = 5;
+    numberOfUpgradersRoomTwo = 3;
     numberOfBuildersRoomTwo = 2;
     numberOfRepairersRoomTwo = 1;
     numberOfTowerFillersRoomTwo = 2;
     numberOfDefendersRoomTwo = 2;
     numberOfScavangersRoomTwo = 4;
+    numberOfLinkSendersRoomTwo = 4;
+    numberOfLinkReceiversRoomTwo = 4;
+    numberOfAttackersRoomTwo = 1;
 
 
   } else if (controller.level == 7) {
@@ -306,6 +314,8 @@ module.exports.loop = function () {
     numberOfTowerFillersRoomTwo = 0;
     numberOfDefendersRoomTwo = 0;
     numberOfScavangersRoomTwo = 0;
+    numberOfLinkSendersRoomTwo = 0;
+    numberOfLinkReceiversRoomTwo = 0;
 
 
   } else if (controller.level == 8) {
@@ -329,28 +339,13 @@ module.exports.loop = function () {
     numberOfTowerFillersRoomTwo = 0;
     numberOfDefendersRoomTwo = 0;
     numberOfScavangersRoomTwo = 0;
+    numberOfLinkSendersRoomTwo = 0;
+    numberOfLinkReceiversRoomTwo = 0;
 
 
   }
   console.log("phase: " + PHASE + " controller level: " + controller.level);
-  console.log(
-    "numberOfHarvesters: " +
-    numberOfHarvesters +
-    ", numberOfUpgraders: " +
-    numberOfUpgraders +
-    ", numberOfHealers: " +
-    numberOfHealers +
-    ", numberOfBuilders: " +
-    numberOfBuilders +
-    ", numberOfScavangers: " +
-    numberOfScavangers +
-    ", numberOfRepairers: " +
-    numberOfRepairers +
-    ", numberOfInvaders: " +
-    numberOfInvaders +
-    ", numberOfTowerFillers: " +
-    numberOfTowerFillers
-  );
+
 
   harvesters = [];
   harvestersRoomTwo = [];
@@ -372,17 +367,21 @@ module.exports.loop = function () {
   attackersRoomTwo = [];
   attackers = [];
   linkSenders = [];
+  linkSendersRoomTwo = [];
   linkReceivers = [];
+  linkReceiversRoomTwo = [];
 
 
   hurtCreeps = [];
 
+  if (Game.time % 10) {
+    const linkFrom = Game.getObjectById("660b0f40955d662f42c25f54");
 
-  const linkFrom = Game.getObjectById("660b0f40955d662f42c25f54");
+    const linkTo = Game.getObjectById("660aecada8e937549627008d");
 
-  const linkTo = Game.getObjectById("660aecada8e937549627008d");
+    linkFrom.transferEnergy(linkTo);
+  }
 
-  linkFrom.transferEnergy(linkTo);
 
   // sort current creeps by role and put them into arrays
   for (const i in Game.creeps) {
@@ -440,6 +439,10 @@ module.exports.loop = function () {
       linkSenders.push(Game.creeps[i]);
     } else if (Game.creeps[i].memory.role == "linkReceiver") {
       linkReceivers.push(Game.creeps[i]);
+    }else if (Game.creeps[i].memory.role == "linkSender2") {
+      linkSendersRoomTwo.push(Game.creeps[i]);
+    } else if (Game.creeps[i].memory.role == "linkReceiver2") {
+      linkReceiversRoomTwo.push(Game.creeps[i]);
     }
   }
   console.log(
@@ -921,6 +924,26 @@ module.exports.loop = function () {
     );
     number++;
   }
+  if (linkSendersRoomTwo.length < numberOfLinkSendersRoomTwo) {
+    linkSendersRoomTwo.push(
+      Game.spawns["Spawn2"].spawnCreep(
+        [MOVE, MOVE, CARRY, WORK],
+        "LinkSender" + number.toString(),
+        { memory: { role: "linkSender2", isLoaded: false } }
+      )
+    );
+    number++;
+  }
+  if (linkReceiversRoomTwo.length < numberOfLinkReceiversRoomTwo) {
+    linkReceiversRoomTwo.push(
+      Game.spawns["Spawn2"].spawnCreep(
+        [MOVE, MOVE, CARRY, WORK],
+        "linkReceiver" + number.toString(),
+        { memory: { role: "linkReceiver2", isLoaded: false } }
+      )
+    );
+    number++;
+  }
   //clear non-existing creep memory
   for (var name in Memory.creeps) {
     if (!Game.creeps[name]) {
@@ -957,6 +980,9 @@ module.exports.loop = function () {
   var storage = Game.spawns.Spawn1.room.find(FIND_STRUCTURES, {
     filter: { structureType: STRUCTURE_STORAGE },
   });
+
+  //-----------------------------------------------------------------------------------------------------------------------------------------------------
+
   for (const i in Game.creeps) {
     if (Game.creeps[i].ticksToLive < 200) {
       Game.creeps[i].say("R.I.P.");
@@ -996,7 +1022,6 @@ module.exports.loop = function () {
     fillerTargets = Game.creeps[i].room.find(FIND_STRUCTURES, {
       filter: (object) => object.structureType == STRUCTURE_TOWER,
     });
-
     //send memory role: harvester to spawn1 and drop off RESOURCE_ENERGY
     if (Game.creeps[i].memory.role == "harvester") {
       if (
@@ -1846,6 +1871,57 @@ module.exports.loop = function () {
           });
         }
       }
+    }if (Game.creeps[i].memory.role === "linkSender2") {
+      if (
+        Game.creeps[i].store.getUsedCapacity() ===
+        Game.creeps[i].store.getCapacity()
+      ) {
+        Game.creeps[i].memory.isLoaded = true;
+      } else if (Game.creeps[i].store.getUsedCapacity() === 0) {
+        Game.creeps[i].memory.isLoaded = false;
+      }
+      if (Game.creeps[i].memory.isLoaded === false) {
+        if (Game.creeps[i].harvest(energySources[1]) === ERR_NOT_IN_RANGE) {
+          Game.creeps[i].moveTo(energySources[1]);
+        }
+      } if (Game.creeps[i].memory.isLoaded === true) {
+        Game.creeps[i].moveTo(Game.getObjectById("660f352851357a90ab4e9636"));
+        Game.creeps[i].transfer(Game.getObjectById("660f352851357a90ab4e9636"), RESOURCE_ENERGY);
+
+      }
+    }
+
+    if (Game.creeps[i].memory.role === "linkReceiver2") {
+      if (
+        Game.creeps[i].store.getUsedCapacity() ===
+        Game.creeps[i].store.getCapacity()
+      ) {
+        Game.creeps[i].memory.isLoaded = true;
+      } else if (Game.creeps[i].store.getUsedCapacity() === 0) {
+        Game.creeps[i].memory.isLoaded = false;
+      }
+      if (Game.creeps[i].memory.isLoaded === false) {
+        Game.creeps[i].moveTo(Game.getObjectById("660f67231495414f15818757"));
+        if (Game.creeps[i].withdraw(Game.getObjectById("660f67231495414f15818757"), RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
+          Game.creeps[i].moveTo(Game.getObjectById("660f67231495414f15818757"));
+        }
+      } else if (Game.creeps[i].memory.isLoaded === true) {
+        if (
+          Game.creeps[i].upgradeController(
+            Game.spawns.Spawn1.room.controller
+          ) === ERR_NOT_IN_RANGE
+        ) {
+          Game.creeps[i].moveTo(Game.spawns.Spawn1.room.controller, {
+            visualizePathStyle: {
+              fill: "transparent",
+              stroke: "#fff",
+              lineStyle: "dashed",
+              strokeWidth: 0.15,
+              opacity: 0.1,
+            },
+          });
+        }
+      }
     }
 
     var enemies = Game.creeps[i].room.find(FIND_HOSTILE_CREEPS);
@@ -1944,5 +2020,5 @@ module.exports.loop = function () {
   }
   console.log("depositTargets: " + depositTargets);
   console.log("-----------------------End Report-----------------------");
-};
+}
 
