@@ -380,6 +380,12 @@ module.exports.loop = function () {
     const linkTo = Game.getObjectById("660aecada8e937549627008d");
 
     linkFrom.transferEnergy(linkTo);
+
+    const linkFrom2 = Game.getObjectById("660f352851357a90ab4e9636");
+
+    const linkTo2 = Game.getObjectById("660f67231495414f15818757");
+
+    linkFrom2.transferEnergy(linkTo2);
   }
 
 
@@ -1908,10 +1914,10 @@ module.exports.loop = function () {
       } else if (Game.creeps[i].memory.isLoaded === true) {
         if (
           Game.creeps[i].upgradeController(
-            Game.spawns.Spawn1.room.controller
+            Game.spawns.Spawn2.room.controller
           ) === ERR_NOT_IN_RANGE
         ) {
-          Game.creeps[i].moveTo(Game.spawns.Spawn1.room.controller, {
+          Game.creeps[i].moveTo(Game.spawns.Spawn2.room.controller, {
             visualizePathStyle: {
               fill: "transparent",
               stroke: "#fff",
