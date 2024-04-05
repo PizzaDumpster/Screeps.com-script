@@ -1881,8 +1881,8 @@ module.exports.loop = function () {
         Game.creeps[i].memory.isLoaded = false;
       }
       if (Game.creeps[i].memory.isLoaded === false) {
-        if (Game.creeps[i].harvest(energySources[1]) === ERR_NOT_IN_RANGE) {
-          Game.creeps[i].moveTo(energySources[1]);
+        if (Game.creeps[i].harvest(energySourcesRoomTwo[1]) === ERR_NOT_IN_RANGE) {
+          Game.creeps[i].moveTo(energySourcesRoomTwo[1]);
         }
       } if (Game.creeps[i].memory.isLoaded === true) {
         Game.creeps[i].moveTo(Game.getObjectById("660f352851357a90ab4e9636"));
