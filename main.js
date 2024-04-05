@@ -439,7 +439,7 @@ module.exports.loop = function () {
       linkSenders.push(Game.creeps[i]);
     } else if (Game.creeps[i].memory.role == "linkReceiver") {
       linkReceivers.push(Game.creeps[i]);
-    }else if (Game.creeps[i].memory.role == "linkSender2") {
+    } else if (Game.creeps[i].memory.role == "linkSender2") {
       linkSendersRoomTwo.push(Game.creeps[i]);
     } else if (Game.creeps[i].memory.role == "linkReceiver2") {
       linkReceiversRoomTwo.push(Game.creeps[i]);
@@ -1871,7 +1871,7 @@ module.exports.loop = function () {
           });
         }
       }
-    }if (Game.creeps[i].memory.role === "linkSender2") {
+    } if (Game.creeps[i].memory.role === "linkSender2") {
       if (
         Game.creeps[i].store.getUsedCapacity() ===
         Game.creeps[i].store.getCapacity()
