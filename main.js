@@ -282,8 +282,8 @@ module.exports.loop = function () {
     numberOfTowerFillers = 2;
     numberOfDefenders = 1;
     numberOfScavangers = 1;
-    numberOfLinkSenders = 5;
-    numberOfLinkReceivers = 8;
+    numberOfLinkSenders = 3;
+    numberOfLinkReceivers = 3;
     numberOfAttackers = 1;
 
     numberOfHarvestersRoomTwo = 3;
@@ -293,8 +293,8 @@ module.exports.loop = function () {
     numberOfTowerFillersRoomTwo = 2;
     numberOfDefendersRoomTwo = 2;
     numberOfScavangersRoomTwo = 4;
-    numberOfLinkSendersRoomTwo = 4;
-    numberOfLinkReceiversRoomTwo = 4;
+    numberOfLinkSendersRoomTwo = 3;
+    numberOfLinkReceiversRoomTwo = 3;
     numberOfAttackersRoomTwo = 1;
 
 
@@ -1892,8 +1892,8 @@ module.exports.loop = function () {
         Game.creeps[i].memory.isLoaded = false;
       }
       if (Game.creeps[i].memory.isLoaded === false) {
-        if (Game.creeps[i].withdraw(Game.getObjectById("6608608c416bc24ad50a8b1d"), RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
-          Game.creeps[i].moveTo(Game.getObjectById("6608608c416bc24ad50a8b1d"), RESOURCE_ENERGY);
+        if (Game.creeps[i].harvest(Game.getObjectById("5bbcabe39099fc012e63472e"), RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
+          Game.creeps[i].moveTo(Game.getObjectById("5bbcabe39099fc012e63472e"), RESOURCE_ENERGY);
         }
       } if (Game.creeps[i].memory.isLoaded === true) {
         Game.creeps[i].moveTo(Game.getObjectById("660f352851357a90ab4e9636"));
