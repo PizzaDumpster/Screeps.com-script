@@ -557,7 +557,7 @@ module.exports.loop = function () {
   } else if (harvesters.length < numberOfHarvesters && PHASE == 6) {
     harvesters.push(
       Game.spawns["Spawn1"].spawnCreep(
-        [WORK, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE],
+        [WORK, CARRY, MOVE],
         "Harvester" + number.toString(),
         { memory: { role: "harvester", isLoaded: false } }
       )
@@ -650,7 +650,7 @@ module.exports.loop = function () {
   } else if (upgraders.length < numberOfUpgraders && PHASE == 6) {
     upgraders.push(
       Game.spawns["Spawn1"].spawnCreep(
-        [WORK, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE],
+        [WORK, CARRY, MOVE, MOVE],
         "Upgrader" + number.toString(),
         { memory: { role: "upgrader", isLoaded: false } }
       )
