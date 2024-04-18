@@ -33,6 +33,7 @@ var numberOfAttackers;
 var numberOfAttackersRoomTwo;
 var numberOfLinkSenders;
 var numberOfLinkReceivers;
+var numberOfMineralMiners;
 
 var energyContainers;
 var energySources;
@@ -72,6 +73,8 @@ var linkReceivers = [];
 var linkSenders = [];
 var linkSendersRoomTwo = [];
 var linkReceiversRoomTwo = [];
+var mineralMiners = [];
+var mineralMinersRoomTwo = [];
 
 var rooomToInvade = Game.flags.Flag1
 
@@ -285,6 +288,7 @@ module.exports.loop = function () {
     numberOfLinkSenders = 3;
     numberOfLinkReceivers = 3;
     numberOfAttackers = 1;
+    numberOfMineralMiners = 1;
 
     numberOfHarvestersRoomTwo = 3;
     numberOfUpgradersRoomTwo = 3;
@@ -296,6 +300,7 @@ module.exports.loop = function () {
     numberOfLinkSendersRoomTwo = 3;
     numberOfLinkReceiversRoomTwo = 3;
     numberOfAttackersRoomTwo = 1;
+    numberOfMineralMinersRoomTwo = 1;
 
 
   } else if (controller.level == 7) {
@@ -375,6 +380,8 @@ module.exports.loop = function () {
   linkSendersRoomTwo = [];
   linkReceivers = [];
   linkReceiversRoomTwo = [];
+  mineralMiners = [];
+  mineralMinersRoomTwo = [];
 
 
   hurtCreeps = [];
@@ -391,6 +398,8 @@ module.exports.loop = function () {
     const linkTo2 = Game.getObjectById("660f67231495414f15818757");
 
     linkFrom2.transferEnergy(linkTo2);
+
+
   }
 
 
@@ -454,50 +463,13 @@ module.exports.loop = function () {
       linkSendersRoomTwo.push(Game.creeps[i]);
     } else if (Game.creeps[i].memory.role == "linkReceiver2") {
       linkReceiversRoomTwo.push(Game.creeps[i]);
+    } else if (Game.creeps[i].memory.role == "mineralMiner") {
+      mineralMiners.push(Game.creeps[i]);
+    } else if (Game.creeps[i].memory.role == "mineralMiner2") {
+      mineralMinersRoomTwo.push(Game.creeps[i]);
     }
   }
-  console.log(
-    "Harvesters: " +
-    harvesters.length +
-    " Upgraders: " +
-    upgraders.length +
-    " Defenders: " +
-    defenders.length +
-    " towerFillers: " +
-    towerFillers.length +
-    " Healers: " +
-    healers.length +
-    " Builders: " +
-    builders.length +
-    " Scavangers: " +
-    scavangers.length +
-    " Repairers: " +
-    repairers.length +
-    " Invaders: " +
-    invaders.length +
-    " Attackers: " +
-    attackers.length
-  );
-  console.log(
-    "HarvestersRoomTwo: " +
-    harvestersRoomTwo.length +
-    " UpgradersRoomTwo: " +
-    upgradersRoomTwo.length +
-    " DefendersRoomTwo: " +
-    defendersRoomTwo.length +
-    " towerFillersRoomTwo: " +
-    towerFillersRoomTwo.length +
-
-    " BuildersRoomTwo: " +
-    buildersRoomTwo.length +
-    " ScavangersRoomTwo: " +
-    scavangersRoomTwo.length +
-    " RepairersRoomTwo: " +
-    repairersRoomTwo.length +
-    " AttackersRoomTwo: " +
-    attackersRoomTwo.length
-
-  );
+  
 
   // if no harvesters in room spawn one
   if (harvesters.length < numberOfHarvesters && PHASE == 0) {
@@ -955,7 +927,29 @@ module.exports.loop = function () {
     );
     number++;
   }
-  //clear non-existing creep memory
+  // if no minerial miner spawn one
+  if (mineralMiners.length < numberOfMineralMiners) {
+    mineralMiners.push(
+      Game.spawns["Spawn1"].spawnCreep(
+        [MOVE, MOVE, CARRY, WORK],
+        "MineralMiner" + number.toString(),
+        { memory: { role: "mineralMiner", isLoaded: false } }
+      )
+    );
+    number++;
+  }
+  if (mineralMinersRoomTwo.length < numberOfMineralMinersRoomTwo) {
+    mineralMinersRoomTwo.push(
+      Game.spawns["Spawn2"].spawnCreep(
+        [MOVE, MOVE, CARRY, WORK],
+        "MineralMiner" + number.toString(),
+        { memory: { role: "mineralMiner2", isLoaded: false } }
+      )
+    );
+    number++;
+  }
+
+  //clear non-existing creep memory ----------------------------------------------------------------------
   for (var name in Memory.creeps) {
     if (!Game.creeps[name]) {
       delete Memory.creeps[name];
@@ -1934,6 +1928,48 @@ module.exports.loop = function () {
         }
       }
     }
+
+    // mineralMiners 
+    if (Game.creeps[i].memory.role === "mineralMiner") {
+      if (
+        Game.creeps[i].store.getUsedCapacity() ===
+        Game.creeps[i].store.getCapacity()
+      ) {
+        Game.creeps[i].memory.isLoaded = true;
+      } else if (Game.creeps[i].store.getUsedCapacity() === 0) {
+        Game.creeps[i].memory.isLoaded = false;
+      }
+      if (Game.creeps[i].memory.isLoaded === false) {
+        if (Game.creeps[i].harvest(Game.getObjectById("5bbcb24240062e4259e93836")) === ERR_NOT_IN_RANGE) {
+          Game.creeps[i].moveTo(Game.getObjectById("5bbcb24240062e4259e93836"));
+        }
+      } if (Game.creeps[i].memory.isLoaded === true) {
+        Game.creeps[i].moveTo(Game.getObjectById("661920a8ca108025ef166c18"));
+        Game.creeps[i].transfer(Game.getObjectById("661920a8ca108025ef166c18"), RESOURCE_KEANIUM , 50);
+
+      }
+    }
+     // mineralMiners2
+     if (Game.creeps[i].memory.role === "mineralMiner2") {
+      if (
+        Game.creeps[i].store.getUsedCapacity() ===
+        Game.creeps[i].store.getCapacity()
+      ) {
+        Game.creeps[i].memory.isLoaded = true;
+      } else if (Game.creeps[i].store.getUsedCapacity() === 0) {
+        Game.creeps[i].memory.isLoaded = false;
+      }
+      if (Game.creeps[i].memory.isLoaded === false) {
+        if (Game.creeps[i].harvest(Game.getObjectById("66193f12e6498862b81f5e34")) === ERR_NOT_IN_RANGE) {
+          Game.creeps[i].moveTo(Game.getObjectById("66193f12e6498862b81f5e34"));
+        }
+      } if (Game.creeps[i].memory.isLoaded === true) {
+        Game.creeps[i].moveTo(Game.getObjectById("661920a8ca108025ef166c18"));
+        Game.creeps[i].transfer(Game.getObjectById("661920a8ca108025ef166c18"), RESOURCE_MINERAL);
+
+      }
+    }
+    
 
     var enemies = Game.creeps[i].room.find(FIND_HOSTILE_CREEPS);
 
